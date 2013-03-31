@@ -310,7 +310,9 @@ function parseMap(data) {
                                 }
                                 break;
                             case 'joint':
-                                components.ngRevoluteJoint = {};
+                                if (!components.ngRevoluteJoint) {
+                                    components.ngRevoluteJoint = {};
+                                }
                                 break;
                             case '':
                                 //TODO:
