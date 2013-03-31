@@ -16,7 +16,7 @@ module.$s('selectControlledEntityByKeyboardSystem', {
 
     $require: ['selectByKeyboard'],
 
-    $added: ['$nodes', function($nodes) {
+    $added: function() {
         this._target = document.getElementById(this.domId) || document;
         var self = this;
         this._target.addEventListener('keydown', function(e) {
@@ -27,11 +27,11 @@ module.$s('selectControlledEntityByKeyboardSystem', {
 
             self.selectNode($node);
         });
-    }],
+    },
 
     $addNode: function($node) {
         var selector = $node.selectByKeyboard;
-        if (selector.selected) {
+        if ($node.ngSelected) {
             this.selectNode($node);
         } else {
             selector._controlComponent = $node.$remove('ngControlPlatformStyle');
@@ -55,11 +55,16 @@ module.$s('selectControlledEntityByKeyboardSystem', {
             if (selector.onlyOne && this._selectedNode) {
                 var prevSelector = this._selectedNode.selectByKeyboard;
                 prevSelector._controlComponent = this._selectedNode.$remove('ngControlPlatformStyle');
-                prevSelector.selected = false;
+                prevSelector._selectedComponent = this._selectedNode.$remove('ngSelected');
             }
 
-            if (!selector.selected) {
+            if (!value.$has('ngSelected')) {
                 value.$add(selector._controlComponent);
+                if (prevSelector._selectedComponent) {
+                    value.$add(prevSelector._selectedComponent);
+                } else {
+                    value.$add('ngSelected');
+                }
                 selector.selected = true;
             }
         }

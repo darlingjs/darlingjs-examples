@@ -20,7 +20,7 @@ function GameCtrl() {
     var width = 800;
     var height = 600;
 
-    world = darlingjs.world('myGame', ['ngModule', 'ngFlatland', 'ngBox2D', 'ngPixijsIntegration', 'selectControlledEntity'], {
+    world = darlingjs.world('myGame', ['ngModule', 'ngCommon', 'ngFlatland', 'ngBox2D', 'ngPixijsAdapter', 'selectControlledEntity'], {
         fps: 60
     });
 
@@ -39,6 +39,7 @@ function GameCtrl() {
     world.$add('ngPixijsSheetSprite');
     world.$add('ngPixijsSprite');
     world.$add('ngPixijsMovieClip');
+    world.$add('ngPixijsFollowSelected');
 
     box2DDebugDraw = world.$add('ngBox2DDebugDraw', {
         domID: 'gameView', width: width, height: height
@@ -62,9 +63,9 @@ function GameCtrl() {
             speed: 100.0
         },
         'selectByKeyboard', {
-            keyCode: 49,
-            selected: true
+            keyCode: 49
         },
+        'ngSelected',
         'ngDraggable',
         'ngPhysic', {
             restitution: 0.0,

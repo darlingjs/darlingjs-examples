@@ -7,7 +7,15 @@
 
 
 'use strict';
-var m = darlingjs.module('ngPixijsIntegration');
+var m = darlingjs.module('ngPixijsAdapter');
+
+m.$s('ngPixijsFollowSelected', {
+    $requre: ['ngSelected'],
+
+    $update: ['$nodes', function($nodes) {
+
+    }]
+});
 
 m.$s('ngPixijsMovieClip', {
     $require: ['ng2D', 'ngMovieClip'],
