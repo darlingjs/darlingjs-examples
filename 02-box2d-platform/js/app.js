@@ -20,7 +20,7 @@ function GameCtrl() {
     var width = 800;
     var height = 600;
 
-    world = darlingjs.world('myGame', ['ngModule', 'ngFlatland', 'ngBox2D', 'ngPixijsIntegration'], {
+    world = darlingjs.world('myGame', ['ngModule', 'ngFlatland', 'ngBox2D', 'ngPixijsIntegration', 'selectControlledEntity'], {
         fps: 60
     });
 
@@ -35,7 +35,6 @@ function GameCtrl() {
 
     world.$add('ngBox2DRevoluteJoint');
 
-
     world.$add('ngPixijsStage', { domId: 'gameView', width: width, height: height });
     world.$add('ngPixijsSheetSprite');
     world.$add('ngPixijsSprite');
@@ -46,6 +45,8 @@ function GameCtrl() {
     });
 
     world.$add('ngBox2DDraggable', { domId: 'gameView', width: width, height: height });
+
+    world.$add('selectControlledEntityByKeyboardSystem');
 
     world.$add(world.$e('player', [
         'ngDOM', { color: 'rgb(0,200,200)' },
@@ -59,6 +60,10 @@ function GameCtrl() {
             flySpeed: 0.0, //0.05,
             doubleJump: 2,
             speed: 100.0
+        },
+        'selectByKeyboard', {
+            keyCode: 49,
+            selected: true
         },
         'ngDraggable',
         'ngPhysic', {

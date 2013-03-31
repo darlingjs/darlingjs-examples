@@ -355,7 +355,8 @@
                      "ngControlPlatformStyle.jumpSpeed":"6",
                      "ngControlPlatformStyle.runSpeed":"2.75",
                      "ngPhysic.friction":"200",
-                     "ngPhysic.restitution":"0"
+                     "ngPhysic.restitution":"0",
+                     "selectByKeyboard.keyCode":"50"
                     },
                  "type":"dynamic",
                  "visible":true,
@@ -433,7 +434,8 @@
                      "ngControlPlatformStyle.jumpSpeed":"2.5",
                      "ngControlPlatformStyle.runSpeed":"2.5",
                      "ngPhysic.friction":"200",
-                     "ngPhysic.restitution":"0"
+                     "ngPhysic.restitution":"0",
+                     "selectByKeyboard.keyCode":"51"
                     },
                  "type":"dynamic",
                  "visible":true,
