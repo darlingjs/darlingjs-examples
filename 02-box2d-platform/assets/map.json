@@ -155,7 +155,7 @@
                     },
                  "type":"static",
                  "visible":true,
-                 "width":128,
+                 "width":96,
                  "x":576,
                  "y":352
                 }, 
@@ -168,7 +168,7 @@
                     },
                  "type":"static",
                  "visible":true,
-                 "width":192,
+                 "width":160,
                  "x":416,
                  "y":416
                 }, 
@@ -302,7 +302,7 @@
                  "type":"static",
                  "visible":true,
                  "width":0,
-                 "x":704,
+                 "x":768,
                  "y":480
                 }, 
                 {
@@ -390,8 +390,8 @@
                  "type":"dynamic",
                  "visible":true,
                  "width":32,
-                 "x":256,
-                 "y":192
+                 "x":76,
+                 "y":471
                 }, 
                 {
                  "height":32,
@@ -406,8 +406,8 @@
                  "type":"dynamic",
                  "visible":true,
                  "width":32,
-                 "x":320,
-                 "y":192
+                 "x":247,
+                 "y":491
                 }, 
                 {
                  "height":32,
@@ -433,6 +433,7 @@
                     {
                      "ngControlPlatformStyle.jumpSpeed":"2.5",
                      "ngControlPlatformStyle.runSpeed":"2.5",
+                     "ngPhysic.dencity":"2.0",
                      "ngPhysic.friction":"200",
                      "ngPhysic.restitution":"0",
                      "selectByKeyboard.keyCode":"51"
@@ -440,8 +441,8 @@
                  "type":"dynamic",
                  "visible":true,
                  "width":64,
-                 "x":282,
-                 "y":454
+                 "x":320,
+                 "y":448
                 }, 
                 {
                  "height":32,
@@ -507,6 +508,19 @@
                  "width":96,
                  "x":258,
                  "y":138
+                }, 
+                {
+                 "height":43,
+                 "name":"elephant-body",
+                 "properties":
+                    {
+                     "ngPhysic.fixedRotation":"true"
+                    },
+                 "type":"dynamic",
+                 "visible":true,
+                 "width":64,
+                 "x":320,
+                 "y":448
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -616,6 +630,20 @@
                  "width":0,
                  "x":532,
                  "y":131
+                }, 
+                {
+                 "ellipse":true,
+                 "height":0,
+                 "name":"",
+                 "properties":
+                    {
+
+                    },
+                 "type":"joint",
+                 "visible":true,
+                 "width":0,
+                 "x":352,
+                 "y":480
                 }],
          "opacity":1,
          "type":"objectgroup",

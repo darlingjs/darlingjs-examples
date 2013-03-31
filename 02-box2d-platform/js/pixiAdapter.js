@@ -10,10 +10,32 @@
 var m = darlingjs.module('ngPixijsAdapter');
 
 m.$s('ngPixijsFollowSelected', {
-    $requre: ['ngSelected'],
+    _avgPosition: {x:0.0, y:0.0},
 
-    $update: ['$nodes', function($nodes) {
+    $require: ['ng2D', 'ngSelected'],
 
+    $beforeUpdate: function() {
+        this._avgPosition.x = 0.0;
+        this._avgPosition.y = 0.0;
+        this._avgPosition.count = 0;
+    },
+    $update: ['$node', 'ngPixijsStage', function($node, ngPixijsStage) {
+        this._avgPosition.x += $node.ng2D.x;
+        this._avgPosition.y += $node.ng2D.y;
+        this._avgPosition.count++;
+    }],
+
+    $afterUpdate: ['ngPixijsStage', 'ng2DViewPort', function(ngPixijsStage, ng2DViewPort) {
+        if (this._avgPosition.count > 1) {
+            var coef = 1 / this._avgPosition.count;
+            this._avgPosition.x *= coef;
+            this._avgPosition.y *= coef;
+        }
+
+        ngPixijsStage.lookAt(this._avgPosition.x, this._avgPosition.y);
+
+        ng2DViewPort.lookAt.x = this._avgPosition.x;
+        ng2DViewPort.lookAt.y = this._avgPosition.y;
     }]
 });
 
@@ -175,6 +197,9 @@ m.$s('ngPixijsStage', {
     width: 640,
     height: 480,
 
+    shiftX: 0.0,
+    shiftY: 0.0,
+
     domId: '',
 
     useWebGL: true,
@@ -217,12 +242,13 @@ m.$s('ngPixijsStage', {
         this._stage.addChild($node.ngPixijsSprite.sprite);
     },
 
-    $updateNode: function($node) {
+    $update: ['$node', 'ng2DViewPort', function($node, ng2DViewPort) {
         var sprite = $node.ngPixijsSprite;
 
         var ng2D = $node.ng2D;
-        sprite.sprite.position.x = ng2D.x;
-        sprite.sprite.position.y = ng2D.y;
+
+        sprite.sprite.position.x = ng2D.x - ng2DViewPort.lookAt.x;
+        sprite.sprite.position.y = ng2D.y - ng2DViewPort.lookAt.y;
 
         var ng2DRotation = $node.ng2DRotation;
         if (ng2DRotation) {
@@ -235,13 +261,18 @@ m.$s('ngPixijsStage', {
             sprite.sprite.scale.x = ng2DSize.width / sprite.sprite.width;
             sprite.sprite.scale.y = ng2DSize.height / sprite.sprite.height;
         }
-    },
+    }],
 
-    $update: ['$nodes', function($nodes) {
-        $nodes.forEach(this.$updateNode);
+    $afterUpdate: ['$nodes', function($nodes) {
+        //$nodes.forEach(this.$updateNode);
         // render the stage
         this._renderer.render(this._stage);
-    }]
+    }],
+
+    lookAt: function(x, y) {
+        this.shiftX = -x;
+        this.shiftY = -y;
+    }
 });
 
 })();

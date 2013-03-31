@@ -52,10 +52,12 @@ module.$s('selectControlledEntityByKeyboardSystem', {
 
         if (value) {
             var selector = value.selectByKeyboard;
-            if (selector.onlyOne && this._selectedNode) {
-                var prevSelector = this._selectedNode.selectByKeyboard;
-                prevSelector._controlComponent = this._selectedNode.$remove('ngControlPlatformStyle');
-                prevSelector._selectedComponent = this._selectedNode.$remove('ngSelected');
+            var previous = this._selectedNode;
+            if (selector.onlyOne && previous) {
+                var prevSelector = previous.selectByKeyboard;
+                prevSelector._controlComponent = previous.$remove('ngControlPlatformStyle');
+                prevSelector._selectedComponent = previous.$remove('ngSelected');
+                previous.$add('ngFixedRotation');
             }
 
             if (!value.$has('ngSelected')) {
@@ -66,6 +68,7 @@ module.$s('selectControlledEntityByKeyboardSystem', {
                     value.$add('ngSelected');
                 }
                 selector.selected = true;
+                value.$remove('ngFixedRotation');
             }
         }
 

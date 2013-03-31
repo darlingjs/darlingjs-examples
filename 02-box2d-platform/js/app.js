@@ -35,17 +35,20 @@ function GameCtrl() {
 
     world.$add('ngBox2DRevoluteJoint');
 
+    world.$add('ng2DViewPort');
     world.$add('ngPixijsStage', { domId: 'gameView', width: width, height: height });
     world.$add('ngPixijsSheetSprite');
     world.$add('ngPixijsSprite');
     world.$add('ngPixijsMovieClip');
-    world.$add('ngPixijsFollowSelected');
+    //world.$add('ngPixijsFollowSelected');
+
 
     box2DDebugDraw = world.$add('ngBox2DDebugDraw', {
         domID: 'gameView', width: width, height: height
     });
 
     world.$add('ngBox2DDraggable', { domId: 'gameView', width: width, height: height });
+    world.$add('ngBox2DFixRotation');
 
     world.$add('selectControlledEntityByKeyboardSystem');
 
@@ -70,7 +73,7 @@ function GameCtrl() {
         'ngPhysic', {
             restitution: 0.0,
             friction: 200.0,
-            density: 1.0
+            density: 0.5
         }
     ]));
 
