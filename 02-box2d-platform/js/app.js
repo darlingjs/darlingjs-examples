@@ -9,6 +9,7 @@
  */
 var box2DDebugDraw;
 var world;
+var box2DSystem;
 
 /**
  * Place Game View
@@ -26,7 +27,7 @@ function GameCtrl() {
 
     world.$add('ngBox2DRollingControl');
 
-    world.$add('ngBox2DSystem', {
+    box2DSystem = world.$add('ngBox2DSystem', {
         gravity: {
             x:0,
             y:10.0
@@ -34,6 +35,7 @@ function GameCtrl() {
     });
 
     world.$add('ngBox2DRevoluteJoint');
+    world.$add('ngBox2DDistanceJoint');
 
     world.$add('ng2DViewPort');
     world.$add('ngPixijsStage', { domId: 'gameView', width: width, height: height });
@@ -309,9 +311,32 @@ function parseMap(data) {
                                     components.ngPhysic = {type: 'dynamic'};
                                 }
                                 break;
-                            case 'joint':
+                            case 'revolute-joint':
                                 if (!components.ngRevoluteJoint) {
                                     components.ngRevoluteJoint = {};
+                                }
+                                break;
+                            case 'distance-joint':
+                                if (!components.ngDistanceJoint) {
+                                    components.ngDistanceJoint = {};
+                                }
+                                components.ngDistanceJoint.anchorA = {
+                                    x: object.polyline[0].x + object.x,
+                                    y: object.polyline[0].y + object.y
+                                };
+                                components.ngDistanceJoint.anchorB = {
+                                    x: object.polyline[1].x + object.x,
+                                    y: object.polyline[1].y + object.y
+                                };
+                                break;
+                            case 'pulley-joint':
+                                if (!components.ngPulleyJoint) {
+                                    components.ngPulleyJoint = {};
+                                }
+                                break;
+                            case 'prismatic-joint':
+                                if (!components.ngPrismaticJoint) {
+                                    components.ngPrismaticJoint = {};
                                 }
                                 break;
                             case '':
@@ -341,7 +366,7 @@ function parseMap(data) {
                             components.ng2DPolygon = {
                                 line: object.polyline
                             };
-                            continue;
+                            //continue;
                         } else if (object.polygon) {
                             components.ng2DPolygon = {
                                 line: object.polygon

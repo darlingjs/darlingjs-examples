@@ -345,8 +345,8 @@
                  "type":"dynamic",
                  "visible":true,
                  "width":96,
-                 "x":128,
-                 "y":384
+                 "x":120,
+                 "y":397
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -374,11 +374,11 @@
                  "type":"dynamic",
                  "visible":true,
                  "width":48,
-                 "x":187,
-                 "y":475
+                 "x":179,
+                 "y":488
                 }, 
                 {
-                 "height":128,
+                 "height":50,
                  "name":"giraffe-body",
                  "properties":
                     {
@@ -386,9 +386,9 @@
                     },
                  "type":"dynamic",
                  "visible":true,
-                 "width":32,
-                 "x":192,
-                 "y":384
+                 "width":28,
+                 "x":188,
+                 "y":476
                 }, 
                 {
                  "height":32,
@@ -419,8 +419,8 @@
                  "type":"dynamic",
                  "visible":true,
                  "width":32,
-                 "x":247,
-                 "y":491
+                 "x":270,
+                 "y":484
                 }, 
                 {
                  "height":32,
@@ -435,8 +435,8 @@
                  "type":"dynamic",
                  "visible":true,
                  "width":32,
-                 "x":412,
-                 "y":188
+                 "x":219,
+                 "y":35
                 }, 
                 {
                  "ellipse":true,
@@ -534,6 +534,45 @@
                  "width":64,
                  "x":320,
                  "y":448
+                }, 
+                {
+                 "height":28,
+                 "name":"",
+                 "properties":
+                    {
+
+                    },
+                 "type":"dynamic",
+                 "visible":true,
+                 "width":79,
+                 "x":47,
+                 "y":237
+                }, 
+                {
+                 "height":73,
+                 "name":"",
+                 "properties":
+                    {
+
+                    },
+                 "type":"dynamic",
+                 "visible":true,
+                 "width":33,
+                 "x":56,
+                 "y":194
+                }, 
+                {
+                 "height":14,
+                 "name":"",
+                 "properties":
+                    {
+
+                    },
+                 "type":"dynamic",
+                 "visible":true,
+                 "width":80,
+                 "x":191,
+                 "y":72
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -554,11 +593,11 @@
                     {
 
                     },
-                 "type":"joint",
+                 "type":"revolute-joint",
                  "visible":true,
                  "width":0,
-                 "x":211,
-                 "y":499
+                 "x":203,
+                 "y":512
                 }, 
                 {
                  "ellipse":true,
@@ -568,7 +607,7 @@
                     {
 
                     },
-                 "type":"joint",
+                 "type":"revolute-joint",
                  "visible":true,
                  "width":0,
                  "x":204,
@@ -582,7 +621,7 @@
                     {
 
                     },
-                 "type":"joint",
+                 "type":"revolute-joint",
                  "visible":true,
                  "width":0,
                  "x":272,
@@ -596,7 +635,7 @@
                     {
 
                     },
-                 "type":"joint",
+                 "type":"revolute-joint",
                  "visible":true,
                  "width":0,
                  "x":340,
@@ -610,7 +649,7 @@
                     {
 
                     },
-                 "type":"joint",
+                 "type":"revolute-joint",
                  "visible":true,
                  "width":0,
                  "x":408,
@@ -624,7 +663,7 @@
                     {
 
                     },
-                 "type":"joint",
+                 "type":"revolute-joint",
                  "visible":true,
                  "width":0,
                  "x":470,
@@ -638,7 +677,7 @@
                     {
 
                     },
-                 "type":"joint",
+                 "type":"revolute-joint",
                  "visible":true,
                  "width":0,
                  "x":532,
@@ -652,7 +691,7 @@
                     {
 
                     },
-                 "type":"joint",
+                 "type":"revolute-joint",
                  "visible":true,
                  "width":0,
                  "x":352,
@@ -668,11 +707,99 @@
                      "ngRevoluteJoint.lowerAngle":"0",
                      "ngRevoluteJoint.upperAngle":"0"
                     },
-                 "type":"joint",
+                 "type":"revolute-joint",
                  "visible":true,
                  "width":0,
-                 "x":208,
-                 "y":402
+                 "x":70,
+                 "y":249
+                }, 
+                {
+                 "height":0,
+                 "name":"giraffe-pulley ",
+                 "polyline":[
+                        {
+                         "x":0,
+                         "y":0
+                        }, 
+                        {
+                         "x":0,
+                         "y":96
+                        }],
+                 "properties":
+                    {
+
+                    },
+                 "type":"pulley-joint",
+                 "visible":true,
+                 "width":0,
+                 "x":128,
+                 "y":416
+                }, 
+                {
+                 "height":0,
+                 "name":"giraffe-neak",
+                 "polyline":[
+                        {
+                         "x":-2,
+                         "y":31
+                        }, 
+                        {
+                         "x":-2,
+                         "y":95
+                        }],
+                 "properties":
+                    {
+
+                    },
+                 "type":"prismatic-joint",
+                 "visible":true,
+                 "width":0,
+                 "x":194,
+                 "y":385
+                }, 
+                {
+                 "height":0,
+                 "name":"",
+                 "polyline":[
+                        {
+                         "x":0,
+                         "y":0
+                        }, 
+                        {
+                         "x":52,
+                         "y":-63
+                        }],
+                 "properties":
+                    {
+
+                    },
+                 "type":"distance-joint",
+                 "visible":true,
+                 "width":0,
+                 "x":206,
+                 "y":78
+                }, 
+                {
+                 "height":0,
+                 "name":"",
+                 "polyline":[
+                        {
+                         "x":0,
+                         "y":0
+                        }, 
+                        {
+                         "x":52,
+                         "y":-63
+                        }],
+                 "properties":
+                    {
+
+                    },
+                 "type":"distance-joint",
+                 "visible":true,
+                 "width":0,
+                 "x":261,
+                 "y":79
                 }],
          "opacity":1,
          "type":"objectgroup",
