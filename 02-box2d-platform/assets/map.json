@@ -155,7 +155,7 @@
                     },
                  "type":"static",
                  "visible":true,
-                 "width":96,
+                 "width":84,
                  "x":576,
                  "y":352
                 }, 
@@ -302,8 +302,8 @@
                  "type":"static",
                  "visible":true,
                  "width":0,
-                 "x":768,
-                 "y":480
+                 "x":674,
+                 "y":515
                 }, 
                 {
                  "height":0,
@@ -345,8 +345,22 @@
                  "type":"dynamic",
                  "visible":true,
                  "width":96,
-                 "x":120,
-                 "y":397
+                 "x":366,
+                 "y":299
+                }, 
+                {
+                 "height":32,
+                 "name":"",
+                 "properties":
+                    {
+                     "ngPhysic.restitution":"0.0",
+                     "ngPhysic.type":"static"
+                    },
+                 "type":"static",
+                 "visible":true,
+                 "width":96,
+                 "x":672,
+                 "y":481
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -403,8 +417,8 @@
                  "type":"dynamic",
                  "visible":true,
                  "width":32,
-                 "x":76,
-                 "y":471
+                 "x":75,
+                 "y":392
                 }, 
                 {
                  "height":32,
@@ -412,6 +426,7 @@
                  "properties":
                     {
                      "ng2DRotation.rotation":"0",
+                     "ngDraggable":"",
                      "ngSpriteAtlas.fitToSize":"true",
                      "ngSpriteAtlas.name":"box1.png",
                      "ngSpriteAtlas.url":"assets\/spritesheet.json"
@@ -419,8 +434,8 @@
                  "type":"dynamic",
                  "visible":true,
                  "width":32,
-                 "x":270,
-                 "y":484
+                 "x":709,
+                 "y":400
                 }, 
                 {
                  "height":32,
@@ -573,6 +588,90 @@
                  "width":80,
                  "x":191,
                  "y":72
+                }, 
+                {
+                 "ellipse":true,
+                 "height":31,
+                 "name":"",
+                 "properties":
+                    {
+                     "ngDraggable":"",
+                     "ngPhysic.restitution":"0.9"
+                    },
+                 "type":"dynamic",
+                 "visible":true,
+                 "width":31,
+                 "x":544,
+                 "y":64
+                }, 
+                {
+                 "ellipse":true,
+                 "height":31,
+                 "name":"",
+                 "properties":
+                    {
+                     "ngPhysic.restitution":"0.9"
+                    },
+                 "type":"dynamic",
+                 "visible":true,
+                 "width":31,
+                 "x":576,
+                 "y":64
+                }, 
+                {
+                 "ellipse":true,
+                 "height":31,
+                 "name":"",
+                 "properties":
+                    {
+                     "ngPhysic.restitution":"0.9"
+                    },
+                 "type":"dynamic",
+                 "visible":true,
+                 "width":31,
+                 "x":608,
+                 "y":64
+                }, 
+                {
+                 "ellipse":true,
+                 "height":31,
+                 "name":"",
+                 "properties":
+                    {
+                     "ngDraggable":"",
+                     "ngPhysic.restitution":"0.9"
+                    },
+                 "type":"dynamic",
+                 "visible":true,
+                 "width":31,
+                 "x":485,
+                 "y":50
+                }, 
+                {
+                 "height":11,
+                 "name":"elevator",
+                 "properties":
+                    {
+                     "ngDraggable":""
+                    },
+                 "type":"dynamic",
+                 "visible":true,
+                 "width":96,
+                 "x":668,
+                 "y":457
+                }, 
+                {
+                 "height":11,
+                 "name":"elevator",
+                 "properties":
+                    {
+                     "ngDraggable":""
+                    },
+                 "type":"dynamic",
+                 "visible":true,
+                 "width":96,
+                 "x":575,
+                 "y":325
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -715,50 +814,6 @@
                 }, 
                 {
                  "height":0,
-                 "name":"giraffe-pulley ",
-                 "polyline":[
-                        {
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
-                         "x":0,
-                         "y":96
-                        }],
-                 "properties":
-                    {
-
-                    },
-                 "type":"pulley-joint",
-                 "visible":true,
-                 "width":0,
-                 "x":128,
-                 "y":416
-                }, 
-                {
-                 "height":0,
-                 "name":"giraffe-neak",
-                 "polyline":[
-                        {
-                         "x":-2,
-                         "y":31
-                        }, 
-                        {
-                         "x":-2,
-                         "y":95
-                        }],
-                 "properties":
-                    {
-
-                    },
-                 "type":"prismatic-joint",
-                 "visible":true,
-                 "width":0,
-                 "x":194,
-                 "y":385
-                }, 
-                {
-                 "height":0,
                  "name":"",
                  "polyline":[
                         {
@@ -800,7 +855,164 @@
                  "width":0,
                  "x":261,
                  "y":79
+                }, 
+                {
+                 "height":0,
+                 "name":"",
+                 "polyline":[
+                        {
+                         "x":0,
+                         "y":0
+                        }, 
+                        {
+                         "x":1,
+                         "y":59
+                        }],
+                 "properties":
+                    {
+                     "ngDistanceJoint.dampingRatio":"0.8"
+                    },
+                 "type":"distance-joint",
+                 "visible":true,
+                 "width":0,
+                 "x":560,
+                 "y":16
+                }, 
+                {
+                 "height":0,
+                 "name":"",
+                 "polyline":[
+                        {
+                         "x":0,
+                         "y":0
+                        }, 
+                        {
+                         "x":1,
+                         "y":59
+                        }],
+                 "properties":
+                    {
+                     "ngDistanceJoint.dampingRatio":"0.1"
+                    },
+                 "type":"distance-joint",
+                 "visible":true,
+                 "width":0,
+                 "x":591,
+                 "y":15
+                }, 
+                {
+                 "height":0,
+                 "name":"",
+                 "polyline":[
+                        {
+                         "x":0,
+                         "y":0
+                        }, 
+                        {
+                         "x":1,
+                         "y":59
+                        }],
+                 "properties":
+                    {
+                     "ngDistanceJoint.dampingRatio":"0.1"
+                    },
+                 "type":"distance-joint",
+                 "visible":true,
+                 "width":0,
+                 "x":622,
+                 "y":15
+                }, 
+                {
+                 "height":0,
+                 "name":"",
+                 "polyline":[
+                        {
+                         "x":28,
+                         "y":18
+                        }, 
+                        {
+                         "x":-2,
+                         "y":64
+                        }],
+                 "properties":
+                    {
+                     "ngDistanceJoint.dampingRatio":"0.8"
+                    },
+                 "type":"distance-joint",
+                 "visible":true,
+                 "width":0,
+                 "x":505,
+                 "y":-1
+                }, 
+                {
+                 "height":0,
+                 "name":"elevator-joint",
+                 "polyline":[
+                        {
+                         "x":0,
+                         "y":0
+                        }, 
+                        {
+                         "x":0,
+                         "y":26
+                        }],
+                 "properties":
+                    {
+
+                    },
+                 "type":"prismatic-joint",
+                 "visible":true,
+                 "width":0,
+                 "x":715,
+                 "y":463
+                }, 
+                {
+                 "height":0,
+                 "name":"elevator-joint",
+                 "polyline":[
+                        {
+                         "x":0,
+                         "y":0
+                        }, 
+                        {
+                         "x":0,
+                         "y":26
+                        }],
+                 "properties":
+                    {
+
+                    },
+                 "type":"prismatic-joint",
+                 "visible":true,
+                 "width":0,
+                 "x":622,
+                 "y":331
+                }, 
+                {
+                 "ellipse":true,
+                 "height":0,
+                 "name":"",
+                 "properties":
+                    {
+
+                    },
+                 "type":"revolute-joint",
+                 "visible":true,
+                 "width":0,
+                 "x":415,
+                 "y":313
                 }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":25,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "height":18,
+         "name":"markers",
+         "objects":[],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,

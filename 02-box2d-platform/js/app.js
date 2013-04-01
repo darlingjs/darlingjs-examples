@@ -36,6 +36,7 @@ function GameCtrl() {
 
     world.$add('ngBox2DRevoluteJoint');
     world.$add('ngBox2DDistanceJoint');
+    world.$add('ngBox2DPrismaticJoint');
 
     world.$add('ng2DViewPort');
     world.$add('ngPixijsStage', { domId: 'gameView', width: width, height: height });
@@ -320,23 +321,18 @@ function parseMap(data) {
                                 if (!components.ngDistanceJoint) {
                                     components.ngDistanceJoint = {};
                                 }
-                                components.ngDistanceJoint.anchorA = {
-                                    x: object.polyline[0].x + object.x,
-                                    y: object.polyline[0].y + object.y
-                                };
-                                components.ngDistanceJoint.anchorB = {
-                                    x: object.polyline[1].x + object.x,
-                                    y: object.polyline[1].y + object.y
-                                };
-                                break;
-                            case 'pulley-joint':
-                                if (!components.ngPulleyJoint) {
-                                    components.ngPulleyJoint = {};
-                                }
+
+                                parseAnchors(components.ngDistanceJoint, object);
                                 break;
                             case 'prismatic-joint':
                                 if (!components.ngPrismaticJoint) {
                                     components.ngPrismaticJoint = {};
+                                }
+                                parseAnchors(components.ngPrismaticJoint, object);
+                                break;
+                            case 'pulley-joint':
+                                if (!components.ngPulleyJoint) {
+                                    components.ngPulleyJoint = {};
                                 }
                                 break;
                             case '':
@@ -391,4 +387,15 @@ function parseMap(data) {
     } catch(e) {
         console.log(e);
     }
+}
+
+function parseAnchors(component, object) {
+    component.anchorA = {
+        x: object.polyline[0].x + object.x,
+        y: object.polyline[0].y + object.y
+    };
+    component.anchorB = {
+        x: object.polyline[1].x + object.x,
+        y: object.polyline[1].y + object.y
+    };
 }
