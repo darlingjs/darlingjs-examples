@@ -670,8 +670,8 @@
                  "type":"dynamic",
                  "visible":true,
                  "width":96,
-                 "x":575,
-                 "y":325
+                 "x":566,
+                 "y":322
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -985,8 +985,8 @@
                  "type":"prismatic-joint",
                  "visible":true,
                  "width":0,
-                 "x":622,
-                 "y":331
+                 "x":613,
+                 "y":328
                 }, 
                 {
                  "ellipse":true,

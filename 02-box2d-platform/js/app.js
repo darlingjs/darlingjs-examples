@@ -21,10 +21,11 @@ function GameCtrl() {
     var width = 800;
     var height = 600;
 
-    world = darlingjs.world('myGame', ['ngModule', 'ngCommon', 'ngFlatland', 'ngPhysics', 'ngBox2DEmscripten', 'ngPixijsAdapter', 'selectControlledEntity'], {
+    world = darlingjs.world('myGame', ['ngModule', 'ngCommon', 'ngFlatland', 'ngPhysics', 'ngBox2DEmscripten', 'ngPixijsAdapter', 'selectControlledEntity', 'ngStats'], {
         fps: 60
     });
 
+    world.$add('ngStatsBegin');
     world.$add('ngBox2DRollingControl');
 
     box2DSystem = world.$add('ngBox2DSystem', {
@@ -60,6 +61,8 @@ function GameCtrl() {
     world.$add('ngBox2DFixRotation');
 
     world.$add('selectControlledEntityByKeyboardSystem');
+
+    world.$add('ngStatsEnd');
 
     world.$add(world.$e('player', [
         'ngDOM', { color: 'rgb(0,200,200)' },
