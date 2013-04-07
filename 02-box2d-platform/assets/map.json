@@ -946,7 +946,7 @@
                 }, 
                 {
                  "height":0,
-                 "name":"elevator-joint",
+                 "name":"elevator-prismatic-joint-1",
                  "polyline":[
                         {
                          "x":0,
@@ -968,7 +968,7 @@
                 }, 
                 {
                  "height":0,
-                 "name":"elevator-joint",
+                 "name":"elevator-prismatic-joint-2",
                  "polyline":[
                         {
                          "x":0,
@@ -1011,7 +1011,32 @@
         }, 
         {
          "height":18,
-         "name":"markers",
+         "name":"sensor",
+         "objects":[
+                {
+                 "height":48,
+                 "name":"sensor",
+                 "properties":
+                    {
+                     "ngBox2DEnableMotorOnSensor.targetId":"elevator-prismatic-joint-1",
+                     "ngSensorAny":""
+                    },
+                 "type":"static",
+                 "visible":true,
+                 "width":63,
+                 "x":485,
+                 "y":483
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":25,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "height":18,
+         "name":"connections",
          "objects":[],
          "opacity":1,
          "type":"objectgroup",

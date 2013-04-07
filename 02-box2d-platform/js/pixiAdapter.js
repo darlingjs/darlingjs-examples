@@ -3,7 +3,7 @@
  * Copyright (c) 2013, Eugene-Krevenets
  */
 
-(function() {
+(function(darlingjs, darlingutil) {
 
 
 'use strict';
@@ -214,7 +214,7 @@ m.$s('ngPixijsStage', {
         var width, height;
         var view;
         if (this.domId !== null && this.domId !== '') {
-            view = placeCanvasInStack(this.domId, this.width, this.height);
+            view = darlingutil.placeCanvasInStack(this.domId, this.width, this.height);
             width = view.width;
             height = view.height;
         } else {
@@ -275,4 +275,4 @@ m.$s('ngPixijsStage', {
     }
 });
 
-})();
+})(darlingjs, darlingutil);

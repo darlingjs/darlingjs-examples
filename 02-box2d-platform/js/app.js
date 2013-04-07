@@ -21,7 +21,7 @@ function GameCtrl() {
     var width = 800;
     var height = 600;
 
-    world = darlingjs.world('myGame', ['ngModule', 'ngCommon', 'ngFlatland', 'ngBox2D', 'ngPixijsAdapter', 'selectControlledEntity'], {
+    world = darlingjs.world('myGame', ['ngModule', 'ngCommon', 'ngFlatland', 'ngPhysics', 'ngBox2DEmscripten', 'ngPixijsAdapter', 'selectControlledEntity'], {
         fps: 60
     });
 
@@ -38,12 +38,18 @@ function GameCtrl() {
     world.$add('ngBox2DDistanceJoint');
     world.$add('ngBox2DPrismaticJoint');
 
+    world.$add('ngBox2DSensorSystem');
+
+    world.$add('ngBox2DEnableMotorOnSensor');
+
+    world.$add('ngBox2DEnableMotorSystem');
+
     world.$add('ng2DViewPort');
     world.$add('ngPixijsStage', { domId: 'gameView', width: width, height: height });
     world.$add('ngPixijsSheetSprite');
     world.$add('ngPixijsSprite');
     world.$add('ngPixijsMovieClip');
-    //world.$add('ngPixijsFollowSelected');
+    world.$add('ngPixijsFollowSelected');
 
 
     box2DDebugDraw = world.$add('ngBox2DDebugDraw', {
