@@ -25,7 +25,10 @@ function GameCtrl() {
         fps: 60
     });
 
-    world.$add('ngStatsBegin');
+    world.$add('ngStatsBegin', {
+        domId: 'fpsContainer'
+    });
+
     world.$add('ngBox2DRollingControl');
 
     box2DSystem = world.$add('ngBox2DSystem', {
