@@ -47,6 +47,7 @@ function GameCtrl() {
     world.$add('ngBox2DEnableMotorOnSensor');
 
     world.$add('ngBox2DEnableMotorSystem');
+    world.$add('ngBox2DCollision');
 
     world.$add('ng2DViewPort');
     world.$add('ngPixijsStage', { domId: 'gameView', width: width, height: height });
@@ -85,6 +86,7 @@ function GameCtrl() {
         },
         'ngSelected',
         'ngDraggable',
+        'ngWantsToCollide',
         'ngPhysic', {
             restitution: 0.0,
             friction: 200.0,

@@ -28,7 +28,7 @@
          "objects":[
                 {
                  "height":544,
-                 "name":"",
+                 "name":"world left wall",
                  "properties":
                     {
                      "ngPhysic.restitution":"0.0",
@@ -174,7 +174,7 @@
                 }, 
                 {
                  "height":32,
-                 "name":"",
+                 "name":"floor",
                  "properties":
                     {
 
@@ -410,6 +410,7 @@
                  "properties":
                     {
                      "ng2DRotation.rotation":"0",
+                     "ngCollision":"",
                      "ngSpriteAtlas.fitToSize":"true",
                      "ngSpriteAtlas.name":"box1.png",
                      "ngSpriteAtlas.url":"assets\/spritesheet.json"
@@ -551,7 +552,7 @@
                  "y":448
                 }, 
                 {
-                 "height":28,
+                 "height":14,
                  "name":"",
                  "properties":
                     {
@@ -559,22 +560,9 @@
                     },
                  "type":"dynamic",
                  "visible":true,
-                 "width":79,
-                 "x":47,
-                 "y":237
-                }, 
-                {
-                 "height":73,
-                 "name":"",
-                 "properties":
-                    {
-
-                    },
-                 "type":"dynamic",
-                 "visible":true,
-                 "width":33,
-                 "x":56,
-                 "y":194
+                 "width":44,
+                 "x":167,
+                 "y":473
                 }, 
                 {
                  "height":14,
@@ -672,6 +660,53 @@
                  "width":96,
                  "x":566,
                  "y":322
+                }, 
+                {
+                 "height":0,
+                 "name":"",
+                 "polygon":[
+                        {
+                         "x":0,
+                         "y":0
+                        }, 
+                        {
+                         "x":55,
+                         "y":0
+                        }, 
+                        {
+                         "x":46,
+                         "y":-7
+                        }, 
+                        {
+                         "x":13,
+                         "y":-6
+                        }],
+                 "properties":
+                    {
+
+                    },
+                 "type":"dynamic",
+                 "visible":true,
+                 "width":0,
+                 "x":124,
+                 "y":531
+                }, 
+                {
+                 "height":32,
+                 "name":"box-with-bonus",
+                 "properties":
+                    {
+                     "ng2DRotation.rotation":"0",
+                     "ngBonus":"",
+                     "ngSpriteAtlas.fitToSize":"true",
+                     "ngSpriteAtlas.name":"box1.png",
+                     "ngSpriteAtlas.url":"assets\/spritesheet.json"
+                    },
+                 "type":"dynamic",
+                 "visible":true,
+                 "width":32,
+                 "x":126,
+                 "y":79
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -809,8 +844,8 @@
                  "type":"revolute-joint",
                  "visible":true,
                  "width":0,
-                 "x":70,
-                 "y":249
+                 "x":203,
+                 "y":483
                 }, 
                 {
                  "height":0,
@@ -1001,6 +1036,29 @@
                  "width":0,
                  "x":415,
                  "y":313
+                }, 
+                {
+                 "height":0,
+                 "name":"elevator-prismatic-joint-2",
+                 "polyline":[
+                        {
+                         "x":0,
+                         "y":0
+                        }, 
+                        {
+                         "x":0,
+                         "y":48
+                        }],
+                 "properties":
+                    {
+                     "ngPrismaticJoint.lowerTranslation":"-0.1",
+                     "ngPrismaticJoint.upperTranslation":"0.1"
+                    },
+                 "type":"prismatic-joint",
+                 "visible":true,
+                 "width":0,
+                 "x":171,
+                 "y":479
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1037,7 +1095,25 @@
         {
          "height":18,
          "name":"connections",
-         "objects":[],
+         "objects":[
+                {
+                 "height":0,
+                 "name":"",
+                 "polygon":[
+                        {
+                         "x":0,
+                         "y":0
+                        }],
+                 "properties":
+                    {
+
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":160,
+                 "y":384
+                }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
