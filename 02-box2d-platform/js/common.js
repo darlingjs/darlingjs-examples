@@ -272,7 +272,10 @@
 
             //FIX ME: can only remove in timeout
             setTimeout(function() {
-                $world.$remove(bonusState.entity);
+                var entities = bonusState.entities;
+                for (var i = 0, count = entities.length; i < count; i++) {
+                    $world.$remove(entities[i]);
+                }
             }, 0);
         }]
     });
