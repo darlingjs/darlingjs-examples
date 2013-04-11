@@ -30,7 +30,7 @@ world.$add('ngBox2DDebugDraw', {
     domID: 'canvas', width: width, height: height
 });
 
-world.$add('ngBox2DDraggable');
+world.$add('ngBox2DDraggable', { domId: 'gameView', width: width, height: height });
 world.$add('ngBox2DRollingControl');
 world.$add('ngBox2DFixRotation');
 
@@ -54,11 +54,11 @@ for (var i = 0, l = 50; i < l; i++) {
         'ngDraggable': {},
         'ngFixedRotation': {}
     }));
-    (function(box) {
-        setTimeout(function() {
-            world.$remove(box);
-        }, 10000 * Math.random());
-    }) (box);
+//    (function(box) {
+//        setTimeout(function() {
+//            world.$remove(box);
+//        }, 10000 * Math.random());
+//    }) (box);
 }
 
 
