@@ -66,6 +66,8 @@ function GameCtrl() {
 
     world.$add('selectControlledEntityByKeyboardSystem');
 
+    world.$add('ngCollectBonuses');
+
     world.$add('ngStatsEnd');
 
     world.$add(world.$e('player', [

@@ -7,11 +7,17 @@
 var width = 800;
 var height = 600;
 
-world = darlingjs.world('myGame', ['ngModule', 'ngCommon', 'ngFlatland', 'ngPhysics', 'ngBox2DEmscripten', 'ngStats'], {
+var world = darlingjs.world('myGame', ['ngModule', 'ngCommon', 'ngFlatland', 'ngPhysics', 'ngBox2DEmscripten', 'ngStats'], {
     fps: 60
 });
 
 world.$add('ngStatsBegin');
+
+world.$add('ng2DViewPort', {
+    lookAt: {
+        x: 400, y: 300
+    }
+});
 
 world.$add('ngBox2DSystem', {
     gravity: {
@@ -28,13 +34,14 @@ world.$add('ngBox2DDraggable');
 world.$add('ngBox2DRollingControl');
 world.$add('ngBox2DFixRotation');
 
+
 world.$add('ngStatsEnd');
 
 
 for (var i = 0, l = 50; i < l; i++) {
     var fixed = Math.random() > 0.5;
     var boxType = Math.floor(1 + 3 * Math.random());
-    world.$add(world.$e('obstacle_' + i, {
+    var box = world.$add(world.$e('obstacle_' + i, {
 //            'ngDOM': { color: fixed?'rgb(0, 255, 0)':'rgb(200, 200, 0)'},
         //Get From : http://www.iconfinder.com/search/?q=iconset%3Aie_ICandies
 //            'ngSprite': { name: 'assets/box' + boxType + '.png', fitToSize: true },
@@ -47,6 +54,11 @@ for (var i = 0, l = 50; i < l; i++) {
         'ngDraggable': {},
         'ngFixedRotation': {}
     }));
+    (function(box) {
+        setTimeout(function() {
+            world.$remove(box);
+        }, 10000 * Math.random());
+    }) (box);
 }
 
 
