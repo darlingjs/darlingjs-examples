@@ -1,4 +1,4 @@
-(function() {
+(function(darlingjs) {
     'use strict';
     /**
      * Project: GameEngine.
@@ -9,39 +9,39 @@
 
 //Define Engine
 
-    var ngModule = darlingjs.module('ngModule');
+    var m = darlingjs.module('CommonModule');
 
-    ngModule.$c('ngCollision', {
+    m.$c('ngCollision', {
         fixed: false
     });
 
-    ngModule.$c('ngScan', {
+    m.$c('ngScan', {
         target: 'ngPlayer'
     });
 
-    ngModule.$c('ngRamble', {
+    m.$c('ngRamble', {
         frame: {
             left: 0, right: 0,
             top: 0, bottom: 0
         }
     });
 
-    ngModule.$c('ngPlayer', {
+    m.$c('ngPlayer', {
     });
 
-    ngModule.$c('ngDOM', {
+    m.$c('ngDOM', {
         color: 'rgb(255,0,0)'
     });
 
-    ngModule.$c('ngDraggable', {
+    m.$c('ngDraggable', {
     });
 
-    ngModule.$c('ngSpriteAtlas', {
+    m.$c('ngSpriteAtlas', {
         name: 0,
         url: ''
     });
 
-    ngModule.$c('ngSprite', {
+    m.$c('ngSprite', {
         name: '',
         fitToSize: false,
         anchor: {
@@ -50,17 +50,17 @@
         }
     });
 
-    ngModule.$c('ngMovieClip', {
+    m.$c('ngMovieClip', {
         url: '',
         frames: null
     });
 
-    ngModule.$c('ngControl', {
+    m.$c('ngControl', {
         speed: 0.1,
         keys:{ UP_ARROW: -90, DOWN_ARROW: 90, RIGHT_ARROW: 0, LEFT_ARROW: 180}
     });
 
-    ngModule.$c('ngControlPlatformStyle', {
+    m.$c('ngControlPlatformStyle', {
         runSpeed: 4.0,
         jumpSpeed: 5.0,
         flySpeed: 0.0, //0.05,
@@ -69,7 +69,7 @@
         keys:{ UP_ARROW: -90, DOWN_ARROW: 90, RIGHT_ARROW: 0, LEFT_ARROW: 180}
     });
 
-    ngModule.$system('ng2DRamble', {
+    m.$system('ng2DRamble', {
         $require: ['ngRamble', 'ng2D'],
         _updateTarget: function($node) {
             $node.ngRamble._target = {
@@ -118,7 +118,7 @@
         }]
     });
 
-    ngModule.$system('ng2DScan', {
+    m.$system('ng2DScan', {
         $require: ['ng2D', 'ngScan'],
         $update : ['$nodes', function($nodes) {
             //TODO brute-force. just push away after collision
@@ -130,7 +130,7 @@
         }]
     })
 
-    ngModule.$system('ngControlSystem', {
+    m.$system('ngControlSystem', {
         $require: ['ng2D', 'ngControl'],
         targetId: null,
         _target: null,
@@ -207,7 +207,7 @@
         }]
     });
 
-    ngModule.$system('ngDOMSystem', {
+    m.$system('ngDOMSystem', {
         $require: ['ngDOM', 'ng2D'],
         _targetElementID: 'game',
         _target: null,
@@ -251,4 +251,29 @@
             style.backgroundColor = $node.ngDOM.color;
         }]
     });
-}) ();
+
+    //Here is little experiment with collision
+
+    m.$c('ngSounding');
+    m.$c('ngPlaySoundOf');
+
+    m.$c('ngBonus');
+
+
+    m.$c('ngGetBonus', {
+        'bonus': null
+    });
+
+    m.$s('ngCollectBonuses', {
+        $require: ['ngGetBonus'],
+
+        $addNode: ['$node', '$world', function($node, $world) {
+            var bonusState = $node.ngGetBonus;
+
+            //FIX ME: can only remove in timeout
+            setTimeout(function() {
+                $world.$remove(bonusState.entity);
+            }, 0);
+        }]
+    });
+}) (darlingjs);

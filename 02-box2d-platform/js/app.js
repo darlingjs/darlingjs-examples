@@ -21,7 +21,7 @@ function GameCtrl() {
     var width = 800;
     var height = 600;
 
-    world = darlingjs.world('myGame', ['ngModule', 'ngCommon', 'ngFlatland', 'ngPhysics', 'ngBox2DEmscripten', 'ngPixijsAdapter', 'selectControlledEntity', 'ngStats'], {
+    world = darlingjs.world('myGame', ['CommonModule', 'ngCommon', 'ngFlatland', 'ngPhysics', 'ngBox2DEmscripten', 'ngPixijsAdapter', 'selectControlledEntity', 'ngStats'], {
         fps: 60
     });
 
