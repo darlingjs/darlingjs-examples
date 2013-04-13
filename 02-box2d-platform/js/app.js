@@ -253,13 +253,20 @@ function convertTiledPropertiesToComponents(properties) {
         if (previousParam === '') {
             continue;
         }
-        var value = properties[key];
+
+        var value;
+        try {
+            value = eval(properties[key]);
+        } catch(e) {
+            value = properties[key];
+        }
+
         if(value === 'true') {
             componentParam[previousParam] = true;
         } else if(value === 'false') {
             componentParam[previousParam] = false;
         } else if (isNaN(value)) {
-            componentParam[previousParam] = properties[key];
+            componentParam[previousParam] = value;
         } else {
             componentParam[previousParam] = Number(value);
         }

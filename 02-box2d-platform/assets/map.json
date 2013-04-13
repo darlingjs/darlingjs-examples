@@ -388,8 +388,8 @@
                  "type":"dynamic",
                  "visible":true,
                  "width":48,
-                 "x":179,
-                 "y":488
+                 "x":94,
+                 "y":481
                 }, 
                 {
                  "height":50,
@@ -401,8 +401,8 @@
                  "type":"dynamic",
                  "visible":true,
                  "width":28,
-                 "x":188,
-                 "y":476
+                 "x":103,
+                 "y":469
                 }, 
                 {
                  "height":32,
@@ -418,8 +418,8 @@
                  "type":"dynamic",
                  "visible":true,
                  "width":32,
-                 "x":75,
-                 "y":392
+                 "x":39,
+                 "y":366
                 }, 
                 {
                  "height":32,
@@ -470,8 +470,8 @@
                  "type":"dynamic",
                  "visible":true,
                  "width":64,
-                 "x":320,
-                 "y":448
+                 "x":151,
+                 "y":465
                 }, 
                 {
                  "height":32,
@@ -548,11 +548,11 @@
                  "type":"dynamic",
                  "visible":true,
                  "width":64,
-                 "x":320,
-                 "y":448
+                 "x":151,
+                 "y":465
                 }, 
                 {
-                 "height":14,
+                 "height":15,
                  "name":"",
                  "properties":
                     {
@@ -560,9 +560,9 @@
                     },
                  "type":"dynamic",
                  "visible":true,
-                 "width":44,
-                 "x":164,
-                 "y":470
+                 "width":64,
+                 "x":63,
+                 "y":436
                 }, 
                 {
                  "height":14,
@@ -729,6 +729,47 @@
                  "width":32,
                  "x":710,
                  "y":52
+                }, 
+                {
+                 "height":79,
+                 "name":"",
+                 "properties":
+                    {
+
+                    },
+                 "type":"dynamic",
+                 "visible":true,
+                 "width":19,
+                 "x":103,
+                 "y":189
+                }, 
+                {
+                 "height":15,
+                 "name":"",
+                 "properties":
+                    {
+
+                    },
+                 "type":"dynamic",
+                 "visible":true,
+                 "width":87,
+                 "x":65,
+                 "y":228
+                }, 
+                {
+                 "ellipse":true,
+                 "height":22,
+                 "name":"",
+                 "properties":
+                    {
+                     "ngDraggable":"",
+                     "ngPhysic.restitution":"0.9"
+                    },
+                 "type":"dynamic",
+                 "visible":true,
+                 "width":23,
+                 "x":64,
+                 "y":491
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -752,8 +793,8 @@
                  "type":"revolute-joint",
                  "visible":true,
                  "width":0,
-                 "x":203,
-                 "y":512
+                 "x":118,
+                 "y":505
                 }, 
                 {
                  "ellipse":true,
@@ -850,24 +891,8 @@
                  "type":"revolute-joint",
                  "visible":true,
                  "width":0,
-                 "x":352,
-                 "y":480
-                }, 
-                {
-                 "ellipse":true,
-                 "height":0,
-                 "name":"giraffe-top-joint",
-                 "properties":
-                    {
-                     "ngRevoluteJoint.enableLimit":"true",
-                     "ngRevoluteJoint.lowerAngle":"0",
-                     "ngRevoluteJoint.upperAngle":"0"
-                    },
-                 "type":"revolute-joint",
-                 "visible":true,
-                 "width":0,
-                 "x":199,
-                 "y":480
+                 "x":183,
+                 "y":497
                 }, 
                 {
                  "height":0,
@@ -1058,6 +1083,50 @@
                  "width":0,
                  "x":415,
                  "y":313
+                }, 
+                {
+                 "height":0,
+                 "name":"elevator-prismatic-joint-2",
+                 "polyline":[
+                        {
+                         "x":0,
+                         "y":-64
+                        }, 
+                        {
+                         "x":0,
+                         "y":26
+                        }],
+                 "properties":
+                    {
+
+                    },
+                 "type":"prismatic-joint",
+                 "visible":true,
+                 "width":0,
+                 "x":116,
+                 "y":449
+                }, 
+                {
+                 "height":0,
+                 "name":"",
+                 "polyline":[
+                        {
+                         "x":0,
+                         "y":0
+                        }, 
+                        {
+                         "x":1,
+                         "y":59
+                        }],
+                 "properties":
+                    {
+                     "ngDistanceJoint.dampingRatio":"0.8"
+                    },
+                 "type":"distance-joint",
+                 "visible":true,
+                 "width":0,
+                 "x":73,
+                 "y":443
                 }],
          "opacity":1,
          "type":"objectgroup",
