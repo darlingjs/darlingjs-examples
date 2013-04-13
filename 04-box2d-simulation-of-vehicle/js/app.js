@@ -279,6 +279,7 @@ function vehicle(x, y, name){
             },
             bodyA: leftSuspensionAxleName,
             bodyB: bodyName,
+            maxMotorForce: 10.0,
             enableLimit: true,
             enableMotor: true,
             motorSpeed: 10
@@ -299,6 +300,7 @@ function vehicle(x, y, name){
             },
             bodyA: rightSuspensionAxleName,
             bodyB: bodyName,
+            maxMotorForce: 10.0,
             enableLimit: true,
             enableMotor: true,
             motorSpeed: 10
