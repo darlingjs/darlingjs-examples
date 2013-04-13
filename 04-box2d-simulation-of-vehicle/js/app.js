@@ -24,7 +24,7 @@ world.$add('ng2DViewPort', {
 world.$add('ngBox2DSystem', {
     gravity: {
         x:0,
-        y:10.0
+        y:9.8
     }
 });
 
@@ -33,9 +33,13 @@ world.$add('ngBox2DDebugDraw', {
 });
 
 world.$add('ngBox2DDraggable', { domId: 'gameView', width: width, height: height });
-world.$add('ngBox2DRollingControl');
 world.$add('ngBox2DFixRotation');
 world.$add('ngBox2DCollisionGroup');
+world.$add('ngBox2DRevoluteJoint');
+world.$add('ngBox2DPrismaticJoint');
+world.$add('ngEnableMotorOnKeyDown');
+world.$add('ngBox2DEnableMotorSystem');
+world.$add('ngBox2DMotorWithAcceleration');
 
 
 world.$add('ngStatsEnd');
@@ -53,18 +57,13 @@ for (var i = 0, l = 50; i < l; i++) {
 //            'ngSprite': { name: 'assets/box' + boxType + '.png', fitToSize: true },
 //        'ngSpriteAtlas' : { name: 'box' + boxType + '.png', url: 'assets/spritesheet.json', fitToSize: true},
 //            'ngMovieClip' : {url: 'assets/explosion.json', fitToSize: true, frames: ['Explosion_Sequence_A 1.png', 'Explosion_Sequence_A 2.png', 'Explosion_Sequence_A 3.png', 'Explosion_Sequence_A 4.png', 'Explosion_Sequence_A 5.png', 'Explosion_Sequence_A 6.png', 'Explosion_Sequence_A 7.png', 'Explosion_Sequence_A 8.png', 'Explosion_Sequence_A 9.png', 'Explosion_Sequence_A 10.png', 'Explosion_Sequence_A 11.png', 'Explosion_Sequence_A 12.png', 'Explosion_Sequence_A 13.png', 'Explosion_Sequence_A 14.png', 'Explosion_Sequence_A 15.png', 'Explosion_Sequence_A 16.png', 'Explosion_Sequence_A 17.png', 'Explosion_Sequence_A 18.png', 'Explosion_Sequence_A 19.png', 'Explosion_Sequence_A 20.png', 'Explosion_Sequence_A 21.png', 'Explosion_Sequence_A 22.png', 'Explosion_Sequence_A 23.png', 'Explosion_Sequence_A 24.png', 'Explosion_Sequence_A 25.png', 'Explosion_Sequence_A 26.png', 'Explosion_Sequence_A 27.png']},
-        'ng2D': {x : 40 + (width - 40) * Math.random(), y: 40 + (height - 40) * Math.random()},
+        'ng2D': {x : width / 2 + (width / 2) * Math.random(), y: 40 + (height - 40) * Math.random()},
         'ng2DSize': {width:30, height:30},
         'ng2DRotation': {},
         'ngPhysic': {},
         'ngCollisionGroup': {
-            //'alwaysWith': 'ground',
             'neverWith': 'stones'
         },
-//        'ngCollisionCategory': {
-//            'is': ['rock'],
-//            'collideWith': ['vehicle']
-//        },
         'ngDraggable': {},
         'ngFixedRotation': {}
     }));
@@ -77,35 +76,237 @@ for (var i = 0, l = 50; i < l; i++) {
 
 //vehicle
 
-function vehicle(x, y){
+function vehicle(x, y, name){
+    var carWidth = 45;
+    var carHeight = 10;
+    var axleContainerDistance = 30;
+    var axleContainerWidth = 5;
+    var axleContainerHeight = 20;
+    var axleContainerDepth = 10;
+    var axleAngle = 20;
+    var wheelRadius = 25;
+
+    var wheelMaxSpeed = 10.0;
+    var wheelAcceleration = 0.5;
+
+    var degreesToRadians = Math.PI / 180;
+
     //body
-    world.$add(world.$e('player', [
-        'ngDOM', { color: 'rgb(0,200,200)' },
-        'ngSprite', { name: 'assets/bunny.png', anchor: {y: 0.8} },
-        'ng2D', {x : 50, y: 50},
-        'ng2DCircle', {radius: 10.0},
-        //'ng2DRotation',
-        'ngControlPlatformStyle', {
-            runSpeed: 4.0,
-            jumpSpeed: 5.0,
-            flySpeed: 0.0, //0.05,
-            doubleJump: 2,
-            speed: 100.0
-        },
-        'ngSelected',
-        'ngDraggable',
-        'ngPhysic', {
+    var bodyName = 'vehicle-body-' + name;
+    world.$add(world.$e(bodyName, {
+        'ng2D': {x : x, y: y},
+        'ng2DSize': {width:2 * carWidth, height:2 * carHeight},
+        'ng2DRotation': {},
+        'ngDraggable': {},
+        'ngPhysic': {
             restitution: 0.0,
             friction: 200.0,
             density: 0.5
+        },
+        'ngCollisionGroup': {
+            'neverWith': 'vehicle'
         }
-    ]));
-    //wheels
+    }));
 
     //suspension
+    //* left-container
+    world.$add(world.$e('vehicle-left-suspension-container-' + name, {
+        'ng2D': {x : x - axleContainerDistance, y: y + axleContainerDepth},
+        'ng2DSize': {width: 2 * axleContainerWidth, height: 2 * axleContainerHeight},
+        'ng2DRotation': { rotation: axleAngle*degreesToRadians },
+        'ngPhysic': {
+            partOf: bodyName,
+            restitution: 0.0,
+            friction: 200.0,
+            density: 0.5
+        },
+        'ngCollisionGroup': {
+            'neverWith': 'vehicle'
+        }
+    }));
+
+    //* left-axle
+    var leftSuspensionAxleName = 'vehicle-left-suspension-axle-' + name;
+    var leftSuspensionAxleX = x - axleContainerDistance - axleContainerHeight * Math.cos((90 - axleAngle) * degreesToRadians);
+    var leftSuspensionAxleY = y + axleContainerDepth + axleContainerHeight * Math.sin((90 - axleAngle) * degreesToRadians);
+
+    world.$add(world.$e(leftSuspensionAxleName, {
+        'ng2D': {
+            x: leftSuspensionAxleX,
+            y: leftSuspensionAxleY
+        },
+        'ng2DSize': {width: 2 * axleContainerWidth / 2, height: 2 * axleContainerHeight},
+        'ng2DRotation': { rotation: axleAngle*degreesToRadians },
+        'ngPhysic': {
+            restitution: 0.0,
+            friction: 200.0,
+            density: 0.5
+        },
+        'ngCollisionGroup': {
+            'neverWith': 'vehicle'
+        }
+    }));
+
+    //* right-container
+    world.$add(world.$e('vehicle-left-suspension-container-' + name, {
+        'ng2D': {x : x + axleContainerDistance, y: y + axleContainerDepth},
+        'ng2DSize': {width: 2 * axleContainerWidth, height: 2 * axleContainerHeight},
+        'ng2DRotation': { rotation: -axleAngle*degreesToRadians },
+        'ngPhysic': {
+            partOf: bodyName,
+            restitution: 0.0,
+            friction: 200.0,
+            density: 0.5
+        },
+        'ngCollisionGroup': {
+            'neverWith': 'vehicle'
+        }
+    }));
+
+    //* right-axle
+    var rightSuspensionAxleName = 'vehicle-right-suspension-axle-' + name;
+    var rightSuspensionAxleX = x + axleContainerDistance + axleContainerHeight * Math.cos((90 - axleAngle) * degreesToRadians);
+    var rightSuspensionAxleY = y + axleContainerDepth + axleContainerHeight * Math.sin((90 - axleAngle) * degreesToRadians);
+
+    world.$add(world.$e(rightSuspensionAxleName, {
+        'ng2D': {
+            x: rightSuspensionAxleX,
+            y: rightSuspensionAxleY
+        },
+        'ng2DSize': {width: 2 * axleContainerWidth / 2, height: 2 * axleContainerHeight},
+        'ng2DRotation': { rotation: -axleAngle*degreesToRadians },
+        'ngPhysic': {
+            restitution: 0.0,
+            friction: 200.0,
+            density: 0.5
+        },
+        'ngCollisionGroup': {
+            'neverWith': 'vehicle'
+        }
+    }));
+
+    //wheels
+    //* left-wheel
+    var leftWheelName = 'vehicle-left-wheel-' + name;
+    world.$add(world.$e(leftWheelName, {
+        'ng2D': {
+            x: x - axleContainerDistance - 2 * axleContainerHeight * Math.cos((90 - axleAngle) * degreesToRadians),
+            y: y + axleContainerDepth + 2 * axleContainerHeight * Math.sin((90 - axleAngle) * degreesToRadians)
+        },
+        'ng2DCircle': {radius: wheelRadius},
+        //'ng2DRotation',
+        'ngSelected': {},
+        'ngDraggable': {},
+        'ngPhysic': {
+            restitution: 0.0,
+            friction: 200.0,
+            density: 0.5
+        },
+        'ngCollisionGroup': {
+            'neverWith': 'vehicle'
+        }
+    }));
+
+    //* right-wheel
+    var rightWheelName = 'vehicle-right-wheel-' + name;
+    world.$add(world.$e(rightWheelName, {
+        'ng2D': {
+            x: x + axleContainerDistance + 2 * axleContainerHeight * Math.cos((90 - axleAngle) * degreesToRadians),
+            y: y + axleContainerDepth + 2 * axleContainerHeight * Math.sin((90 - axleAngle) * degreesToRadians)
+        },
+        'ng2DCircle': {radius: wheelRadius},
+        //'ng2DRotation',
+        'ngSelected': {},
+        'ngDraggable': {},
+        'ngPhysic': {
+            name: rightWheelName,
+            restitution: 0.0,
+            friction: 200.0,
+            density: 0.5
+        },
+        'ngCollisionGroup': {
+            'neverWith': 'vehicle'
+        }
+    }));
+
+    //revolute-joints
+    //*left
+    world.$add(world.$e('vehicle-left-wheel-revolute-joint-' + name, {
+        'ng2D': {
+            x: x - axleContainerDistance - 2 * axleContainerHeight * Math.cos((90 - axleAngle) * degreesToRadians),
+            y: y + axleContainerDepth + 2 * axleContainerHeight * Math.sin((90 - axleAngle) * degreesToRadians)
+        },
+        'ngRevoluteJoint': {
+        },
+        'ngEnableMotorOnKeyDown': {
+            keyCode: [37, 65],
+            keyCodeReverse: [39, 68]
+        },
+        'ngMotorWithAcceleration': {
+            min:-wheelMaxSpeed,
+            max: wheelMaxSpeed,
+            acceleration: wheelAcceleration
+        }
+    }));
+
+    //*right
+    world.$add(world.$e('vehicle-right-wheel-revolute-joint-' + name, {
+        'ng2D': {
+            x: x + axleContainerDistance + 2 * axleContainerHeight * Math.cos((90 - axleAngle) * degreesToRadians),
+            y: y + axleContainerDepth + 2 * axleContainerHeight * Math.sin((90 - axleAngle) * degreesToRadians)
+        },
+        'ngRevoluteJoint': {
+        }
+        /*,
+        'ngEnableMotorOnKeyDown': {
+            keyCode: [37, 65],
+            keyCodeReverse: [39, 68]
+        }
+        */
+    }));
+
+    //primatic-joints
+    //*left
+    world.$add(world.$e('vehicle-left-wheel-prismatic-joint-' + name, {
+        'ngPrismaticJoint': {
+            anchorA: {
+                x: leftSuspensionAxleX,
+                y: leftSuspensionAxleY
+            },
+            anchorB: {
+                x: leftSuspensionAxleX + axleContainerDepth * Math.cos((90-axleAngle)*degreesToRadians),
+                y: leftSuspensionAxleY - axleContainerDepth * Math.sin((90-axleAngle)*degreesToRadians)
+            },
+            bodyA: leftSuspensionAxleName,
+            bodyB: bodyName,
+            enableLimit: true,
+            enableMotor: true,
+            motorSpeed: 10
+        }
+    }));
+
+    //*right
+
+    world.$add(world.$e('vehicle-right-wheel-prismatic-joint-' + name, {
+        'ngPrismaticJoint': {
+            anchorA: {
+                x: rightSuspensionAxleX,
+                y: rightSuspensionAxleY
+            },
+            anchorB: {
+                x: rightSuspensionAxleX - axleContainerDepth * Math.cos((90-axleAngle)*degreesToRadians),
+                y: rightSuspensionAxleY - axleContainerDepth * Math.sin((90-axleAngle)*degreesToRadians)
+            },
+            bodyA: rightSuspensionAxleName,
+            bodyB: bodyName,
+            enableLimit: true,
+            enableMotor: true,
+            motorSpeed: 10
+        }
+    }));
 }
 
-vehicle(100, 100);
+vehicle(100, 100, 'cabriolet');
 
 world.$add(world.$e('ground', [
     'ng2D', {x: width / 2, y: height},
