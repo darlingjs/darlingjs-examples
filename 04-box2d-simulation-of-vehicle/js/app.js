@@ -25,7 +25,9 @@ world.$add('ngStatsBegin');
 world.$add('ng2DViewPort', {
     lookAt: {
         x: 400, y: 300
-    }
+    },
+    width: width,
+    height: height
 });
 
 world.$add('ngBox2DSystem', {
@@ -53,14 +55,20 @@ world.$add('ng2DViewPort', {
     width: width,
     height: height
 });
+
+var pixelStep = 32,
+    hillWidth = 640;
+
 world.$add('ngFollowSelected');
 world.$add('ngInfinity1DWorld', {
-    generator: function(newNode, seedNode) {
-//        {
-//            entities: [],
-//                width: 640,
-//            lastHeight: 0
-//        }
+    seed: {
+        leftEdge: 0.0,
+        leftHeight: 0.0,
+        rightEdge: 0.0,
+        rightHeight: 0.0//140 + 200 * Math.random()
+    },
+    generator: function(newTile, leftSeedTile) {
+        hillGenerator(newTile, leftSeedTile);
     }
 });
 
@@ -347,7 +355,21 @@ vehicle(100, 200, 'cabriolet', {
     wheelRadius: 12
 });
 
-function drawHill(pixelStep, hillWidth, xOffset, yOffset) {
+world.$start();
+
+//Generators
+
+/**
+ * Hill Generator
+ *
+ * @param newTile
+ * @param leftSeedTile
+ */
+
+function hillGenerator(newTile, leftSeedTile) {
+    var xOffset = leftSeedTile.rightEdge,
+        yOffset = leftSeedTile.rightHeight;
+
     var hillStartY = yOffset;
     var hillSliceWidth = hillWidth / pixelStep;
     var randomHeight = 100 * Math.random();
@@ -356,40 +378,48 @@ function drawHill(pixelStep, hillWidth, xOffset, yOffset) {
         hillStartY-=randomHeight;
     }
 
+    var entities = [];
+
     for (var j = 0; j < hillSliceWidth; j++) {
-        world.$add(world.$e('ground', {
-            'ng2D': {
-                x: j*pixelStep + xOffset,
-                y: 600
-            },
-            'ng2DPolygon': {
-                'line': [{
-                    x: 0,
-                    y: 0
-                }, {
-                    x: 0,
-                    y: -(hillStartY+randomHeight*Math.cos(2*Math.PI/hillSliceWidth*j))
-                }, {
-                    x: pixelStep,
-                    y: -(hillStartY+randomHeight*Math.cos(2*Math.PI/hillSliceWidth*(j+1)))
-                }, {
-                    x: pixelStep,
-                    y: 0
-                }]
-            },
-            'ngPhysic': {
-                partOf: 'ground',
-                type: 'static', restitution: 0.0
-            }
-        }));
+        var heightBegin = hillStartY + randomHeight * Math.cos(2*Math.PI/hillSliceWidth*j);
+        var heightEnd = hillStartY + randomHeight * Math.cos(2*Math.PI/hillSliceWidth*(j+1));
+        var bottom = 0;
+        var lowHeight = Math.min(heightBegin, heightEnd);
+        bottom = -lowHeight + 32;
+
+        entities.push(
+            world.$add(world.$e('ground', {
+                'ng2D': {
+                    x: j*pixelStep + xOffset,
+                    y: 600
+                },
+                'ng2DPolygon': {
+                    'line': [{
+                        x: 0,
+                        y: bottom
+                    }, {
+                        x: 0,
+                        y: -heightBegin
+                    }, {
+                        x: pixelStep,
+                        y: -heightEnd
+                    }, {
+                        x: pixelStep,
+                        y: bottom
+                    }]
+                },
+                'ngPhysic': {
+                    partOf: 'ground',
+                    type: 'static', restitution: 0.0
+                }
+            }))
+        );
     }
 
-    return hillStartY + randomHeight;
-}
+    newTile.entities = entities;
+    newTile.leftEdge = xOffset;
+    newTile.rightEdge = leftSeedTile.rightEdge + hillWidth;
 
-var nextHill = 140 + 200 * Math.random();
-
-nextHill = drawHill(10, 640, 0, nextHill);
-nextHill = drawHill(10, 640, 640, nextHill);
-
-world.$start();
+    newTile.leftHeight = yOffset;
+    newTile.rightHeight = hillStartY + randomHeight;
+};
