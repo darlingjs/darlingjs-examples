@@ -1,4 +1,4 @@
-(function() {
+(function(darlingjs, darlingutil) {
     'use strict';
     /**
      * Project: GameEngine.
@@ -251,4 +251,4 @@
             style.backgroundColor = $node.ngDOM.color;
         }]
     });
-}) ();
+}) (darlingjs, darlingutil);

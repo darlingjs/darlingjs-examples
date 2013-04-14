@@ -7,7 +7,14 @@
 var width = 800;
 var height = 600;
 
-var world = darlingjs.world('myGame', ['ngModule', 'ngCommon', 'ngFlatland', 'ngPhysics', 'ngBox2DEmscripten', 'ngStats'], {
+var world = darlingjs.world('myGame', [
+    'ngModule',
+    'ngCommon',
+    'ngFlatland',
+    'ngPhysics',
+    'ngBox2DEmscripten',
+    'ngStats',
+    'ngInfinity1DWorld'], {
     fps: 60
 });
 
@@ -42,8 +49,20 @@ world.$add('ngBox2DPrismaticJoint');
 world.$add('ngEnableMotorOnKeyDown');
 world.$add('ngBox2DEnableMotorSystem');
 world.$add('ngBox2DMotorWithAcceleration');
-world.$add('ng2DViewPort');
+world.$add('ng2DViewPort', {
+    width: width,
+    height: height
+});
 world.$add('ngFollowSelected');
+world.$add('ngInfinity1DWorld', {
+    generator: function(newNode, seedNode) {
+//        {
+//            entities: [],
+//                width: 640,
+//            lastHeight: 0
+//        }
+    }
+});
 
 world.$add('ngStatsEnd');
 
