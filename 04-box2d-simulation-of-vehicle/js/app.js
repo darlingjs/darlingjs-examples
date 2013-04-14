@@ -56,9 +56,6 @@ world.$add('ng2DViewPort', {
     height: height
 });
 
-var pixelStep = 32,
-    hillWidth = 640;
-
 world.$add('ngFollowSelected');
 world.$add('ngInfinity1DWorld', {
     seed: {
@@ -67,8 +64,11 @@ world.$add('ngInfinity1DWorld', {
         rightEdge: 0.0,
         rightHeight: 0.0//140 + 200 * Math.random()
     },
-    generator: function(newTile, leftSeedTile) {
-        hillGenerator(newTile, leftSeedTile);
+    generator: function(newTile, leftSeedTile, rightSeedTile) {
+        hillGenerator(newTile, leftSeedTile, rightSeedTile, {
+            hillWidth: 640 + 50 * Math.random(),
+            hillHeight: 100 * Math.random()
+        });
     }
 });
 
@@ -88,7 +88,8 @@ for (var i = 0, l = 50; i < l; i++) {
 //        'ngSpriteAtlas' : { name: 'box' + boxType + '.png', url: 'assets/spritesheet.json', fitToSize: true},
 //            'ngMovieClip' : {url: 'assets/explosion.json', fitToSize: true, frames: ['Explosion_Sequence_A 1.png', 'Explosion_Sequence_A 2.png', 'Explosion_Sequence_A 3.png', 'Explosion_Sequence_A 4.png', 'Explosion_Sequence_A 5.png', 'Explosion_Sequence_A 6.png', 'Explosion_Sequence_A 7.png', 'Explosion_Sequence_A 8.png', 'Explosion_Sequence_A 9.png', 'Explosion_Sequence_A 10.png', 'Explosion_Sequence_A 11.png', 'Explosion_Sequence_A 12.png', 'Explosion_Sequence_A 13.png', 'Explosion_Sequence_A 14.png', 'Explosion_Sequence_A 15.png', 'Explosion_Sequence_A 16.png', 'Explosion_Sequence_A 17.png', 'Explosion_Sequence_A 18.png', 'Explosion_Sequence_A 19.png', 'Explosion_Sequence_A 20.png', 'Explosion_Sequence_A 21.png', 'Explosion_Sequence_A 22.png', 'Explosion_Sequence_A 23.png', 'Explosion_Sequence_A 24.png', 'Explosion_Sequence_A 25.png', 'Explosion_Sequence_A 26.png', 'Explosion_Sequence_A 27.png']},
         'ng2D': {x : width / 2 + (width / 2) * Math.random(), y: 40 + (height - 40) * Math.random()},
-        'ng2DSize': {width:10, height:10},
+        'ng2DSize': {width:3, height:3},
+        //'ng2DCircle': {radius: 3},
         'ng2DRotation': {},
         'ngPhysic': {},
         'ngDraggable': {}
@@ -349,7 +350,7 @@ function vehicle(x, y, name, newOps){
     }));
 }
 
-vehicle(100, 200, 'cabriolet', {
+vehicle(400, 500, 'cabriolet', {
     axleContainerHeight: 5,
     axleContainerDepth: 2.5,
     wheelRadius: 12
@@ -366,13 +367,25 @@ world.$start();
  * @param leftSeedTile
  */
 
-function hillGenerator(newTile, leftSeedTile) {
-    var xOffset = leftSeedTile.rightEdge,
+function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
+    var xOffset, yOffset, goRight, sign;
+    var pixelStep = 32;
+
+    if (leftSeedTile) {
+        xOffset = leftSeedTile.rightEdge;
         yOffset = leftSeedTile.rightHeight;
+        goRight = true;
+        sign = 1;
+    } else {
+        xOffset = rightSeedTile.leftEdge;
+        yOffset = rightSeedTile.leftHeight;
+        goRight = false;
+        sign = -1;
+    }
 
     var hillStartY = yOffset;
-    var hillSliceWidth = hillWidth / pixelStep;
-    var randomHeight = 100 * Math.random();
+    var hillSliceWidth = ops.hillWidth / pixelStep;
+    var randomHeight = ops.hillHeight;
 
     if (xOffset!==0) {
         hillStartY-=randomHeight;
@@ -381,8 +394,8 @@ function hillGenerator(newTile, leftSeedTile) {
     var entities = [];
 
     for (var j = 0; j < hillSliceWidth; j++) {
-        var heightBegin = hillStartY + randomHeight * Math.cos(2*Math.PI/hillSliceWidth*j);
-        var heightEnd = hillStartY + randomHeight * Math.cos(2*Math.PI/hillSliceWidth*(j+1));
+        var heightBegin = hillStartY + randomHeight * Math.cos(2*Math.PI/hillSliceWidth * j);
+        var heightEnd = hillStartY + randomHeight * Math.cos(2*Math.PI/hillSliceWidth * (j + sign));
         var bottom = 0;
         var lowHeight = Math.min(heightBegin, heightEnd);
         bottom = -lowHeight + 32;
@@ -390,7 +403,7 @@ function hillGenerator(newTile, leftSeedTile) {
         entities.push(
             world.$add(world.$e('ground', {
                 'ng2D': {
-                    x: j*pixelStep + xOffset,
+                    x: sign * j * pixelStep + xOffset,
                     y: 600
                 },
                 'ng2DPolygon': {
@@ -417,9 +430,15 @@ function hillGenerator(newTile, leftSeedTile) {
     }
 
     newTile.entities = entities;
-    newTile.leftEdge = xOffset;
-    newTile.rightEdge = leftSeedTile.rightEdge + hillWidth;
+
+    if (goRight) {
+        newTile.leftEdge = xOffset;
+        newTile.rightEdge = leftSeedTile.rightEdge + ops.hillWidth;
+    } else {
+        newTile.leftEdge = rightSeedTile.leftEdge - ops.hillWidth;
+        newTile.rightEdge = xOffset;
+    }
 
     newTile.leftHeight = yOffset;
     newTile.rightHeight = hillStartY + randomHeight;
-};
+}
