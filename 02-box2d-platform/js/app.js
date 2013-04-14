@@ -54,7 +54,7 @@ function GameCtrl() {
     world.$add('ngPixijsSheetSprite');
     world.$add('ngPixijsSprite');
     world.$add('ngPixijsMovieClip');
-    world.$add('ngPixijsFollowSelected');
+    world.$add('ngFollowSelected');
 
 
     box2DDebugDraw = world.$add('ngBox2DDebugDraw', {

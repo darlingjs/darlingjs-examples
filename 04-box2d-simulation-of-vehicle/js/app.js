@@ -42,7 +42,8 @@ world.$add('ngBox2DPrismaticJoint');
 world.$add('ngEnableMotorOnKeyDown');
 world.$add('ngBox2DEnableMotorSystem');
 world.$add('ngBox2DMotorWithAcceleration');
-
+world.$add('ng2DViewPort');
+world.$add('ngFollowSelected');
 
 world.$add('ngStatsEnd');
 
@@ -327,42 +328,49 @@ vehicle(100, 200, 'cabriolet', {
     wheelRadius: 12
 });
 
-world.$add(world.$e('ground', [
-    'ng2D', {x: width / 2, y: height},
-    'ng2DSize', {width:width, height:10},
-    'ngPhysic', {type: 'static', restitution: 0.0}
-]));
+function drawHill(pixelStep, hillWidth, xOffset, yOffset) {
+    var hillStartY = yOffset;
+    var hillSliceWidth = hillWidth / pixelStep;
+    var randomHeight = 100 * Math.random();
 
-world.$add(world.$e('ground-slope', [
-    'ng2D', {x: width / 2, y: height - 40},
-    'ng2DSize', {width:width / 2, height:10.0},
-    'ng2DRotation', {rotation: 15.0 * Math.PI / 180},
-    'ngPhysic', {type: 'static', restitution: 0.0}
-]));
+    if (xOffset!==0) {
+        hillStartY-=randomHeight;
+    }
 
-world.$add(world.$e('ground-hill', [
-    'ng2D', {x: width / 8 + 10, y: height - 80},
-    'ng2DSize', {width:width / 4, height:10.0},
-    'ngPhysic', {type: 'static', restitution: 0.0}
-]));
+    for (var j = 0; j < hillSliceWidth; j++) {
+        world.$add(world.$e('ground', {
+            'ng2D': {
+                x: j*pixelStep + xOffset,
+                y: 600
+            },
+            'ng2DPolygon': {
+                'line': [{
+                    x: 0,
+                    y: 0
+                }, {
+                    x: 0,
+                    y: -(hillStartY+randomHeight*Math.cos(2*Math.PI/hillSliceWidth*j))
+                }, {
+                    x: pixelStep,
+                    y: -(hillStartY+randomHeight*Math.cos(2*Math.PI/hillSliceWidth*(j+1)))
+                }, {
+                    x: pixelStep,
+                    y: 0
+                }]
+            },
+            'ngPhysic': {
+                partOf: 'ground',
+                type: 'static', restitution: 0.0
+            }
+        }));
+    }
 
-world.$add(world.$e('top-frame', [
-    'ng2D', {x: width / 2, y: 0.0},
-    'ng2DSize', {width:width, height:10},
-    'ngPhysic', {type: 'static', restitution: 0.0}
-]));
+    return hillStartY + randomHeight;
+}
 
-world.$add(world.$e('left-frame', [
-    'ng2D', {x: 0.0, y: height / 2},
-    'ng2DSize', {width:10, height:height},
-    'ngPhysic', {type: 'static', restitution: 0.0}
-]));
+var nextHill = 140 + 200 * Math.random();
 
-world.$add(world.$e('right-frame', [
-    'ng2D', {x: width, y: height / 2},
-    'ng2DSize', {width:10, height:height},
-    'ngPhysic', {type: 'static', restitution: 0.0}
-]));
-
+nextHill = drawHill(10, 640, 0, nextHill);
+nextHill = drawHill(10, 640, 640, nextHill);
 
 world.$start();
