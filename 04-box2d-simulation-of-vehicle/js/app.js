@@ -49,7 +49,7 @@ world.$add('ngBox2DDebugDraw', {
     domID: 'gameView', width: width, height: height
 });
 
-world.$add('ngBox2DDraggable', { domId: 'gameView', width: width, height: height });
+//world.$add('ngBox2DDraggable', { domId: 'gameView', width: width, height: height });
 world.$add('ngBox2DFixRotation');
 world.$add('ngBox2DCollisionGroup');
 world.$add('ngBox2DRevoluteJoint');
@@ -73,7 +73,7 @@ world.$add('ngInfinity1DWorld', {
     generator: function(newTile, leftSeedTile, rightSeedTile) {
         hillGenerator(newTile, leftSeedTile, rightSeedTile, {
             hillWidth: 640 + 50 * Math.random(),
-            hillHeight: 100 * Math.random()
+            hillHeight: 50 * Math.random()
         });
     }
 });
@@ -202,8 +202,8 @@ function vehicle(x, y, name, newOps){
             url: 'assets/spritesheet.json',
             fitToSize: false,
             anchor: {
-                x: 0.5,
-                y: 0.6
+                x: 0.52,
+                y: 0.76
             }
         }
     }));
@@ -378,9 +378,11 @@ function vehicle(x, y, name, newOps){
 }
 
 vehicle(400, 500, 'cabriolet', {
+    axleContainerDistance: 30,
     axleContainerHeight: 5,
     axleContainerDepth: 2.5,
-    wheelRadius: 12
+    wheelRadius: 12,
+    wheelMaxSpeed: 15.0
 });
 
 world.$start();
@@ -395,7 +397,7 @@ world.$start();
  */
 
 function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
-    var xOffset, yOffset, goRight, sign;
+    var xOffset, yOffset, goRight, sign, startIndex;
     var pixelStep = 32;
 
     if (leftSeedTile) {
@@ -403,34 +405,38 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
         yOffset = leftSeedTile.rightHeight;
         goRight = true;
         sign = 1;
+        startIndex = 0;
     } else {
         xOffset = rightSeedTile.leftEdge;
         yOffset = rightSeedTile.leftHeight;
         goRight = false;
         sign = -1;
+        startIndex = 0;
     }
 
     var hillStartY = yOffset;
-    var hillSliceWidth = ops.hillWidth / pixelStep;
+    var hillSliceWidth = Math.floor(ops.hillWidth / pixelStep);
+    ops.hillWidth = hillSliceWidth * pixelStep;
     var randomHeight = ops.hillHeight;
 
-    if (xOffset!==0) {
+//    if (xOffset!==0) {
         hillStartY-=randomHeight;
-    }
+//    }
 
     var entities = [];
 
-    for (var j = 0; j < hillSliceWidth; j++) {
+    for (var j = startIndex; j < hillSliceWidth; j++) {
         var heightBegin = hillStartY + randomHeight * Math.cos(2*Math.PI/hillSliceWidth * j);
         var heightEnd = hillStartY + randomHeight * Math.cos(2*Math.PI/hillSliceWidth * (j + sign));
         var bottom = 0;
         var lowHeight = Math.min(heightBegin, heightEnd);
+        var x = sign * j * pixelStep + xOffset;
         bottom = -lowHeight + 32;
 
         entities.push(
-            world.$add(world.$e('ground', {
+            world.$add(world.$e('ground-' + x, {
                 'ng2D': {
-                    x: sign * j * pixelStep + xOffset,
+                    x: x,
                     y: 600
                 },
                 'ng2DPolygon': {

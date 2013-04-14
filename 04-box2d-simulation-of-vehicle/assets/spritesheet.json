@@ -2,18 +2,18 @@
 
 "cabriolet-body.png":
 {
-	"frame": {"x":2,"y":2,"w":111,"h":44},
+	"frame": {"x":2,"y":2,"w":140,"h":55},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":111,"h":44},
-	"sourceSize": {"w":111,"h":44}
+	"spriteSourceSize": {"x":0,"y":0,"w":140,"h":55},
+	"sourceSize": {"w":140,"h":55}
 },
 "cabriolet-wheel.png":
 {
-	"frame": {"x":2,"y":48,"w":22,"h":22},
+	"frame": {"x":144,"y":2,"w":22,"h":22},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":10,"w":22,"h":22},
+	"spriteSourceSize": {"x":0,"y":0,"w":22,"h":22},
 	"sourceSize": {"w":22,"h":22}
 }},
 "meta": {
@@ -21,8 +21,8 @@
 	"version": "1.0",
 	"image": "spritesheet.png",
 	"format": "RGBA8888",
-	"size": {"w":128,"h":128},
+	"size": {"w":256,"h":64},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:5121595311e5c16fa4c4430c46ea826e$"
+	"smartupdate": "$TexturePacker:SmartUpdate:17ccccdd46497331988a8e1bedde7357$"
 }
 }
