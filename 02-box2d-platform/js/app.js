@@ -414,11 +414,11 @@ function parseMap(data) {
 
 function parseAnchors(component, object) {
     component.anchorA = {
-        x: object.polyline[0].x + object.x,
-        y: object.polyline[0].y + object.y
+        x: object.polyline[0].x,
+        y: object.polyline[0].y
     };
     component.anchorB = {
-        x: object.polyline[1].x + object.x,
-        y: object.polyline[1].y + object.y
+        x: object.polyline[1].x,
+        y: object.polyline[1].y
     };
 }

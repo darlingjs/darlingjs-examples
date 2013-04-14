@@ -31,10 +31,6 @@ world.$add('ng2DViewPort', {
     height: height
 });
 
-world.$add('ngPixijsStage', { domId: 'gameView', width: width, height: height });
-world.$add('ngPixijsSprite');
-world.$add('ngPixijsMovieClip');
-world.$add('ngPixijsSheetSprite');
 
 world.$add('ngBox2DSystem', {
     gravity: {
@@ -45,15 +41,13 @@ world.$add('ngBox2DSystem', {
     positionIterations: 10
 });
 
-world.$add('ngBox2DDebugDraw', {
-    domID: 'gameView', width: width, height: height
-});
-
 //world.$add('ngBox2DDraggable', { domId: 'gameView', width: width, height: height });
 world.$add('ngBox2DFixRotation');
 world.$add('ngBox2DCollisionGroup');
 world.$add('ngBox2DRevoluteJoint');
 world.$add('ngBox2DPrismaticJoint');
+world.$add('ngBox2DDistanceJoint');
+
 world.$add('ngEnableMotorOnKeyDown');
 world.$add('ngBox2DEnableMotorSystem');
 world.$add('ngBox2DMotorWithAcceleration');
@@ -68,14 +62,30 @@ world.$add('ngInfinity1DWorld', {
         leftEdge: 0.0,
         leftHeight: 0.0,
         rightEdge: 0.0,
-        rightHeight: 0.0//140 + 200 * Math.random()
+        rightHeight: 600.0//140 + 200 * Math.random()
     },
     generator: function(newTile, leftSeedTile, rightSeedTile) {
-        hillGenerator(newTile, leftSeedTile, rightSeedTile, {
-            hillWidth: 640 + 50 * Math.random(),
-            hillHeight: 50 * Math.random()
-        });
+        var seed = Math.random();
+
+        if (seed > 0.7) {
+            hillGenerator(newTile, leftSeedTile, rightSeedTile, {
+                hillWidth: 640 + 50 * Math.random(),
+                hillHeight: 50 * Math.random()
+            });
+        } else {
+//            generateStraightLine(newTile, leftSeedTile, rightSeedTile);
+            generateByTiledFile(newTile, leftSeedTile, rightSeedTile, 'assets/maps/bridge-0.json');
+        }
     }
+});
+
+world.$add('ngPixijsStage', { domId: 'gameView', width: width, height: height });
+world.$add('ngPixijsSprite');
+world.$add('ngPixijsMovieClip');
+world.$add('ngPixijsSheetSprite');
+
+world.$add('ngBox2DDebugDraw', {
+    domID: 'gameView', width: width, height: height
 });
 
 world.$add('ngStatsEnd');
@@ -414,13 +424,13 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
         startIndex = 0;
     }
 
-    var hillStartY = yOffset;
     var hillSliceWidth = Math.floor(ops.hillWidth / pixelStep);
     ops.hillWidth = hillSliceWidth * pixelStep;
     var randomHeight = ops.hillHeight;
 
 //    if (xOffset!==0) {
-        hillStartY-=randomHeight;
+
+    var hillStartY = -yOffset - randomHeight;
 //    }
 
     var entities = [];
@@ -437,7 +447,7 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
             world.$add(world.$e('ground-' + x, {
                 'ng2D': {
                     x: x,
-                    y: 600
+                    y: 0
                 },
                 'ng2DPolygon': {
                     'line': [{
@@ -473,5 +483,321 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
     }
 
     newTile.leftHeight = yOffset;
-    newTile.rightHeight = hillStartY + randomHeight;
+    newTile.rightHeight = yOffset;
+}
+
+
+/**
+ * Generate tile with straight line
+ * @param newTile
+ * @param leftSeedTile
+ * @param rightSeedTile
+ */
+function generateStraightLine(newTile, leftSeedTile, rightSeedTile) {
+    var goRight;
+    if (leftSeedTile) {
+        goRight = true;
+        newTile.leftEdge = leftSeedTile.rightEdge;
+        newTile.leftHeight = leftSeedTile.rightHeight;
+        newTile.rightEdge = newTile.leftEdge + width;
+        newTile.rightHeight = leftSeedTile.rightHeight;
+    } else {
+        goRight = false;
+        newTile.rightEdge = rightSeedTile.leftEdge;
+        newTile.rightHeight = rightSeedTile.leftHeight;
+        newTile.leftEdge = newTile.rightEdge - width;
+        newTile.leftHeight = rightSeedTile.rightHeight;
+    }
+
+    var entities = [];
+    newTile.entities = entities;
+
+    entities.push(
+        world.$add(world.$e('ground-straight', {
+            'ng2D': {
+                x: newTile.leftEdge,
+                y: newTile.leftHeight
+            },
+            'ng2DPolygon': {
+                'line': [{
+                    x: 0,
+                    y: 0
+                }, {
+                    x: width,
+                    y: 0
+                }, {
+                    x: width,
+                    y: 10
+                }, {
+                    x: 0,
+                    y: 10
+                }]
+            },
+            'ngPhysic': {
+                //partOf: 'ground',
+                type: 'static', restitution: 0.0
+            }
+        }))
+    );
+}
+
+/**
+ * Generate tile by tiled file
+ *
+ * @param newTile
+ * @param leftSeedTile
+ * @param rightSeedTile
+ */
+function generateByTiledFile(newTile, leftSeedTile, rightSeedTile, fileName) {
+    var goRight;
+    if (leftSeedTile) {
+        goRight = true;
+
+        newTile.leftEdge = leftSeedTile.rightEdge;
+        newTile.leftHeight = leftSeedTile.rightHeight;
+
+        //1st aproximation
+        newTile.rightEdge = leftSeedTile.leftEdge + 10 * width;
+        newTile.rightHeight = leftSeedTile.rightHeight;
+    } else {
+        goRight = false;
+
+        newTile.rightEdge = rightSeedTile.rightEdge;
+        newTile.rightHeight = rightSeedTile.rightHeight;
+
+        //1st aproximation
+        newTile.leftEdge = rightSeedTile.leftEdge - 10 * width;
+        newTile.leftHeight = rightSeedTile.rightHeight;
+    }
+
+
+    loadMap(fileName)
+        .then(function(data) {
+            var map = parseMap(data);
+
+            var entities = map.entities;
+
+            var dx = newTile.leftEdge - map.leftEdge.x;
+            var dy = newTile.leftHeight - map.leftEdge.y;
+
+            for(var i = 0, count = entities.length; i < count; i++) {
+                var entity = entities[i];
+                entity.ng2D.x += dx;
+                entity.ng2D.y += dy;
+                world.$add(entity);
+            }
+
+            newTile.rightEdge = dx + map.rightEdge.x;
+            newTile.rightHeight = dy + map.rightEdge.y;
+        });
+}
+
+/**
+ *
+ * @param file
+ * @return Promise https://github.com/kriskowal/q
+ */
+function loadMap(file) {
+    var deferred = Q.defer();
+    var oReq = new XMLHttpRequest();
+    oReq.onload = function(data) {
+        deferred.resolve(JSON.parse(data.target.response));
+    };
+
+    //TODO: handle error
+    //deferred.reject(new Error(error));
+    oReq.open("get", file, true);
+    oReq.send();
+
+    return deferred.promise;
+}
+
+function parseMap(data) {
+    var entities = [],
+        rightEdge = {},
+        leftEdge = {};
+
+    try {
+        for(var j = 0, lj = data.layers.length; j < lj; j++) {
+            var layer = data.layers[j];
+            switch(layer.type) {
+                case 'tilelayer':
+                    //TODO: Do we really need to transform flat array to separate entities?
+//                var tile = data.tilesets[0];
+//                parseTileLayerData(layer.data, layer.width, layer.height, {
+//                    ng2D: {x:0, y:0},
+//                    ng2DSize: {width:tile.tilewidth, height:tile.tileheight},
+//                    ngTileSprite: {tilesheetUrl: 'assets/' + tile.image, tileId: 0}
+//                });
+                    break;
+                case 'imagelayer':
+                    //TODO: whole image.
+                    break;
+                case 'objectgroup':
+
+                    for(var i = 0, li = layer.objects.length; i < li; i++) {
+                        var object = layer.objects[i];
+                        var components = {};
+
+                        components = convertTiledPropertiesToComponents(object.properties);
+
+                        switch(object.type) {
+                            case 'right-edge':
+                                rightEdge.x = object.x + 0.5 * object.width;
+                                rightEdge.y = object.y + 0.5 * object.height;
+                                continue;
+                            case 'left-edge':
+                                leftEdge.x = object.x + 0.5 * object.width;
+                                leftEdge.y = object.y + 0.5 * object.height;
+                                continue;
+                            case 'static':
+                                if (components.ngPhysic) {
+                                    components.ngPhysic.type = 'static';
+                                    components.ngPhysic.restitution = 0.0;
+                                } else {
+                                    components.ngPhysic = {type: 'static', restitution: 0.0};
+                                }
+                                break;
+                            case 'dynamic':
+                                if (components.ngPhysic) {
+                                    components.ngPhysic.type = 'dynamic';
+                                } else {
+                                    components.ngPhysic = {type: 'dynamic'};
+                                }
+                                break;
+                            case 'revolute-joint':
+                                if (!components.ngRevoluteJoint) {
+                                    components.ngRevoluteJoint = {};
+                                }
+                                break;
+                            case 'distance-joint':
+                                if (!components.ngDistanceJoint) {
+                                    components.ngDistanceJoint = {};
+                                }
+
+                                parseAnchors(components.ngDistanceJoint, object);
+                                break;
+                            case 'prismatic-joint':
+                                if (!components.ngPrismaticJoint) {
+                                    components.ngPrismaticJoint = {};
+                                }
+                                parseAnchors(components.ngPrismaticJoint, object);
+                                break;
+                            case 'pulley-joint':
+                                if (!components.ngPulleyJoint) {
+                                    components.ngPulleyJoint = {};
+                                }
+                                break;
+                            case '':
+                                //TODO:
+                                console.log('undefined object', object);
+                                continue;
+                            default:
+                                throw new Error('Need to implement new object type : "' + object.type + '"');
+                                break;
+                        }
+
+                        components.ng2D = {
+                            x: object.x,
+                            y: object.y
+                        };
+
+                        if (object.ellipse) {
+                            //Because Box2D can't interact with ellipse we just take average value
+                            components.ng2DCircle = {
+                                radius: 0.25 * (object.width + object.height)
+                            };
+                            components.ng2D.x+= 0.5 * object.width;
+                            components.ng2D.y+= 0.5 * object.height;
+                        } else if (object.polyline) {
+                            //TODO : create complex shape
+                            //object.polyline[].{x,y};// custom shape
+                            components.ng2DPolygon = {
+                                line: object.polyline
+                            };
+                            //continue;
+                        } else if (object.polygon) {
+                            components.ng2DPolygon = {
+                                line: object.polygon
+                            };
+                        } else {
+                            components.ng2DSize = {
+                                width: object.width,
+                                height: object.height
+                            };
+
+                            components.ng2D.x += 0.5 * object.width;
+                            components.ng2D.y += 0.5 * object.height;
+                        }
+
+                        entities.push(world.$e(object.name, components));
+                    }
+                    break;
+            }
+        }
+    } catch(e) {
+        console.log(e);
+    }
+
+    return {
+        entities: entities,
+        leftEdge: leftEdge,
+        rightEdge: rightEdge
+    };
+}
+
+function parseAnchors(component, object) {
+    component.anchorA = {
+        x: object.polyline[0].x,
+        y: object.polyline[0].y
+    };
+    component.anchorB = {
+        x: object.polyline[1].x,
+        y: object.polyline[1].y
+    };
+}
+
+function convertTiledPropertiesToComponents(properties) {
+    var components = {};
+    for (var key in properties) {
+        var params = key.split('.');
+        var componentParam = components;
+        var previousParam;
+        if (params.length === 0) {
+            previousParam = key;
+        } else {
+            for (var i = 0, l = params.length - 1; i < l; i++) {
+                previousParam = params[i];
+                if (!componentParam.hasOwnProperty(previousParam)) {
+                    componentParam[previousParam] = {};
+                }
+
+                componentParam = componentParam[previousParam];
+            }
+            previousParam = params[i];
+        }
+
+        if (previousParam === '') {
+            continue;
+        }
+
+        var value;
+        try {
+            value = eval(properties[key]);
+        } catch(e) {
+            value = properties[key];
+        }
+
+        if(value === 'true') {
+            componentParam[previousParam] = true;
+        } else if(value === 'false') {
+            componentParam[previousParam] = false;
+        } else if (isNaN(value)) {
+            componentParam[previousParam] = value;
+        } else {
+            componentParam[previousParam] = Number(value);
+        }
+    }
+
+    return components;
 }
