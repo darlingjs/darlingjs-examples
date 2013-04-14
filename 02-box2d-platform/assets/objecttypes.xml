@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objecttypes>
+ <objecttype name="static" color="#35a429"/>
+ <objecttype name="dynamic" color="#a41826"/>
+ <objecttype name="revolute-joint" color="#002ba4"/>
+ <objecttype name="prismatic-joint" color="#0080a4"/>
+ <objecttype name="pulley-joint" color="#00a491"/>
+ <objecttype name="distance-joint" color="#00a475"/>
+ <objecttype name="sensor" color="#ffff00"/>
+</objecttypes>
