@@ -1,0 +1,28 @@
+{"frames": {
+
+"cabriolet-body.png":
+{
+	"frame": {"x":2,"y":2,"w":111,"h":44},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":111,"h":44},
+	"sourceSize": {"w":111,"h":44}
+},
+"cabriolet-wheel.png":
+{
+	"frame": {"x":2,"y":48,"w":22,"h":22},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":10,"w":22,"h":22},
+	"sourceSize": {"w":22,"h":22}
+}},
+"meta": {
+	"app": "http://www.texturepacker.com",
+	"version": "1.0",
+	"image": "spritesheet.png",
+	"format": "RGBA8888",
+	"size": {"w":128,"h":128},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:5121595311e5c16fa4c4430c46ea826e$"
+}
+}
