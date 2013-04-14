@@ -13,6 +13,7 @@ var world = darlingjs.world('myGame', [
     'ngFlatland',
     'ngPhysics',
     'ngBox2DEmscripten',
+    'ngPixijsAdapter',
     'ngStats',
     'ngInfinity1DWorld'], {
     fps: 60
@@ -30,6 +31,11 @@ world.$add('ng2DViewPort', {
     height: height
 });
 
+world.$add('ngPixijsStage', { domId: 'gameView', width: width, height: height });
+world.$add('ngPixijsSprite');
+world.$add('ngPixijsMovieClip');
+world.$add('ngPixijsSheetSprite');
+
 world.$add('ngBox2DSystem', {
     gravity: {
         x: 0,
@@ -40,7 +46,7 @@ world.$add('ngBox2DSystem', {
 });
 
 world.$add('ngBox2DDebugDraw', {
-    domID: 'canvas', width: width, height: height
+    domID: 'gameView', width: width, height: height
 });
 
 world.$add('ngBox2DDraggable', { domId: 'gameView', width: width, height: height });
@@ -122,6 +128,60 @@ function vehicle(x, y, name, newOps){
 
     var degreesToRadians = Math.PI / 180.0;
 
+    //wheels
+    //* left-wheel
+    var leftWheelName = 'vehicle-left-wheel-' + name;
+    world.$add(world.$e(leftWheelName, {
+        'ng2D': {
+            x: x - ops.axleContainerDistance - 2 * ops.axleContainerHeight * Math.cos((90 - ops.axleAngle) * degreesToRadians),
+            y: y + ops.axleContainerDepth + 2 * ops.axleContainerHeight * Math.sin((90 - ops.axleAngle) * degreesToRadians)
+        },
+        'ng2DCircle': {radius: ops.wheelRadius},
+        'ng2DRotation': {},
+        'ngSelected': {},
+        'ngDraggable': {},
+        'ngPhysic': {
+            restitution: 0.2,
+            friction: 15.0,
+            density: 1.0
+        },
+        'ngCollisionGroup': {
+            'neverWith': 'vehicle'
+        },
+        'ngSpriteAtlas' : {
+            name: name + '-wheel.png',
+            url: 'assets/spritesheet.json',
+            fitToSize: false
+        }
+    }));
+
+    //* right-wheel
+    var rightWheelName = 'vehicle-right-wheel-' + name;
+    world.$add(world.$e(rightWheelName, {
+        'ng2D': {
+            x: x + ops.axleContainerDistance + 2 * ops.axleContainerHeight * Math.cos((90 - ops.axleAngle) * degreesToRadians),
+            y: y + ops.axleContainerDepth + 2 * ops.axleContainerHeight * Math.sin((90 - ops.axleAngle) * degreesToRadians)
+        },
+        'ng2DCircle': {radius: ops.wheelRadius},
+        'ng2DRotation': {},
+        'ngSelected': {},
+        'ngDraggable': {},
+        'ngPhysic': {
+            name: rightWheelName,
+            restitution: 0.2,
+            friction: 15.0,
+            density: 1.5
+        },
+        'ngCollisionGroup': {
+            'neverWith': 'vehicle'
+        },
+        'ngSpriteAtlas' : {
+            name: name + '-wheel.png',
+            url: 'assets/spritesheet.json',
+            fitToSize: false
+        }
+    }));
+
     //body
     var bodyName = 'vehicle-body-' + name;
     world.$add(world.$e(bodyName, {
@@ -136,6 +196,15 @@ function vehicle(x, y, name, newOps){
         },
         'ngCollisionGroup': {
             'neverWith': 'vehicle'
+        },
+        'ngSpriteAtlas' : {
+            name: name + '-body.png',
+            url: 'assets/spritesheet.json',
+            fitToSize: false,
+            anchor: {
+                x: 0.5,
+                y: 0.6
+            }
         }
     }));
 
@@ -218,49 +287,7 @@ function vehicle(x, y, name, newOps){
         }
     }));
 
-    //wheels
-    //* left-wheel
-    var leftWheelName = 'vehicle-left-wheel-' + name;
-    world.$add(world.$e(leftWheelName, {
-        'ng2D': {
-            x: x - ops.axleContainerDistance - 2 * ops.axleContainerHeight * Math.cos((90 - ops.axleAngle) * degreesToRadians),
-            y: y + ops.axleContainerDepth + 2 * ops.axleContainerHeight * Math.sin((90 - ops.axleAngle) * degreesToRadians)
-        },
-        'ng2DCircle': {radius: ops.wheelRadius},
-        //'ng2DRotation',
-        'ngSelected': {},
-        'ngDraggable': {},
-        'ngPhysic': {
-            restitution: 0.2,
-            friction: 15.0,
-            density: 1.0
-        },
-        'ngCollisionGroup': {
-            'neverWith': 'vehicle'
-        }
-    }));
 
-    //* right-wheel
-    var rightWheelName = 'vehicle-right-wheel-' + name;
-    world.$add(world.$e(rightWheelName, {
-        'ng2D': {
-            x: x + ops.axleContainerDistance + 2 * ops.axleContainerHeight * Math.cos((90 - ops.axleAngle) * degreesToRadians),
-            y: y + ops.axleContainerDepth + 2 * ops.axleContainerHeight * Math.sin((90 - ops.axleAngle) * degreesToRadians)
-        },
-        'ng2DCircle': {radius: ops.wheelRadius},
-        //'ng2DRotation',
-        'ngSelected': {},
-        'ngDraggable': {},
-        'ngPhysic': {
-            name: rightWheelName,
-            restitution: 0.2,
-            friction: 15.0,
-            density: 1.5
-        },
-        'ngCollisionGroup': {
-            'neverWith': 'vehicle'
-        }
-    }));
 
     //revolute-joints
     //*left
