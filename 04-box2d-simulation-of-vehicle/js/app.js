@@ -15,7 +15,8 @@ var world = darlingjs.world('myGame', [
     'ngBox2DEmscripten',
     'ngPixijsAdapter',
     'ngStats',
-    'ngInfinity1DWorld'], {
+    'ngInfinity1DWorld',
+    'ngPlayer'], {
     fps: 60
 });
 
@@ -47,6 +48,8 @@ world.$add('ngBox2DCollisionGroup');
 world.$add('ngBox2DRevoluteJoint');
 world.$add('ngBox2DPrismaticJoint');
 world.$add('ngBox2DDistanceJoint');
+world.$add('ngBox2DSensorSystem');
+world.$add('ngBox2DCollision');
 
 world.$add('ngEnableMotorOnKeyDown');
 world.$add('ngBox2DEnableMotorSystem');
@@ -57,6 +60,12 @@ world.$add('ng2DViewPort', {
 });
 
 world.$add('ngFollowSelected');
+
+world.$add('ngRemoveSelectionFromWinner');
+
+var firstTile = true;
+var levelLength = 2000;
+
 world.$add('ngInfinity1DWorld', {
     seed: {
         leftEdge: 0.0,
@@ -65,16 +74,26 @@ world.$add('ngInfinity1DWorld', {
         rightHeight: 600.0//140 + 200 * Math.random()
     },
     generator: function(newTile, leftSeedTile, rightSeedTile) {
-        var seed = Math.random();
-
-        if (seed > 0.7) {
-            hillGenerator(newTile, leftSeedTile, rightSeedTile, {
-                hillWidth: 640 + 50 * Math.random(),
-                hillHeight: 50 * Math.random()
-            });
+        if (leftSeedTile && leftSeedTile.rightEdge <= 0.0 || rightSeedTile && rightSeedTile.rightEdge <= 0.0) {
+            generateByTiledFile(newTile, leftSeedTile, rightSeedTile, 'assets/maps/start.json');
+            firstTile = false;
         } else {
-//            generateStraightLine(newTile, leftSeedTile, rightSeedTile);
-            generateByTiledFile(newTile, leftSeedTile, rightSeedTile, 'assets/maps/bridge-0.json');
+
+            if (leftSeedTile && leftSeedTile.rightEdge > levelLength) {
+                generateByTiledFile(newTile, leftSeedTile, rightSeedTile, 'assets/maps/finish.json');
+            } else {
+                var seed = Math.random();
+                if (seed <= 0.5) {
+                    hillGenerator(newTile, leftSeedTile, rightSeedTile, {
+                        hillWidth: 640 + 50 * Math.random(),
+                        hillHeight: 50 * Math.random()
+                    });
+                } else if (seed < 0.95) {
+                    generateByTiledFile(newTile, leftSeedTile, rightSeedTile, 'assets/maps/bridge-0.json');
+                } else {
+                    generateStraightLine(newTile, leftSeedTile, rightSeedTile);
+                }
+            }
         }
     }
 });
@@ -148,7 +167,6 @@ function vehicle(x, y, name, newOps){
         },
         'ng2DCircle': {radius: ops.wheelRadius},
         'ng2DRotation': {},
-        'ngSelected': {},
         'ngDraggable': {},
         'ngPhysic': {
             restitution: 0.2,
@@ -174,7 +192,6 @@ function vehicle(x, y, name, newOps){
         },
         'ng2DCircle': {radius: ops.wheelRadius},
         'ng2DRotation': {},
-        'ngSelected': {},
         'ngDraggable': {},
         'ngPhysic': {
             name: rightWheelName,
@@ -206,6 +223,15 @@ function vehicle(x, y, name, newOps){
         },
         'ngCollisionGroup': {
             'neverWith': 'vehicle'
+        },
+        'ngSelected': {},
+        'ngWantsToCollide': {
+            'with': [
+                {
+                    'any': ['ngFinish'],
+                    'andGet': 'ngWinner'
+                }
+            ]
         },
         'ngSpriteAtlas' : {
             name: name + '-body.png',
@@ -297,8 +323,6 @@ function vehicle(x, y, name, newOps){
         }
     }));
 
-
-
     //revolute-joints
     //*left
     world.$add(world.$e('vehicle-left-wheel-revolute-joint-' + name, {
@@ -315,6 +339,7 @@ function vehicle(x, y, name, newOps){
             keyCode: [37, 65],
             keyCodeReverse: [39, 68]
         }:{},
+        'ngSelected': {},
         'ngMotorWithAcceleration': {
             min:-ops.wheelMaxSpeed,
             max: ops.wheelMaxSpeed,
@@ -337,6 +362,7 @@ function vehicle(x, y, name, newOps){
             keyCode: [37, 65],
             keyCodeReverse: [39, 68]
         }:{},
+        'ngSelected': {},
         'ngMotorWithAcceleration': {
             min:-ops.wheelMaxSpeed,
             max: ops.wheelMaxSpeed,
@@ -347,14 +373,18 @@ function vehicle(x, y, name, newOps){
     //prismatic-joints
     //*left
     world.$add(world.$e('vehicle-left-wheel-prismatic-joint-' + name, {
+        'ng2D': {
+            x: leftSuspensionAxleX,
+            y: leftSuspensionAxleY
+        },
         'ngPrismaticJoint': {
             anchorA: {
-                x: leftSuspensionAxleX,
-                y: leftSuspensionAxleY
+                x: 0.0,
+                y: 0.0
             },
             anchorB: {
-                x: leftSuspensionAxleX + ops.axleContainerDepth * Math.cos((90 - ops.axleAngle)*degreesToRadians),
-                y: leftSuspensionAxleY - ops.axleContainerDepth * Math.sin((90 - ops.axleAngle)*degreesToRadians)
+                x: + ops.axleContainerDepth * Math.cos((90 - ops.axleAngle)*degreesToRadians),
+                y: - ops.axleContainerDepth * Math.sin((90 - ops.axleAngle)*degreesToRadians)
             },
             bodyA: leftSuspensionAxleName,
             bodyB: bodyName,
@@ -368,14 +398,18 @@ function vehicle(x, y, name, newOps){
     //*right
 
     world.$add(world.$e('vehicle-right-wheel-prismatic-joint-' + name, {
+        'ng2D': {
+            x: rightSuspensionAxleX,
+            y: rightSuspensionAxleY
+        },
         'ngPrismaticJoint': {
             anchorA: {
-                x: rightSuspensionAxleX,
-                y: rightSuspensionAxleY
+                x: 0.0,
+                y: 0.0
             },
             anchorB: {
-                x: rightSuspensionAxleX - ops.axleContainerDepth * Math.cos((90 - ops.axleAngle) * degreesToRadians),
-                y: rightSuspensionAxleY - ops.axleContainerDepth * Math.sin((90 - ops.axleAngle) * degreesToRadians)
+                x: - ops.axleContainerDepth * Math.cos((90 - ops.axleAngle) * degreesToRadians),
+                y: - ops.axleContainerDepth * Math.sin((90 - ops.axleAngle) * degreesToRadians)
             },
             bodyA: rightSuspensionAxleName,
             bodyB: bodyName,
@@ -587,6 +621,7 @@ function generateByTiledFile(newTile, leftSeedTile, rightSeedTile, fileName) {
                 world.$add(entity);
             }
 
+            newTile.entities = entities;
             newTile.rightEdge = dx + map.rightEdge.x;
             newTile.rightHeight = dy + map.rightEdge.y;
         });
