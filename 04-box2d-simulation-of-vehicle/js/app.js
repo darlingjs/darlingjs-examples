@@ -64,7 +64,7 @@ world.$add('ngFollowSelected');
 world.$add('ngRemoveSelectionFromWinner');
 
 var firstTile = true;
-var levelLength = 2000;
+var levelLength = 10000;
 
 world.$add('ngInfinity1DWorld', {
     seed: {
@@ -83,7 +83,7 @@ world.$add('ngInfinity1DWorld', {
                 generateByTiledFile(newTile, leftSeedTile, rightSeedTile, 'assets/maps/finish.json');
             } else {
                 var seed = Math.random();
-                if (seed <= 0.5) {
+                if (seed <= 0.9) {
                     hillGenerator(newTile, leftSeedTile, rightSeedTile, {
                         hillWidth: 640 + 50 * Math.random(),
                         hillHeight: 50 * Math.random()
@@ -421,6 +421,21 @@ function vehicle(x, y, name, newOps){
     }));
 }
 
+world.$add(
+    world.$e('sky', {
+        'ng2D': {
+            x:0.0, y:0.0
+        },
+        'ngSpriteAtlas' : {
+            name: 'blue-sky.png',
+            url: 'assets/spritesheet.json',
+            fitToSize: false
+        },
+        'ngLockViewPort': {
+        }
+    })
+);
+
 vehicle(400, 500, 'cabriolet', {
     axleContainerDistance: 30,
     axleContainerHeight: 5,
@@ -504,6 +519,111 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                 }
             }))
         );
+
+        entities.push(world.$add(world.$e('grass-0-' + x, {
+            'ng2D': {
+                x: x,
+                y: -lowHeight
+            },
+            'ng2DSize': {
+                width: 34,
+                height: -lowHeight
+            },
+            'ngSpriteAtlas' : {
+                name: 'grass-0.png',
+                url: 'assets/spritesheet.json',
+                fitToSize: true,
+                anchor: {
+                    x: 0.0,
+                    y: 0.0
+                }
+            }
+        })));
+
+        var seed = Math.floor(100 * Math.random());
+        if (seed < 10) {
+                entities.push(world.$add(world.$e('three-0-' + x, {
+                    'ng2D': {
+                        x: x,
+                        y: -lowHeight
+                    },
+                    'ngSpriteAtlas' : {
+                        name: 'tree-0.png',
+                        url: 'assets/spritesheet.json',
+                        fitToSize: false,
+                        anchor: {
+                            x: 0.5,
+                            y: 1.0
+                        }
+                    }
+                })));
+        } else if (seed < 20) {
+                entities.push(world.$add(world.$e('three-1-' + x, {
+                    'ng2D': {
+                        x: x,
+                        y: -lowHeight
+                    },
+                    'ngSpriteAtlas' : {
+                        name: 'tree-1.png',
+                        url: 'assets/spritesheet.json',
+                        fitToSize: false,
+                        anchor: {
+                            x: 0.5,
+                            y: 1.0
+                        }
+                    }
+                })));
+        } else if (seed < 30) {
+                entities.push(world.$add(world.$e('fence-0-' + x, {
+                    'ng2D': {
+                        x: x,
+                        y: -lowHeight
+                    },
+                    'ngSpriteAtlas' : {
+                        name: 'fence-0.png',
+                        url: 'assets/spritesheet.json',
+                        fitToSize: false,
+                        anchor: {
+                            x: 0.5,
+                            y: 0.5
+                        }
+                    }
+                })));
+        } else if (seed > 99) {
+                entities.push(world.$add(world.$e('rail-road-0-' + x, {
+                    'ng2D': {
+                        x: x,
+                        y: -lowHeight
+                    },
+                    'ngSpriteAtlas' : {
+                        name: 'rail-road-0.png',
+                        url: 'assets/spritesheet.json',
+                        fitToSize: false,
+                        anchor: {
+                            x: 0.5,
+                            y: 0.0
+                        }
+                    }
+                })));
+        }
+
+        if (Math.random() > 0.5) {
+            entities.push(world.$add(world.$e('flowers-0-' + x, {
+                'ng2D': {
+                    x: x,
+                    y: -lowHeight
+                },
+                'ngSpriteAtlas' : {
+                    name: 'flowers-0.png',
+                    url: 'assets/spritesheet.json',
+                    fitToSize: false,
+                    anchor: {
+                        x: 0.5,
+                        y: -4.0 * Math.random()
+                    }
+                }
+            })));
+        }
     }
 
     newTile.entities = entities;
@@ -532,7 +652,6 @@ function generateStraightLine(newTile, leftSeedTile, rightSeedTile) {
     if (leftSeedTile) {
         goRight = true;
         newTile.leftEdge = leftSeedTile.rightEdge;
-        newTile.leftHeight = leftSeedTile.rightHeight;
         newTile.rightEdge = newTile.leftEdge + width;
         newTile.rightHeight = leftSeedTile.rightHeight;
     } else {
