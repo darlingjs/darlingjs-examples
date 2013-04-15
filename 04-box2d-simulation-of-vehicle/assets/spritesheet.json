@@ -24,6 +24,22 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":22,"h":22},
 	"sourceSize": {"w":22,"h":22}
 },
+"diamond-0.png":
+{
+	"frame": {"x":897,"y":356,"w":35,"h":32},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":35,"h":32},
+	"sourceSize": {"w":35,"h":32}
+},
+"diamond-1.png":
+{
+	"frame": {"x":920,"y":59,"w":24,"h":23},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":23},
+	"sourceSize": {"w":24,"h":23}
+},
 "fence-0.png":
 {
 	"frame": {"x":911,"y":304,"w":83,"h":50},
@@ -40,6 +56,14 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":114,"h":64},
 	"sourceSize": {"w":114,"h":64}
 },
+"gas-0.png":
+{
+	"frame": {"x":854,"y":331,"w":41,"h":45},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":41,"h":45},
+	"sourceSize": {"w":41,"h":45}
+},
 "grass-0.png":
 {
 	"frame": {"x":2,"y":604,"w":32,"h":400},
@@ -55,6 +79,14 @@
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":52,"h":121},
 	"sourceSize": {"w":52,"h":121}
+},
+"tools-0.png":
+{
+	"frame": {"x":804,"y":331,"w":48,"h":48},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
+	"sourceSize": {"w":48,"h":48}
 },
 "tree-0.png":
 {
@@ -79,6 +111,6 @@
 	"format": "RGBA8888",
 	"size": {"w":1024,"h":1024},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:6c8d52cb6f3601b78ea49478553c00c1$"
+	"smartupdate": "$TexturePacker:SmartUpdate:d45bfaa69df4327f4e30c54c363df49f$"
 }
 }

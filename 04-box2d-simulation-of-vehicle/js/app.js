@@ -60,6 +60,7 @@ world.$add('ng2DViewPort', {
 });
 
 world.$add('ngFollowSelected');
+world.$add('ngCollectBonuses');
 
 world.$add('ngRemoveSelectionFromWinner');
 
@@ -230,6 +231,10 @@ function vehicle(x, y, name, newOps){
                 {
                     'any': ['ngFinish'],
                     'andGet': 'ngWinner'
+                },
+                {
+                    'any': ['ngBonus'],
+                    'andGet': 'ngGetBonus'
                 }
             ]
         },
@@ -241,6 +246,9 @@ function vehicle(x, y, name, newOps){
                 x: 0.52,
                 y: 0.76
             }
+        },
+        'ngScores': {
+            score: 0.0
         }
     }));
 
@@ -484,6 +492,10 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
 
     var entities = [];
 
+    var diamondLeft = 0,
+        diamondType,
+        diamondScore;
+
     for (var j = startIndex; j < hillSliceWidth; j++) {
         var heightBegin = hillStartY + randomHeight * Math.cos(2*Math.PI/hillSliceWidth * j);
         var heightEnd = hillStartY + randomHeight * Math.cos(2*Math.PI/hillSliceWidth * (j + sign));
@@ -621,6 +633,41 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                         x: 0.5,
                         y: -4.0 * Math.random()
                     }
+                }
+            })));
+        }
+
+        if (Math.random() > 0.9 && diamondLeft <= 0) {
+            diamondLeft = Math.floor(3 + 7 * Math.random());
+            if (Math.random() > 0.5) {
+                diamondType = 'diamond-0';
+                diamondScore = 10;
+            } else {
+                diamondType = 'diamond-1';
+                diamondScore = 15;
+            }
+        }
+        if (diamondLeft > 0) {
+            diamondLeft--;
+            entities.push(world.$add(world.$e(diamondType + '-' + x, {
+                'ng2D': {
+                    x: x,
+                    y: -lowHeight - 42
+                },
+                'ngPhysic': {
+                    type: 'static'
+                },
+                'ng2DCircle': {
+                    radius: 16
+                },
+                'ngSensor': {},
+                'ngBonus': {
+                    score: diamondScore
+                },
+                'ngSpriteAtlas' : {
+                    name: diamondType + '.png',
+                    url: 'assets/spritesheet.json',
+                    fitToSize: false
                 }
             })));
         }

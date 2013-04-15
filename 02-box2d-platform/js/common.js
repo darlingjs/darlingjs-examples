@@ -213,6 +213,7 @@
         _target: null,
         _element: null,
         _style: null,
+
         $added: function() {
 
             this._target = this.target;
@@ -220,6 +221,7 @@
                 this._target = document.getElementById(this.targetId);
             }
         },
+
         $addNode: function($node) {
             var element = document.createElement("div");
             var style = element.style;
@@ -229,10 +231,12 @@
             $node._element = element;
             this._target.appendChild(element);
         },
+
         $removeNode: function($node) {
             //TODO:
             this._target.removeChild($node._element);
         },
+
         $update: ['$node', function($node) {
             var style = $node._style;
             style.left = $node.ng2D.x + 'px';
@@ -256,27 +260,4 @@
 
     m.$c('ngSounding');
     m.$c('ngPlaySoundOf');
-
-    m.$c('ngBonus');
-
-
-    m.$c('ngGetBonus', {
-        'bonus': null
-    });
-
-    m.$s('ngCollectBonuses', {
-        $require: ['ngGetBonus'],
-
-        $addNode: ['$node', '$world', function($node, $world) {
-            var bonusState = $node.ngGetBonus;
-
-            //FIX ME: can only remove in timeout
-            setTimeout(function() {
-                var entities = bonusState.entities;
-                for (var i = 0, count = entities.length; i < count; i++) {
-                    $world.$remove(entities[i]);
-                }
-            }, 0);
-        }]
-    });
 }) (darlingjs);
