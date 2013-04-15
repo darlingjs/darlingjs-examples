@@ -59,7 +59,12 @@ world.$add('ng2DViewPort', {
     height: height
 });
 
-world.$add('ngFollowSelected');
+world.$add('ngFollowSelected', {
+    shift: {
+        x: 100.0,
+        y: -100.0
+    }
+});
 world.$add('ngCollectBonuses');
 
 world.$add('ngRemoveSelectionFromWinner');
