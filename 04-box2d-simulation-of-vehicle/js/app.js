@@ -80,6 +80,19 @@ world.$add('ngInfinity1DWorld', {
         rightHeight: 600.0//140 + 200 * Math.random()
     },
     generator: function(newTile, leftSeedTile, rightSeedTile) {
+//        if (leftSeedTile) {
+//            console.log('leftSeedTile.rightEdge = ' + leftSeedTile.rightEdge);
+//            console.log('leftSeedTile.leftEdge = ' + leftSeedTile.leftEdge);
+//            console.log('leftSeedTile.rightHeight = ' + leftSeedTile.rightHeight);
+//            console.log('leftSeedTile.leftHeight = ' + leftSeedTile.leftHeight);
+//        }
+//        if(rightSeedTile) {
+//            console.log('leftSeedTile.rightEdge = ' + rightSeedTile.rightEdge);
+//            console.log('leftSeedTile.leftEdge = ' + rightSeedTile.leftEdge);
+//            console.log('leftSeedTile.rightHeight = ' + rightSeedTile.rightHeight);
+//            console.log('leftSeedTile.leftHeight = ' + rightSeedTile.leftHeight);
+//        }
+
         if (leftSeedTile && leftSeedTile.rightEdge <= 0.0 || rightSeedTile && rightSeedTile.rightEdge <= 0.0) {
             generateByTiledFile(newTile, leftSeedTile, rightSeedTile, 'assets/maps/start.json');
             firstTile = false;
@@ -109,9 +122,9 @@ world.$add('ngPixijsSprite');
 world.$add('ngPixijsMovieClip');
 world.$add('ngPixijsSheetSprite');
 
-world.$add('ngBox2DDebugDraw', {
-    domID: 'gameView', width: width, height: height
-});
+//world.$add('ngBox2DDebugDraw', {
+//    domID: 'gameView', width: width, height: height
+//});
 
 world.$add('ngStatsEnd');
 
@@ -449,12 +462,40 @@ world.$add(
     })
 );
 
+function addCloud(ops) {
+    world.$add(
+        world.$e('cloud', {
+            'ng2D': {
+                x: ops.x,
+                y: ops.y
+            },
+            'ngSpriteAtlas' : {
+                name: 'cloud-' + ops.type + '.png',
+                url: 'assets/spritesheet.json',
+                fitToSize: false
+            },
+            'ngParallax': {
+                basis: ops.basis
+            }
+        })
+    );
+}
+
+for(var i = 0, count = 20; i < count; i++ ) {
+    addCloud({
+        x: 500.0 + Math.random() * 2000,
+        y: 500.0 + Math.random() * 200,
+        basis: 0.2 + 0.4 * Math.random(),
+        type: Math.floor(3 * Math.random())
+    });
+}
+
 vehicle(400, 500, 'cabriolet', {
     axleContainerDistance: 30,
     axleContainerHeight: 5,
     axleContainerDepth: 2.5,
     wheelRadius: 12,
-    wheelMaxSpeed: 15.0
+    wheelMaxSpeed: 30.0
 });
 
 world.$start();
@@ -504,6 +545,9 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
     for (var j = startIndex; j < hillSliceWidth; j++) {
         var heightBegin = hillStartY + randomHeight * Math.cos(2*Math.PI/hillSliceWidth * j);
         var heightEnd = hillStartY + randomHeight * Math.cos(2*Math.PI/hillSliceWidth * (j + sign));
+
+        var angle = Math.atan(randomHeight / hillSliceWidth * Math.sin(2 * Math.PI/hillSliceWidth * j)) / (2 * Math.PI);
+
         var bottom = 0;
         var lowHeight = Math.min(heightBegin, heightEnd);
         var x = sign * j * pixelStep + xOffset;
@@ -557,6 +601,45 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
             }
         })));
 
+         entities.push(world.$add(world.$e('grass-top-0-' + x, {
+            'ng2D': {
+                x: x,
+                y: -lowHeight
+            },
+            'ng2DRotation': {
+                rotation: angle
+            },
+            'ngSpriteAtlas' : {
+                name: 'grass-top-0.png',
+                url: 'assets/spritesheet.json',
+                anchor: {
+                    x: 0.5,
+                    y: 0.5
+                }
+            }
+        })));
+
+        if (false) {
+            var topItemsIndex = Math.floor(topItems.length * Math.random());
+            entities.push(world.$add(world.$e('grass-top-0-' + x, {
+                'ng2D': {
+                    x: x,
+                    y: -lowHeight
+                },
+                'ng2DRotation': {
+                    rotation: angle
+                },
+                'ngSpriteAtlas' : {
+                    name: topItems[topItemsIndex],
+                    url: 'assets/spritesheet.json',
+                    anchor: {
+                        x: 0.5,
+                        y: 0.5
+                    }
+                }
+            })));
+        }
+
         var seed = Math.floor(100 * Math.random());
         if (seed < 10) {
                 entities.push(world.$add(world.$e('three-0-' + x, {
@@ -590,11 +673,11 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                         }
                     }
                 })));
-        } else if (seed < 30) {
+        } else if (seed < 22) {
                 entities.push(world.$add(world.$e('fence-0-' + x, {
                     'ng2D': {
                         x: x,
-                        y: -lowHeight
+                        y: -lowHeight + 100 * Math.random() + 100
                     },
                     'ngSpriteAtlas' : {
                         name: 'fence-0.png',
@@ -692,6 +775,7 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
     newTile.rightHeight = yOffset;
 }
 
+var topItems = ['flower-2.png', 'stone-0.png', 'stone-1.png', 'stone-2.png', 'stone-4.png'];
 
 /**
  * Generate tile with straight line
@@ -700,17 +784,19 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
  * @param rightSeedTile
  */
 function generateStraightLine(newTile, leftSeedTile, rightSeedTile) {
+//    console.log('generateStraightLine');
     var goRight;
     if (leftSeedTile) {
         goRight = true;
-        newTile.leftEdge = leftSeedTile.rightEdge;
-        newTile.rightEdge = newTile.leftEdge + width;
+        newTile.rightEdge = leftSeedTile.rightEdge + width;
         newTile.rightHeight = leftSeedTile.rightHeight;
+        newTile.leftEdge = leftSeedTile.rightEdge;
+        newTile.leftHeight = leftSeedTile.rightHeight;
     } else {
         goRight = false;
         newTile.rightEdge = rightSeedTile.leftEdge;
         newTile.rightHeight = rightSeedTile.leftHeight;
-        newTile.leftEdge = newTile.rightEdge - width;
+        newTile.leftEdge = rightSeedTile.leftEdge - width;
         newTile.leftHeight = rightSeedTile.rightHeight;
     }
 
@@ -754,6 +840,7 @@ function generateStraightLine(newTile, leftSeedTile, rightSeedTile) {
  * @param rightSeedTile
  */
 function generateByTiledFile(newTile, leftSeedTile, rightSeedTile, fileName) {
+//    console.log('generateByTiledFile' + [newTile, leftSeedTile, rightSeedTile, fileName].join(', '));
     var goRight;
     if (leftSeedTile) {
         goRight = true;
