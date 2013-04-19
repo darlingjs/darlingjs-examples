@@ -16,7 +16,9 @@ var world = darlingjs.world('myGame', [
     'ngPixijsAdapter',
     'ngStats',
     'ngInfinity1DWorld',
-    'ngPlayer'], {
+    'ngPlayer',
+    'ngParticleSystem'
+], {
     fps: 60
 });
 
@@ -122,9 +124,14 @@ world.$add('ngPixijsSprite');
 world.$add('ngPixijsMovieClip');
 world.$add('ngPixijsSheetSprite');
 
-//world.$add('ngBox2DDebugDraw', {
-//    domID: 'gameView', width: width, height: height
-//});
+world.$add('ng2DShiftMovingSystem');
+
+world.$add('ngRandomEmitterSystem');
+world.$add('ngSquareEmitterSystem');
+
+world.$add('ngBox2DDebugDraw', {
+    domID: 'gameView', width: width, height: height
+});
 
 world.$add('ngStatsEnd');
 
@@ -476,19 +483,75 @@ function addCloud(ops) {
             },
             'ngParallax': {
                 basis: ops.basis
+            },
+            'ngShiftMove': {
+                dx: ops.move.dx || 0.0,
+                dy: ops.move.dy || 0.0
             }
         })
     );
 }
 
+/*
+
 for(var i = 0, count = 20; i < count; i++ ) {
+    var distance = Math.random();
     addCloud({
         x: 500.0 + Math.random() * 2000,
         y: 500.0 + Math.random() * 200,
-        basis: 0.2 + 0.4 * Math.random(),
+        move: { dx: 100 * (0.2 + 0.4 * distance) },
+        basis: 0.2 + 0.4 * distance,
         type: Math.floor(3 * Math.random())
     });
 }
+*/
+
+world.$add(
+    world.$e({
+        'ng2D': {
+            x: 500.0,
+            y: 500.0
+        },
+
+        'ng2DSize': {
+            width: 1.0,
+            height: 200.0
+        },
+
+        'ngEmitterRandomCounter': {
+            minRate: 1.0,
+            maxRate: 2.0
+        },
+
+        'ngEmitter': {
+            generate: function() {
+                var distance = Math.random();
+                var ops = {
+                    move: { dx: 100 * (0.2 + 0.4 * distance) },
+                    basis: 0.2 + 0.4 * distance,
+                    type: Math.floor(3 * Math.random())
+                };
+
+                return {
+                    $name: 'cloud',
+                    'ng2D': {},
+                    'ngSpriteAtlas' : {
+                        name: 'cloud-' + ops.type + '.png',
+                        url: 'assets/spritesheet.json',
+                        fitToSize: false
+                    },
+                    'ngParallax': {
+                        basis: ops.basis
+                    },
+                    'ngShiftMove': {
+                        dx: ops.move.dx || 0.0,
+                        dy: ops.move.dy || 0.0
+                    }
+                };
+            }
+        }
+    })
+);
 
 vehicle(400, 500, 'cabriolet', {
     axleContainerDistance: 30,
