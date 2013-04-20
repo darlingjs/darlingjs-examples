@@ -8,7 +8,7 @@ var width = 640;
 var height = 480;
 
 var world = darlingjs.world('myGame', [
-    'ngModule',
+    'myApp',
     'ngCommon',
     'ngFlatland',
     'ngPhysics',
@@ -133,6 +133,8 @@ world.$add('ngRemoveIfDead');
 world.$add('ngReduceLifeIfOutOfLifeZone');
 world.$add('ngDeadIfOutOfLife');
 world.$add('ngBindLifeToAlpha');
+
+world.$add('ngLockOnViewPortOnShiftToIt');
 
 world.$add('ngBox2DDebugDraw', {
     domID: 'gameView', width: width, height: height
@@ -474,6 +476,7 @@ world.$add(
     })
 );
 
+/*
 function addCloud(ops) {
     world.$add(
         world.$e('cloud', {
@@ -496,6 +499,7 @@ function addCloud(ops) {
         })
     );
 }
+*/
 
 /*
 
@@ -517,7 +521,7 @@ var frontStart = 200.0,
 world.$add(world.$e(
     'doom-sky', {
         'ng2D': {
-            x: frontStart,
+            x: frontStart - 400.0,
             y: 0.0
         },
 
@@ -526,12 +530,16 @@ world.$add(world.$e(
             dy: 0.0
         },
 
+        'ngLockOnViewPortOnShiftToIt': {
+            entitiesToRemove: ['clouds-front', 'clouds-factory', 'sky']
+        },
+
         'ngSpriteAtlas' : {
             name: 'doom.png',
             url: 'assets/spritesheet.json',
             fitToSize: false,
             anchor: {
-                x: 1.0,
+                x: 0.5,
                 y: 0.5
             }
         },
@@ -544,7 +552,7 @@ world.$add(world.$e(
 ));
 
 world.$add(world.$e(
-    'cloud-front', {
+    'clouds-front', {
         'ng2D': {
             x: frontStart - 3,
             y: 0.0

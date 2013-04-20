@@ -9,39 +9,39 @@
 
 //Define Engine
 
-    var ngModule = darlingjs.module('ngModule');
+    var m = darlingjs.module('myApp');
 
-    ngModule.$c('ngCollision', {
+    m.$c('ngCollision', {
         fixed: false
     });
 
-    ngModule.$c('ngScan', {
+    m.$c('ngScan', {
         target: 'ngPlayer'
     });
 
-    ngModule.$c('ngRamble', {
+    m.$c('ngRamble', {
         frame: {
             left: 0, right: 0,
             top: 0, bottom: 0
         }
     });
 
-    ngModule.$c('ngPlayer', {
+    m.$c('ngPlayer', {
     });
 
-    ngModule.$c('ngDOM', {
+    m.$c('ngDOM', {
         color: 'rgb(255,0,0)'
     });
 
-    ngModule.$c('ngDraggable', {
+    m.$c('ngDraggable', {
     });
 
-    ngModule.$c('ngSpriteAtlas', {
+    m.$c('ngSpriteAtlas', {
         name: 0,
         url: ''
     });
 
-    ngModule.$c('ngSprite', {
+    m.$c('ngSprite', {
         name: '',
         fitToSize: false,
         anchor: {
@@ -50,17 +50,17 @@
         }
     });
 
-    ngModule.$c('ngMovieClip', {
+    m.$c('ngMovieClip', {
         url: '',
         frames: null
     });
 
-    ngModule.$c('ngControl', {
+    m.$c('ngControl', {
         speed: 0.1,
         keys:{ UP_ARROW: -90, DOWN_ARROW: 90, RIGHT_ARROW: 0, LEFT_ARROW: 180}
     });
 
-    ngModule.$c('ngControlPlatformStyle', {
+    m.$c('ngControlPlatformStyle', {
         runSpeed: 4.0,
         jumpSpeed: 5.0,
         flySpeed: 0.0, //0.05,
@@ -69,7 +69,7 @@
         keys:{ UP_ARROW: -90, DOWN_ARROW: 90, RIGHT_ARROW: 0, LEFT_ARROW: 180}
     });
 
-    ngModule.$system('ng2DRamble', {
+    m.$system('ng2DRamble', {
         $require: ['ngRamble', 'ng2D'],
         _updateTarget: function($node) {
             $node.ngRamble._target = {
@@ -118,7 +118,7 @@
         }]
     });
 
-    ngModule.$system('ng2DScan', {
+    m.$system('ng2DScan', {
         $require: ['ng2D', 'ngScan'],
         $update : ['$nodes', function($nodes) {
             //TODO brute-force. just push away after collision
@@ -130,7 +130,7 @@
         }]
     })
 
-    ngModule.$system('ngControlSystem', {
+    m.$system('ngControlSystem', {
         $require: ['ng2D', 'ngControl'],
         targetId: null,
         _target: null,
@@ -207,7 +207,7 @@
         }]
     });
 
-    ngModule.$system('ngDOMSystem', {
+    m.$system('ngDOMSystem', {
         $require: ['ngDOM', 'ng2D'],
         _targetElementID: 'game',
         _target: null,
@@ -250,5 +250,49 @@
 
             style.backgroundColor = $node.ngDOM.color;
         }]
+    });
+
+    m.$c('ngLockOnViewPortOnShiftToIt');
+
+    m.$s('ngLockOnViewPortOnShiftToIt', {
+        width: 640,
+        height: 480,
+
+        $require: ['ngLockOnViewPortOnShiftToIt', 'ngShiftMove', 'ng2D'],
+
+        $update: ['$node', 'ng2DViewPort', '$world', function($node, ng2DViewPort, $world) {
+            var ng2D = $node.ng2D;
+            var xEdge = ng2DViewPort.lookAt.x;
+            if (ng2D.x > xEdge && $node.ngShiftMove.dx > 0 ) {
+                this._lockX($node, $world);
+            } else if (ng2D.x < xEdge && $node.ngShiftMove.dx < 0 ) {
+                this._lockX($node, $world);
+            }
+        }],
+
+        _lockX: function($node, $world) {
+            if (!$node.ngLockViewPort) {
+                $node.$add('ngLockViewPort');
+                $node.ngLockViewPort.lockY = false;
+            }
+            $node.ngLockViewPort.lockX = true;
+            $node.ngShiftMove.dx = 0.0;
+            $node.ng2D.x = 0;//0.5 * this.width;
+
+            var entitiesToRemove = $node.ngLockOnViewPortOnShiftToIt.entitiesToRemove;
+            for(var i = entitiesToRemove.length; i >= 0; i--) {
+                var entity = $world.$getByName(entitiesToRemove[i]);
+                if (entity) {
+                    $world.$remove(entity);
+                }
+            }
+            this._checkShiftMove($node);
+        },
+
+        _checkShiftMove: function($node) {
+            if ($node.ngShiftMove.dx === 0 && $node.ngShiftMove.dy === 0) {
+                $node.$remove('ngShiftMove');
+            }
+        }
     });
 }) (darlingjs, darlingutil);
