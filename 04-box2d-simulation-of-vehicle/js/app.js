@@ -477,45 +477,6 @@ world.$add(
     })
 );
 
-/*
-function addCloud(ops) {
-    world.$add(
-        world.$e('cloud', {
-            'ng2D': {
-                x: ops.x,
-                y: ops.y
-            },
-            'ngSpriteAtlas' : {
-                name: 'cloud-' + ops.type + '.png',
-                url: 'assets/spritesheet.json',
-                fitToSize: false
-            },
-            'ngParallax': {
-                basis: ops.basis
-            },
-            'ngShiftMove': {
-                dx: ops.move.dx || 0.0,
-                dy: ops.move.dy || 0.0
-            }
-        })
-    );
-}
-*/
-
-/*
-
-for(var i = 0, count = 20; i < count; i++ ) {
-    var distance = Math.random();
-    addCloud({
-        x: 500.0 + Math.random() * 2000,
-        y: 500.0 + Math.random() * 200,
-        move: { dx: 100 * (0.2 + 0.4 * distance) },
-        basis: 0.2 + 0.4 * distance,
-        type: Math.floor(3 * Math.random())
-    });
-}
-*/
-
 var frontStart = 200.0,
     frontSpeed = 40.0;
 
