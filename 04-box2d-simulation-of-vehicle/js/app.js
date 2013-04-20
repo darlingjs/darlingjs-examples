@@ -138,6 +138,7 @@ world.$add('ngReduceLifeIfOutOfLifeZone');
 world.$add('ngDeadIfOutOfLife');
 world.$add('ngLifeIsGrooving');
 world.$add('ngDecreaseLifeOnDamage');
+world.$add('ngDecreaseLifeOnContinuousDamage');
 
 world.$add('ngLockOnViewPortOnShiftToIt');
 
@@ -281,6 +282,14 @@ function vehicle(x, y, name, newOps){
                     'andGet': {
                         'ngDamage': {
                             damage: 0.1
+                        }
+                    }
+                },
+                {
+                    'any': ['cloudsFront'],
+                    'andGet': {
+                        'ngContinuousDamage': {
+                            damage: 0.5
                         }
                     }
                 }
