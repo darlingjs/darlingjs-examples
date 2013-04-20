@@ -146,7 +146,8 @@ world.$add('ngStatsEnd');
 
 // test heap of rocks
 
-for (var i = 0, l = 50; i < l; i++) {
+var rocksCount = 0;
+for (var i = 0, l = rocksCount; i < l; i++) {
     var fixed = Math.random() > 0.5;
     var boxType = Math.floor(1 + 3 * Math.random());
     var box = world.$add(world.$e('obstacle_' + i, {
@@ -584,7 +585,7 @@ world.$add(
     world.$e('clouds-factory', {
         'ng2D': {
             x: frontStart,
-            y: 200.0
+            y: 300.0
         },
 
         'ng2DSize': {
