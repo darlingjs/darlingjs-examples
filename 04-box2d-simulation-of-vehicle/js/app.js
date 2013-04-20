@@ -4,8 +4,8 @@
  * Copyright (c) 2013, Eugene-Krevenets
  */
 
-var width = 800;
-var height = 600;
+var width = 640;
+var height = 480;
 
 var world = darlingjs.world('myGame', [
     'ngModule',
@@ -128,6 +128,11 @@ world.$add('ng2DShiftMovingSystem');
 
 world.$add('ngRandomEmitterSystem');
 world.$add('ngSquareEmitterSystem');
+world.$add('ngRectangleZone');
+world.$add('ngRemoveIfDead');
+world.$add('ngReduceLifeIfOutOfLifeZone');
+world.$add('ngDeadIfOutOfLife');
+world.$add('ngBindLifeToAlpha');
 
 world.$add('ngBox2DDebugDraw', {
     domID: 'gameView', width: width, height: height
@@ -506,11 +511,72 @@ for(var i = 0, count = 20; i < count; i++ ) {
 }
 */
 
-world.$add(
-    world.$e({
+var frontStart = 200.0,
+    frontSpeed = 40.0;
+
+world.$add(world.$e(
+    'doom-sky', {
         'ng2D': {
-            x: 500.0,
-            y: 500.0
+            x: frontStart,
+            y: 0.0
+        },
+
+        'ngShiftMove': {
+            dx: frontSpeed,
+            dy: 0.0
+        },
+
+        'ngSpriteAtlas' : {
+            name: 'doom.png',
+            url: 'assets/spritesheet.json',
+            fitToSize: false,
+            anchor: {
+                x: 1.0,
+                y: 0.5
+            }
+        },
+
+        'ngLockViewPort': {
+            lockX: false,
+            lockY: true
+        }
+    }
+));
+
+world.$add(world.$e(
+    'cloud-front', {
+        'ng2D': {
+            x: frontStart - 3,
+            y: 0.0
+        },
+
+        'ngShiftMove': {
+            dx: frontSpeed,
+            dy: 0.0
+        },
+
+        'ngSpriteAtlas' : {
+            name: 'doom-front.png',
+            url: 'assets/spritesheet.json',
+            fitToSize: false,
+            anchor: {
+                x: 0.0,
+                y: 0.5
+            }
+        },
+
+        'ngLockViewPort': {
+            lockX: false,
+            lockY: true
+        }
+    }
+));
+
+world.$add(
+    world.$e('clouds-factory', {
+        'ng2D': {
+            x: frontStart,
+            y: 200.0
         },
 
         'ng2DSize': {
@@ -519,12 +585,18 @@ world.$add(
         },
 
         'ngEmitterRandomCounter': {
-            minRate: 1.0,
-            maxRate: 2.0
+            minRate: 0.0,
+            maxRate: 1.0
+        },
+
+        'ngShiftMove': {
+            dx: frontSpeed,
+            dy: 0.0
         },
 
         'ngEmitter': {
-            generate: function() {
+            generate: function(emitter) {
+                var edge = width;
                 var distance = Math.random();
                 var ops = {
                     move: { dx: 100 * (0.2 + 0.4 * distance) },
@@ -534,24 +606,46 @@ world.$add(
 
                 return {
                     $name: 'cloud',
+
                     'ng2D': {},
+
                     'ngSpriteAtlas' : {
                         name: 'cloud-' + ops.type + '.png',
                         url: 'assets/spritesheet.json',
                         fitToSize: false
                     },
+
                     'ngParallax': {
-                        basis: ops.basis
+                        basis: 1.0//ops.basis
                     },
+
                     'ngShiftMove': {
                         dx: ops.move.dx || 0.0,
                         dy: ops.move.dy || 0.0
+                    },
+
+                    'ngRemoveIfDead': {},
+
+                    'ngLifeZone': {},
+
+                    'ngLife': {},
+
+                    'ngBindLifeToAlpha': {},
+
+                    'ngLive': {},
+
+                    'ngRectangleZone': {
+                        left: -edge + emitter.ng2D.x,
+                        right: edge + emitter.ng2D.x,
+                        top:  -edge + emitter.ng2D.y,
+                        bottom:edge + emitter.ng2D.y
                     }
                 };
             }
         }
     })
 );
+
 
 vehicle(400, 500, 'cabriolet', {
     axleContainerDistance: 30,

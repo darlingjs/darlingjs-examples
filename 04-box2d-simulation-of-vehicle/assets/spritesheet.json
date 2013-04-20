@@ -2,7 +2,7 @@
 
 "blue-sky.png":
 {
-	"frame": {"x":2,"y":2,"w":800,"h":600},
+	"frame": {"x":2,"y":604,"w":800,"h":600},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":800,"h":600},
@@ -64,6 +64,22 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":23},
 	"sourceSize": {"w":24,"h":23}
 },
+"doom-front.png":
+{
+	"frame": {"x":2,"y":1206,"w":594,"h":600},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":594,"h":600},
+	"sourceSize": {"w":600,"h":600}
+},
+"doom.png":
+{
+	"frame": {"x":2,"y":2,"w":800,"h":600},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":800,"h":600},
+	"sourceSize": {"w":800,"h":600}
+},
 "fence-0.png":
 {
 	"frame": {"x":934,"y":163,"w":83,"h":50},
@@ -114,7 +130,7 @@
 },
 "grass-0.png":
 {
-	"frame": {"x":2,"y":604,"w":32,"h":400},
+	"frame": {"x":970,"y":580,"w":32,"h":400},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":400},
@@ -138,7 +154,7 @@
 },
 "stone-0.png":
 {
-	"frame": {"x":933,"y":575,"w":30,"h":20},
+	"frame": {"x":933,"y":593,"w":30,"h":20},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":30,"h":20},
@@ -146,7 +162,7 @@
 },
 "stone-1.png":
 {
-	"frame": {"x":2,"y":1006,"w":35,"h":16},
+	"frame": {"x":933,"y":575,"w":35,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":35,"h":16},
@@ -154,7 +170,7 @@
 },
 "stone-2.png":
 {
-	"frame": {"x":965,"y":580,"w":28,"h":25},
+	"frame": {"x":896,"y":609,"w":28,"h":25},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":28,"h":25},
@@ -197,8 +213,8 @@
 	"version": "1.0",
 	"image": "spritesheet.png",
 	"format": "RGBA8888",
-	"size": {"w":1024,"h":1024},
+	"size": {"w":1024,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:33250b76a695e5ddb4208ac710f480a1$"
+	"smartupdate": "$TexturePacker:SmartUpdate:c58da6850babf2547d9a199f9908bd3e$"
 }
 }

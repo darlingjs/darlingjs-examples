@@ -22,7 +22,7 @@
         <key>dataFormat</key>
         <string>json</string>
         <key>textureFileName</key>
-        <filename>../../darlingjs/examples/04-box2d-simulation-of-vehicle/assets/spritesheet.png</filename>
+        <filename>spritesheet.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>ditherType</key>
@@ -111,7 +111,7 @@
             <enum type="AndEngine::MagFilter">MagLinear</enum>
         </struct>
         <key>dataFileName</key>
-        <filename>../../darlingjs/examples/04-box2d-simulation-of-vehicle/assets/spritesheet.json</filename>
+        <filename>spritesheet.json</filename>
         <key>mainExtension</key>
         <string></string>
         <key>forceIdenticalLayout</key>
@@ -165,6 +165,8 @@
             <filename>flower-1.png</filename>
             <filename>flower-2.png</filename>
             <filename>grass-top-0.png</filename>
+            <filename>doom-front.png</filename>
+            <filename>doom.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
