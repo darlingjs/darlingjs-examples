@@ -80,6 +80,14 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":800,"h":600},
 	"sourceSize": {"w":800,"h":600}
 },
+"drop.png":
+{
+	"frame": {"x":1018,"y":2,"w":2,"h":8},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":2,"h":8},
+	"sourceSize": {"w":2,"h":8}
+},
 "fence-0.png":
 {
 	"frame": {"x":934,"y":163,"w":83,"h":50},
@@ -215,6 +223,6 @@
 	"format": "RGBA8888",
 	"size": {"w":1024,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:c58da6850babf2547d9a199f9908bd3e$"
+	"smartupdate": "$TexturePacker:SmartUpdate:cadf2fe13363846669b8dceba5f070d5$"
 }
 }

@@ -119,6 +119,7 @@ world.$add('ngInfinity1DWorld', {
     }
 });
 
+world.$add('ngBindLifeToAlpha');
 world.$add('ngPixijsStage', { domId: 'gameView', width: width, height: height });
 world.$add('ngPixijsSprite');
 world.$add('ngPixijsMovieClip');
@@ -129,10 +130,12 @@ world.$add('ng2DShiftMovingSystem');
 world.$add('ngRandomEmitterSystem');
 world.$add('ngSquareEmitterSystem');
 world.$add('ngRectangleZone');
+
 world.$add('ngRemoveIfDead');
 world.$add('ngReduceLifeIfOutOfLifeZone');
 world.$add('ngDeadIfOutOfLife');
-world.$add('ngBindLifeToAlpha');
+world.$add('ngLifeIsGrooving');
+world.$add('ngDecreaseLifeOnDamage');
 
 world.$add('ngLockOnViewPortOnShiftToIt');
 
@@ -546,7 +549,7 @@ world.$add(
     world.$e('clouds-factory', {
         'ng2D': {
             x: frontStart,
-            y: 300.0
+            y: 275.0
         },
 
         'ng2DSize': {
@@ -554,14 +557,14 @@ world.$add(
             height: 200.0
         },
 
-        'ngEmitterRandomCounter': {
-            minRate: 0.0,
-            maxRate: 1.0
-        },
-
         'ngShiftMove': {
             dx: frontSpeed,
             dy: 0.0
+        },
+
+        'ngEmitterRandomCounter': {
+            minRate: 0.75,
+            maxRate: 2.0
         },
 
         'ngEmitter': {
@@ -578,6 +581,11 @@ world.$add(
                     $name: 'cloud',
 
                     'ng2D': {},
+
+                    'ng2DSize': {
+                        width: 60.0,
+                        height: 1.0
+                    },
 
                     'ngSpriteAtlas' : {
                         name: 'cloud-' + ops.type + '.png',
@@ -598,7 +606,13 @@ world.$add(
 
                     'ngLifeZone': {},
 
-                    'ngLife': {},
+                    'ngLife': {
+                        life: 0.01
+                    },
+
+                    'ngLifeIsGrooving': {
+                        delta: 0.1
+                    },
 
                     'ngBindLifeToAlpha': {},
 
@@ -609,6 +623,62 @@ world.$add(
                         right: edge + emitter.ng2D.x,
                         top:  -edge + emitter.ng2D.y,
                         bottom:edge + emitter.ng2D.y
+                    },
+
+                    'ngEmitterRandomCounter': {
+                        minRate: 0.0,
+                        maxRate: 1.0
+                    },
+
+                    'ngEmitter': {
+                        generate: function(emitter) {
+                            return {
+                                '$name': 'drop-of-' + emitter.$name,
+                                'ng2D': {x : emitter.ng2D.x, y: emitter.ng2D.y},
+                                'ng2DCircle': {radius: 3},
+                                'ng2DRotation': {},
+                                'ngPhysic': {
+                                    density: 2.0
+                                },
+                                'ngDraggable': {},
+
+                                'ngSpriteAtlas' : {
+                                    name: 'drop.png',
+                                    url: 'assets/spritesheet.json',
+                                    fitToSize: false
+                                },
+
+                                'ngLife': {
+                                    life: 0.01
+                                },
+
+                                'ngLifeIsGrooving': {
+                                    delta: 0.2
+                                },
+
+                                'ngBindLifeToAlpha': {},
+
+                                'ngLive': {},
+
+                                'ngRemoveIfDead': {},
+
+                                'ngWantsToCollide': {
+                                    'with': [
+                                        {
+                                            'andGet': 'ngDead'
+//                                            'andGet': {
+//                                                'ngDamage' : {
+//                                                    damage: 0.34
+//                                                }
+//                                            }
+                                        }
+                                    ]
+                                }
+//                                'ngDamageOnCollision': {
+//
+//                                }
+                            };
+                        }
                     }
                 };
             }

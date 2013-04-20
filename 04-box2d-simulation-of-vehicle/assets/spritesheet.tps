@@ -167,6 +167,7 @@
             <filename>grass-top-0.png</filename>
             <filename>doom-front.png</filename>
             <filename>doom.png</filename>
+            <filename>drop.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
