@@ -168,6 +168,7 @@
             <filename>doom-front.png</filename>
             <filename>doom.png</filename>
             <filename>drop.png</filename>
+            <filename>lightning.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

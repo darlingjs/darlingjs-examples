@@ -632,52 +632,79 @@ world.$add(
 
                     'ngEmitter': {
                         generate: function(emitter) {
-                            return {
-                                '$name': 'drop-of-' + emitter.$name,
-                                'ng2D': {x : emitter.ng2D.x, y: emitter.ng2D.y},
-                                'ng2DCircle': {radius: 3},
-                                'ng2DRotation': {},
-                                'ngPhysic': {
-                                    density: 2.0
-                                },
-                                'ngDraggable': {},
+                            if (Math.random() > 0.95) {
+                                var lightningType = Math.floor(2 * Math.random());
+                                return {
+                                    '$name': 'lightning-of-' + emitter.$name,
+                                    'ng2D': {x : emitter.ng2D.x, y: emitter.ng2D.y},
+                                    'ngSpriteAtlas' : {
+                                        name: 'lightning-' + lightningType + '.png',
+                                        url: 'assets/spritesheet.json',
+                                        fitToSize: false
+                                    },
 
-                                'ngSpriteAtlas' : {
-                                    name: 'drop.png',
-                                    url: 'assets/spritesheet.json',
-                                    fitToSize: false
-                                },
+                                    'ngLife': {
+                                        life: 1.0
+                                    },
 
-                                'ngLife': {
-                                    life: 0.01
-                                },
+                                    'ngLifeIsGrooving': {
+                                        delta: -1.0
+                                    },
 
-                                'ngLifeIsGrooving': {
-                                    delta: 0.2
-                                },
+                                    'ngBindLifeToAlpha': {},
 
-                                'ngBindLifeToAlpha': {},
+                                    'ngLive': {},
 
-                                'ngLive': {},
+                                    'ngRemoveIfDead': {}
+                                };
+                            } else {
+                                return {
+                                    '$name': 'drop-of-' + emitter.$name,
+                                    'ng2D': {x : emitter.ng2D.x, y: emitter.ng2D.y},
+                                    'ng2DCircle': {radius: 3},
+                                    'ng2DRotation': {},
+                                    'ngPhysic': {
+                                        density: 2.0
+                                    },
+                                    'ngDraggable': {},
 
-                                'ngRemoveIfDead': {},
+                                    'ngSpriteAtlas' : {
+                                        name: 'drop.png',
+                                        url: 'assets/spritesheet.json',
+                                        fitToSize: false
+                                    },
 
-                                'ngWantsToCollide': {
-                                    'with': [
-                                        {
-                                            'andGet': 'ngDead'
-//                                            'andGet': {
-//                                                'ngDamage' : {
-//                                                    damage: 0.34
-//                                                }
-//                                            }
-                                        }
-                                    ]
-                                }
-//                                'ngDamageOnCollision': {
-//
-//                                }
-                            };
+                                    'ngLife': {
+                                        life: 0.01
+                                    },
+
+                                    'ngLifeIsGrooving': {
+                                        delta: 0.2
+                                    },
+
+                                    'ngBindLifeToAlpha': {},
+
+                                    'ngLive': {},
+
+                                    'ngRemoveIfDead': {},
+
+                                    'ngWantsToCollide': {
+                                        'with': [
+                                            {
+                                                'andGet': 'ngDead'
+    //                                            'andGet': {
+    //                                                'ngDamage' : {
+    //                                                    damage: 0.34
+    //                                                }
+    //                                            }
+                                            }
+                                        ]
+                                    }
+    //                                'ngDamageOnCollision': {
+    //
+    //                                }
+                                };
+                            }
                         }
                     }
                 };
