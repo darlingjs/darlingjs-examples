@@ -141,6 +141,8 @@ world.$add('ngDecreaseLifeOnDamage');
 
 world.$add('ngLockOnViewPortOnShiftToIt');
 
+world.$add('ngLifeHandler');
+
 world.$add('ngBox2DDebugDraw', {
     domID: 'gameView', width: width, height: height
 });
@@ -286,6 +288,11 @@ function vehicle(x, y, name, newOps){
         },
         'ngLife': {
             life: 1.0
+        },
+        'ngOnLifeChange': {
+            handler: function($node, life) {
+                console.log('life:' + life);
+            }
         },
         'ngLive': {},
         'ngSpriteAtlas' : {
