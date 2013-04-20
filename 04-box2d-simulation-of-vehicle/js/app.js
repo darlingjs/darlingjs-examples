@@ -34,7 +34,6 @@ world.$add('ng2DViewPort', {
     height: height
 });
 
-
 world.$add('ngBox2DSystem', {
     gravity: {
         x: 0,
@@ -67,6 +66,7 @@ world.$add('ngFollowSelected', {
         y: -100.0
     }
 });
+
 world.$add('ngCollectBonuses');
 
 world.$add('ngRemoveSelectionFromWinner');
@@ -118,6 +118,8 @@ world.$add('ngInfinity1DWorld', {
         }
     }
 });
+
+world.$add('ngBindPositionToPhysics');
 
 world.$add('ngBindLifeToAlpha');
 world.$add('ngPixijsStage', { domId: 'gameView', width: width, height: height });
@@ -271,9 +273,21 @@ function vehicle(x, y, name, newOps){
                 {
                     'any': ['ngBonus'],
                     'andGet': 'ngGetBonus'
+                },
+                {
+                    'any': ['drop'],
+                    'andGet': {
+                        'ngDamage': {
+                            damage: 0.1
+                        }
+                    }
                 }
             ]
         },
+        'ngLife': {
+            life: 1.0
+        },
+        'ngLive': {},
         'ngSpriteAtlas' : {
             name: name + '-body.png',
             url: 'assets/spritesheet.json',
@@ -517,6 +531,33 @@ world.$add(world.$e(
 ));
 
 world.$add(world.$e(
+    'clouds-front-sensor', {
+        'cloudsFront': {},
+
+        'ng2D': {
+            x: frontStart - 200,
+            y: 500.0
+        },
+
+        'ng2DSize': {
+            width: 10,
+            height: 480
+        },
+
+        'ngPhysic': {},
+
+        'ngSensor': {},
+
+        'ngBindPositionToPhysics': {},
+
+        'ngShiftMove': {
+            dx: frontSpeed,
+            dy: 0.0
+        }
+    }
+));
+
+world.$add(world.$e(
     'clouds-front', {
         'ng2D': {
             x: frontStart - 3,
@@ -660,9 +701,15 @@ world.$add(
                             } else {
                                 return {
                                     '$name': 'drop-of-' + emitter.$name,
+
+                                    'drop': {},
+
                                     'ng2D': {x : emitter.ng2D.x, y: emitter.ng2D.y},
+
                                     'ng2DCircle': {radius: 3},
+
                                     'ng2DRotation': {},
+
                                     'ngPhysic': {
                                         density: 2.0
                                     },
@@ -692,17 +739,9 @@ world.$add(
                                         'with': [
                                             {
                                                 'andGet': 'ngDead'
-    //                                            'andGet': {
-    //                                                'ngDamage' : {
-    //                                                    damage: 0.34
-    //                                                }
-    //                                            }
                                             }
                                         ]
                                     }
-    //                                'ngDamageOnCollision': {
-    //
-    //                                }
                                 };
                             }
                         }

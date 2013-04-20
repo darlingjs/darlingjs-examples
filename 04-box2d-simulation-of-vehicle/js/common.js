@@ -275,6 +275,7 @@
                 $node.$add('ngLockViewPort');
                 $node.ngLockViewPort.lockY = false;
             }
+
             $node.ngLockViewPort.lockX = true;
             $node.ngShiftMove.dx = 0.0;
             $node.ng2D.x = 0;//0.5 * this.width;
@@ -295,4 +296,14 @@
             }
         }
     });
+
+    /**
+     * Marker for drops
+     */
+    m.$c('drop');
+
+    /**
+     * Marker for clouds front
+     */
+    m.$c('cloudsFront');
 }) (darlingjs, darlingutil);
