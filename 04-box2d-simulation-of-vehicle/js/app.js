@@ -113,7 +113,7 @@ world.$add('ngPixijsStage', {
     domId: 'gameView',
     width: width,
     height: height,
-    useWebGL: false
+    useWebGL: true
 });
 
 world.$add('ngPixijsSprite');

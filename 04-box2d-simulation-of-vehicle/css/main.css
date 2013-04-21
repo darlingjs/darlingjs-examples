@@ -1,0 +1,29 @@
+h1 {
+    font-family: 'Lobster', cursive; font-weight: 400;
+}
+
+.center {
+    margin-left: -25%; padding-left: 50%;
+}
+
+body {
+    background-color: #0c0c0c;
+    color: #f7f7f7;
+    font-family: calibri;
+}
+
+a:link {
+    color: #ff315f;
+}
+
+a:hover {
+    color: #ff537b;
+}
+
+a:visited {
+    color: #c8254b;
+}
+
+a:active {
+    color: #ff537b;
+}
