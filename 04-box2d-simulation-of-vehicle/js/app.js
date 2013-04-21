@@ -137,11 +137,13 @@ world.$add('ngLockOnViewPortOnShiftToIt');
 
 world.$add('ngLifeHandler');
 
-//world.$add('ngBox2DDebugDraw', {
-//    domID: 'gameView', width: width, height: height
-//});
+world.$add('ngBox2DDebugDraw', {
+    domID: 'gameView', width: width, height: height
+});
 
-world.$add('ngStatsEnd');
+world.$add('ngStatsEnd', {
+    domId: 'gameView'
+});
 
 // entities
 
