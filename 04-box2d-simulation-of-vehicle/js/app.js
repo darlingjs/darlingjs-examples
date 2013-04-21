@@ -137,9 +137,9 @@ world.$add('ngLockOnViewPortOnShiftToIt');
 
 world.$add('ngLifeHandler');
 
-world.$add('ngBox2DDebugDraw', {
-    domID: 'gameView', width: width, height: height
-});
+//world.$add('ngBox2DDebugDraw', {
+//    domID: 'gameView', width: width, height: height
+//});
 
 world.$add('ngStatsEnd');
 
@@ -765,6 +765,11 @@ function buildCloudFront(ops) {
     }
 }
 
+buildCloudFront({
+    useCloudFactory: true,
+    cloudMinRate: 0.0,
+    cloudMaxRate: 0.1
+});
 
 vehicle(400, 500, 'cabriolet', {
     axleContainerDistance: 30,
@@ -772,12 +777,6 @@ vehicle(400, 500, 'cabriolet', {
     axleContainerDepth: 2.5,
     wheelRadius: 12,
     wheelMaxSpeed: 30.0
-});
-
-buildCloudFront({
-    useCloudFactory: true,
-    cloudMinRate: 0.0,
-    cloudMaxRate: 0.1
 });
 
 world.$start();
