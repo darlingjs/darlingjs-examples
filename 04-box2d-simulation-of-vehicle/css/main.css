@@ -3,7 +3,9 @@ h1 {
 }
 
 .center {
-    margin-left: -25%; padding-left: 50%;
+    /*margin-left: -25%;*/
+    padding-left: 25%;
+    /*text-align: center;*/
 }
 
 body {
@@ -26,4 +28,15 @@ a:visited {
 
 a:active {
     color: #ff537b;
+}
+
+.add-a-little-space-up-and-down {
+    margin-bottom: 32px;
+    margin-top: 32px;
+}
+
+.gameview {
+    height: 480px;
+    width: 640px;
+    position:relative
 }
