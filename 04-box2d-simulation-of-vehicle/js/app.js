@@ -137,9 +137,9 @@ world.$add('ngLockOnViewPortOnShiftToIt');
 
 world.$add('ngLifeHandler');
 
-world.$add('ngBox2DDebugDraw', {
-    domID: 'gameView', width: width, height: height
-});
+//world.$add('ngBox2DDebugDraw', {
+//    domID: 'gameView', width: width, height: height
+//});
 
 world.$add('ngStatsEnd', {
     domId: 'gameView'
@@ -222,7 +222,7 @@ function vehicle(x, y, name, newOps){
 
     //* right-wheel
     var rightWheelName = 'vehicle-right-wheel-' + name;
-    world.$add(world.$e(rightWheelName, {
+    world.$e(rightWheelName, {
         'ng2D': {
             x: x + ops.axleContainerDistance + 2 * ops.axleContainerHeight * Math.cos((90 - ops.axleAngle) * degreesToRadians),
             y: y + ops.axleContainerDepth + 2 * ops.axleContainerHeight * Math.sin((90 - ops.axleAngle) * degreesToRadians)
@@ -244,11 +244,11 @@ function vehicle(x, y, name, newOps){
             url: 'assets/spritesheet.json',
             fitToSize: false
         }
-    }));
+    });
 
     //body
     var bodyName = 'vehicle-body-' + name;
-    world.$add(world.$e(bodyName, {
+    world.$e(bodyName, {
         'ng2D': {x : x, y: y},
         'ng2DSize': {width: 2.0 * ops.width, height: 2.0 * ops.height},
         'ng2DRotation': {},
@@ -311,11 +311,11 @@ function vehicle(x, y, name, newOps){
         'ngScores': {
             score: 0.0
         }
-    }));
+    });
 
     //suspension
     //* left-container
-    world.$add(world.$e('vehicle-left-suspension-container-' + name, {
+    world.$e('vehicle-left-suspension-container-' + name, {
         'ng2D': {
             x: x - ops.axleContainerDistance,
             y: y + ops.axleContainerDepth},
@@ -330,14 +330,14 @@ function vehicle(x, y, name, newOps){
         'ngCollisionGroup': {
             'neverWith': 'vehicle'
         }
-    }));
+    });
 
     //* left-axle
     var leftSuspensionAxleName = 'vehicle-left-suspension-axle-' + name;
     var leftSuspensionAxleX = x - ops.axleContainerDistance - ops.axleContainerHeight * Math.cos((90 - ops.axleAngle) * degreesToRadians);
     var leftSuspensionAxleY = y + ops.axleContainerDepth + ops.axleContainerHeight * Math.sin((90 - ops.axleAngle) * degreesToRadians);
 
-    world.$add(world.$e(leftSuspensionAxleName, {
+    world.$e(leftSuspensionAxleName, {
         'ng2D': {
             x: leftSuspensionAxleX,
             y: leftSuspensionAxleY
@@ -352,10 +352,10 @@ function vehicle(x, y, name, newOps){
         'ngCollisionGroup': {
             'neverWith': 'vehicle'
         }
-    }));
+    });
 
     //* right-container
-    world.$add(world.$e('vehicle-left-suspension-container-' + name, {
+    world.$e('vehicle-left-suspension-container-' + name, {
         'ng2D': {x : x + ops.axleContainerDistance, y: y + ops.axleContainerDepth},
         'ng2DSize': {width: 2 * ops.axleContainerWidth, height: 2 * ops.axleContainerHeight},
         'ng2DRotation': { rotation: -ops.axleAngle * degreesToRadians },
@@ -368,14 +368,14 @@ function vehicle(x, y, name, newOps){
         'ngCollisionGroup': {
             'neverWith': 'vehicle'
         }
-    }));
+    });
 
     //* right-axle
     var rightSuspensionAxleName = 'vehicle-right-suspension-axle-' + name;
     var rightSuspensionAxleX = x + ops.axleContainerDistance + ops.axleContainerHeight * Math.cos((90 - ops.axleAngle) * degreesToRadians);
     var rightSuspensionAxleY = y + ops.axleContainerDepth + ops.axleContainerHeight * Math.sin((90 - ops.axleAngle) * degreesToRadians);
 
-    world.$add(world.$e(rightSuspensionAxleName, {
+    world.$e(rightSuspensionAxleName, {
         'ng2D': {
             x: rightSuspensionAxleX,
             y: rightSuspensionAxleY
@@ -390,11 +390,11 @@ function vehicle(x, y, name, newOps){
         'ngCollisionGroup': {
             'neverWith': 'vehicle'
         }
-    }));
+    });
 
     //revolute-joints
     //*left
-    world.$add(world.$e('vehicle-left-wheel-revolute-joint-' + name, {
+    world.$e('vehicle-left-wheel-revolute-joint-' + name, {
         'ng2D': {
             x: x - ops.axleContainerDistance - 2 * ops.axleContainerHeight * Math.cos((90 - ops.axleAngle) * degreesToRadians),
             y: y + ops.axleContainerDepth + 2 * ops.axleContainerHeight * Math.sin((90 - ops.axleAngle) * degreesToRadians)
@@ -414,10 +414,10 @@ function vehicle(x, y, name, newOps){
             max: ops.wheelMaxSpeed,
             acceleration: ops.wheelAcceleration
         }
-    }));
+    });
 
     //*right
-    world.$add(world.$e('vehicle-right-wheel-revolute-joint-' + name, {
+    world.$e('vehicle-right-wheel-revolute-joint-' + name, {
         'ng2D': {
             x: x + ops.axleContainerDistance + 2 * ops.axleContainerHeight * Math.cos((90 - ops.axleAngle) * degreesToRadians),
             y: y + ops.axleContainerDepth + 2 * ops.axleContainerHeight * Math.sin((90 - ops.axleAngle) * degreesToRadians)
@@ -437,11 +437,11 @@ function vehicle(x, y, name, newOps){
             max: ops.wheelMaxSpeed,
             acceleration: ops.wheelAcceleration
         }
-    }));
+    });
 
     //prismatic-joints
     //*left
-    world.$add(world.$e('vehicle-left-wheel-prismatic-joint-' + name, {
+    world.$e('vehicle-left-wheel-prismatic-joint-' + name, {
         'ng2D': {
             x: leftSuspensionAxleX,
             y: leftSuspensionAxleY
@@ -462,11 +462,11 @@ function vehicle(x, y, name, newOps){
             enableMotor: true,
             motorSpeed: 10.0
         }
-    }));
+    });
 
     //*right
 
-    world.$add(world.$e('vehicle-right-wheel-prismatic-joint-' + name, {
+    world.$e('vehicle-right-wheel-prismatic-joint-' + name, {
         'ng2D': {
             x: rightSuspensionAxleX,
             y: rightSuspensionAxleY
@@ -487,29 +487,27 @@ function vehicle(x, y, name, newOps){
             enableMotor: true,
             motorSpeed: 10.0
         }
-    }));
+    });
 }
 
-world.$add(
-    world.$e('sky', {
-        'ng2D': {
-            x:0.0, y:0.0
-        },
-        'ngSpriteAtlas' : {
-            name: 'blue-sky.png',
-            url: 'assets/spritesheet.json',
-            fitToSize: false
-        },
-        'ngLockViewPort': {
-        }
-    })
-);
+world.$e('sky', {
+    'ng2D': {
+        x:0.0, y:0.0
+    },
+    'ngSpriteAtlas' : {
+        name: 'blue-sky.png',
+        url: 'assets/spritesheet.json',
+        fitToSize: false
+    },
+    'ngLockViewPort': {
+    }
+});
 
 function buildCloudFront(ops) {
     var frontStart = 200.0,
         frontSpeed = 40.0;
 
-    world.$add(world.$e(
+    world.$e(
         'doom-sky', {
             'ng2D': {
                 x: frontStart - 400.0,
@@ -540,9 +538,9 @@ function buildCloudFront(ops) {
                 lockY: true
             }
         }
-    ));
+    );
 
-    world.$add(world.$e(
+    world.$e(
         'clouds-front-sensor', {
             'cloudsFront': {},
 
@@ -567,9 +565,9 @@ function buildCloudFront(ops) {
                 dy: 0.0
             }
         }
-    ));
+    );
 
-    world.$add(world.$e(
+    world.$e(
         'clouds-front', {
             'ng2D': {
                 x: frontStart - 3,
@@ -596,174 +594,172 @@ function buildCloudFront(ops) {
                 lockY: true
             }
         }
-    ));
+    );
 
     if (ops.useCloudFactory) {
-        world.$add(
-            world.$e('clouds-factory', {
-                'ng2D': {
-                    x: frontStart,
-                    y: 275.0
-                },
+        world.$e('clouds-factory', {
+            'ng2D': {
+                x: frontStart,
+                y: 275.0
+            },
 
-                'ng2DSize': {
-                    width: 1.0,
-                    height: 200.0
-                },
+            'ng2DSize': {
+                width: 1.0,
+                height: 200.0
+            },
 
-                'ngShiftMove': {
-                    dx: frontSpeed,
-                    dy: 0.0
-                },
+            'ngShiftMove': {
+                dx: frontSpeed,
+                dy: 0.0
+            },
 
-                'ngEmitterRandomCounter': {
-                    minRate: ops.cloudMinRate || 0.75,
-                    maxRate: ops.cloudMaxRate || 2.0
-                },
+            'ngEmitterRandomCounter': {
+                minRate: ops.cloudMinRate || 0.75,
+                maxRate: ops.cloudMaxRate || 2.0
+            },
 
-                'ngEmitter': {
-                    generate: function(emitter) {
-                        var edge = width;
-                        var distance = Math.random();
-                        var ops = {
-                            move: { dx: 100 * (0.2 + 0.4 * distance) },
-                            basis: 0.2 + 0.4 * distance,
-                            type: Math.floor(3 * Math.random())
-                        };
+            'ngEmitter': {
+                generate: function(emitter) {
+                    var edge = width;
+                    var distance = Math.random();
+                    var ops = {
+                        move: { dx: 100 * (0.2 + 0.4 * distance) },
+                        basis: 0.2 + 0.4 * distance,
+                        type: Math.floor(3 * Math.random())
+                    };
 
-                        return {
-                            $name: 'cloud',
+                    return {
+                        $name: 'cloud',
 
-                            'ng2D': {},
+                        'ng2D': {},
 
-                            'ng2DSize': {
-                                width: 60.0,
-                                height: 1.0
-                            },
+                        'ng2DSize': {
+                            width: 60.0,
+                            height: 1.0
+                        },
 
-                            'ngSpriteAtlas' : {
-                                name: 'cloud-' + ops.type + '.png',
-                                url: 'assets/spritesheet.json',
-                                fitToSize: false
-                            },
+                        'ngSpriteAtlas' : {
+                            name: 'cloud-' + ops.type + '.png',
+                            url: 'assets/spritesheet.json',
+                            fitToSize: false
+                        },
 
-                            'ngParallax': {
-                                basis: 1.0//ops.basis
-                            },
+                        'ngParallax': {
+                            basis: 1.0//ops.basis
+                        },
 
-                            'ngShiftMove': {
-                                dx: ops.move.dx || 0.0,
-                                dy: ops.move.dy || 0.0
-                            },
+                        'ngShiftMove': {
+                            dx: ops.move.dx || 0.0,
+                            dy: ops.move.dy || 0.0
+                        },
 
-                            'ngRemoveIfDead': {},
+                        'ngRemoveIfDead': {},
 
-                            'ngLifeZone': {},
+                        'ngLifeZone': {},
 
-                            'ngLife': {
-                                life: 0.01
-                            },
+                        'ngLife': {
+                            life: 0.01
+                        },
 
-                            'ngLifeIsGrooving': {
-                                delta: 0.1
-                            },
+                        'ngLifeIsGrooving': {
+                            delta: 0.1
+                        },
 
-                            'ngBindLifeToAlpha': {},
+                        'ngBindLifeToAlpha': {},
 
-                            'ngLive': {},
+                        'ngLive': {},
 
-                            'ngRectangleZone': {
-                                left: -edge + emitter.ng2D.x,
-                                right: edge + emitter.ng2D.x,
-                                top:  -edge + emitter.ng2D.y,
-                                bottom:edge + emitter.ng2D.y
-                            },
+                        'ngRectangleZone': {
+                            left: -edge + emitter.ng2D.x,
+                            right: edge + emitter.ng2D.x,
+                            top:  -edge + emitter.ng2D.y,
+                            bottom:edge + emitter.ng2D.y
+                        },
 
-                            'ngEmitterRandomCounter': {
-                                minRate: 0.0,
-                                maxRate: 1.0
-                            },
+                        'ngEmitterRandomCounter': {
+                            minRate: 0.0,
+                            maxRate: 1.0
+                        },
 
-                            'ngEmitter': {
-                                generate: function(emitter) {
-                                    if (Math.random() > 0.95) {
-                                        var lightningType = Math.floor(2 * Math.random());
-                                        return {
-                                            '$name': 'lightning-of-' + emitter.$name,
-                                            'ng2D': {x : emitter.ng2D.x, y: emitter.ng2D.y},
-                                            'ngSpriteAtlas' : {
-                                                name: 'lightning-' + lightningType + '.png',
-                                                url: 'assets/spritesheet.json',
-                                                fitToSize: false
-                                            },
+                        'ngEmitter': {
+                            generate: function(emitter) {
+                                if (Math.random() > 0.95) {
+                                    var lightningType = Math.floor(2 * Math.random());
+                                    return {
+                                        '$name': 'lightning-of-' + emitter.$name,
+                                        'ng2D': {x : emitter.ng2D.x, y: emitter.ng2D.y},
+                                        'ngSpriteAtlas' : {
+                                            name: 'lightning-' + lightningType + '.png',
+                                            url: 'assets/spritesheet.json',
+                                            fitToSize: false
+                                        },
 
-                                            'ngLife': {
-                                                life: 1.0
-                                            },
+                                        'ngLife': {
+                                            life: 1.0
+                                        },
 
-                                            'ngLifeIsGrooving': {
-                                                delta: -1.0
-                                            },
+                                        'ngLifeIsGrooving': {
+                                            delta: -1.0
+                                        },
 
-                                            'ngBindLifeToAlpha': {},
+                                        'ngBindLifeToAlpha': {},
 
-                                            'ngLive': {},
+                                        'ngLive': {},
 
-                                            'ngRemoveIfDead': {}
-                                        };
-                                    } else {
-                                        return {
-                                            '$name': 'drop-of-' + emitter.$name,
+                                        'ngRemoveIfDead': {}
+                                    };
+                                } else {
+                                    return {
+                                        '$name': 'drop-of-' + emitter.$name,
 
-                                            'drop': {},
+                                        'drop': {},
 
-                                            'ng2D': {x : emitter.ng2D.x, y: emitter.ng2D.y},
+                                        'ng2D': {x : emitter.ng2D.x, y: emitter.ng2D.y},
 
-                                            'ng2DCircle': {radius: 3},
+                                        'ng2DCircle': {radius: 3},
 
-                                            'ng2DRotation': {},
+                                        'ng2DRotation': {},
 
-                                            'ngPhysic': {
-                                                density: 2.0
-                                            },
-                                            'ngDraggable': {},
+                                        'ngPhysic': {
+                                            density: 2.0
+                                        },
+                                        'ngDraggable': {},
 
-                                            'ngSpriteAtlas' : {
-                                                name: 'drop.png',
-                                                url: 'assets/spritesheet.json',
-                                                fitToSize: false
-                                            },
+                                        'ngSpriteAtlas' : {
+                                            name: 'drop.png',
+                                            url: 'assets/spritesheet.json',
+                                            fitToSize: false
+                                        },
 
-                                            'ngLife': {
-                                                life: 0.01
-                                            },
+                                        'ngLife': {
+                                            life: 0.01
+                                        },
 
-                                            'ngLifeIsGrooving': {
-                                                delta: 0.2
-                                            },
+                                        'ngLifeIsGrooving': {
+                                            delta: 0.2
+                                        },
 
-                                            'ngBindLifeToAlpha': {},
+                                        'ngBindLifeToAlpha': {},
 
-                                            'ngLive': {},
+                                        'ngLive': {},
 
-                                            'ngRemoveIfDead': {},
+                                        'ngRemoveIfDead': {},
 
-                                            'ngWantsToCollide': {
-                                                'with': [
-                                                    {
-                                                        'andGet': 'ngDead'
-                                                    }
-                                                ]
-                                            }
-                                        };
-                                    }
+                                        'ngWantsToCollide': {
+                                            'with': [
+                                                {
+                                                    'andGet': 'ngDead'
+                                                }
+                                            ]
+                                        }
+                                    };
                                 }
                             }
-                        };
-                    }
+                        }
+                    };
                 }
-            })
-        );
+            }
+        });
     }
 }
 
@@ -837,7 +833,7 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
         bottom = -lowHeight + 32;
 
         entities.push(
-            world.$add(world.$e('ground-' + x, {
+            world.$e('ground-' + x, {
                 'ng2D': {
                     x: x,
                     y: 0
@@ -861,10 +857,10 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                     partOf: 'ground',
                     type: 'static', restitution: 0.0
                 }
-            }))
+            })
         );
 
-        entities.push(world.$add(world.$e('grass-0-' + x, {
+        entities.push(world.$e('grass-0-' + x, {
             'ng2D': {
                 x: x,
                 y: -lowHeight
@@ -882,9 +878,9 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                     y: 0.0
                 }
             }
-        })));
+        }));
 
-         entities.push(world.$add(world.$e('grass-top-0-' + x, {
+         entities.push(world.$e('grass-top-0-' + x, {
             'ng2D': {
                 x: x,
                 y: -lowHeight
@@ -900,11 +896,11 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                     y: 0.5
                 }
             }
-        })));
+        }));
 
         if (false) {
             var topItemsIndex = Math.floor(topItems.length * Math.random());
-            entities.push(world.$add(world.$e('grass-top-0-' + x, {
+            entities.push(world.$e('grass-top-0-' + x, {
                 'ng2D': {
                     x: x,
                     y: -lowHeight
@@ -920,12 +916,12 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                         y: 0.5
                     }
                 }
-            })));
+            }));
         }
 
         var seed = Math.floor(100 * Math.random());
         if (seed < 10) {
-                entities.push(world.$add(world.$e('three-0-' + x, {
+                entities.push(world.$e('three-0-' + x, {
                     'ng2D': {
                         x: x,
                         y: -lowHeight
@@ -939,9 +935,9 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                             y: 1.0
                         }
                     }
-                })));
+                }));
         } else if (seed < 20) {
-                entities.push(world.$add(world.$e('three-1-' + x, {
+                entities.push(world.$e('three-1-' + x, {
                     'ng2D': {
                         x: x,
                         y: -lowHeight
@@ -955,9 +951,9 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                             y: 1.0
                         }
                     }
-                })));
+                }));
         } else if (seed < 22) {
-                entities.push(world.$add(world.$e('fence-0-' + x, {
+                entities.push(world.$e('fence-0-' + x, {
                     'ng2D': {
                         x: x,
                         y: -lowHeight + 100 * Math.random() + 100
@@ -971,9 +967,9 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                             y: 0.5
                         }
                     }
-                })));
+                }));
         } else if (seed > 99) {
-                entities.push(world.$add(world.$e('rail-road-0-' + x, {
+                entities.push(world.$e('rail-road-0-' + x, {
                     'ng2D': {
                         x: x,
                         y: -lowHeight
@@ -987,11 +983,11 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                             y: 0.0
                         }
                     }
-                })));
+                }));
         }
 
         if (Math.random() > 0.5) {
-            entities.push(world.$add(world.$e('flowers-0-' + x, {
+            entities.push(world.$e('flowers-0-' + x, {
                 'ng2D': {
                     x: x,
                     y: -lowHeight
@@ -1005,7 +1001,7 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                         y: -4.0 * Math.random()
                     }
                 }
-            })));
+            }));
         }
 
         if (Math.random() > 0.9 && diamondLeft <= 0) {
@@ -1020,7 +1016,7 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
         }
         if (diamondLeft > 0) {
             diamondLeft--;
-            entities.push(world.$add(world.$e(diamondType + '-' + x, {
+            entities.push(world.$e(diamondType + '-' + x, {
                 'ng2D': {
                     x: x,
                     y: -lowHeight - 42
@@ -1040,7 +1036,7 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                     url: 'assets/spritesheet.json',
                     fitToSize: false
                 }
-            })));
+            }));
         }
     }
 
@@ -1086,33 +1082,31 @@ function generateStraightLine(newTile, leftSeedTile, rightSeedTile) {
     var entities = [];
     newTile.entities = entities;
 
-    entities.push(
-        world.$add(world.$e('ground-straight', {
-            'ng2D': {
-                x: newTile.leftEdge,
-                y: newTile.leftHeight
-            },
-            'ng2DPolygon': {
-                'line': [{
-                    x: 0,
-                    y: 0
-                }, {
-                    x: width,
-                    y: 0
-                }, {
-                    x: width,
-                    y: 10
-                }, {
-                    x: 0,
-                    y: 10
-                }]
-            },
-            'ngPhysic': {
-                //partOf: 'ground',
-                type: 'static', restitution: 0.0
-            }
-        }))
-    );
+    entities.push(world.$e('ground-straight', {
+        'ng2D': {
+            x: newTile.leftEdge,
+            y: newTile.leftHeight
+        },
+        'ng2DPolygon': {
+            'line': [{
+                x: 0,
+                y: 0
+            }, {
+                x: width,
+                y: 0
+            }, {
+                x: width,
+                y: 10
+            }, {
+                x: 0,
+                y: 10
+            }]
+        },
+        'ngPhysic': {
+            //partOf: 'ground',
+            type: 'static', restitution: 0.0
+        }
+    }));
 }
 
 /**
@@ -1307,7 +1301,7 @@ function parseMap(data) {
                             components.ng2D.y += 0.5 * object.height;
                         }
 
-                        entities.push(world.$e(object.name, components));
+                        entities.push(world.$e(object.name, components, true));
                     }
                     break;
             }
