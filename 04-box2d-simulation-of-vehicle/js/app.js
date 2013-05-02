@@ -39,8 +39,8 @@ world.$add('ngBox2DSystem', {
         x: 0,
         y: 9.8
     },
-    velocityIterations: 10,
-    positionIterations: 10
+    velocityIterations: 7,
+    positionIterations: 7
 });
 
 //world.$add('ngBox2DDraggable', { domId: 'gameView', width: width, height: height });
@@ -55,10 +55,10 @@ world.$add('ngBox2DCollision');
 world.$add('ngEnableMotorOnKeyDown');
 world.$add('ngBox2DEnableMotorSystem');
 world.$add('ngBox2DMotorWithAcceleration');
-world.$add('ng2DViewPort', {
-    width: width,
-    height: height
-});
+//world.$add('ng2DViewPort', {
+//    width: width,
+//    height: height
+//});
 
 world.$add('ngFollowSelected', {
     shift: {
