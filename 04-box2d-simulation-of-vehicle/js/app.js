@@ -510,9 +510,36 @@ function buildCloudFront(ops) {
         frontSpeed = 40.0;
 
     world.$e(
+        'clouds-front-sensor', {
+            'cloudsFront': {},
+
+            'ng2D': {
+                x: frontStart - 200,
+                y: 500.0
+            },
+
+            'ng2DSize': {
+                width: 10,
+                height: 480
+            },
+
+            'ngPhysic': {},
+
+            'ngSensor': {},
+
+            'ngBindPositionToPhysics': {},
+
+            'ngShiftMove': {
+                dx: frontSpeed,
+                dy: 0.0
+            }
+        }
+    );
+
+    world.$e(
         'doom-sky', {
             'ng2D': {
-                x: frontStart - 400.0,
+                x: frontStart - 320.0,
                 y: 0.0
             },
 
@@ -538,33 +565,6 @@ function buildCloudFront(ops) {
             'ngLockViewPort': {
                 lockX: false,
                 lockY: true
-            }
-        }
-    );
-
-    world.$e(
-        'clouds-front-sensor', {
-            'cloudsFront': {},
-
-            'ng2D': {
-                x: frontStart - 200,
-                y: 500.0
-            },
-
-            'ng2DSize': {
-                width: 10,
-                height: 480
-            },
-
-            'ngPhysic': {},
-
-            'ngSensor': {},
-
-            'ngBindPositionToPhysics': {},
-
-            'ngShiftMove': {
-                dx: frontSpeed,
-                dy: 0.0
             }
         }
     );
@@ -644,10 +644,6 @@ function buildCloudFront(ops) {
                             name: 'cloud-' + ops.type + '.png',
                             url: 'assets/spritesheet.json',
                             fitToSize: false
-                        },
-
-                        'ngParallax': {
-                            basis: 1.0//ops.basis
                         },
 
                         'ngShiftMove': {
