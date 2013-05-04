@@ -13,6 +13,7 @@ var world = darlingjs.world('myGame', [
     'myApp',
     'ngCommon',
     'ngFlatland',
+    'ng3D',
     'ngPhysics',
     'ngBox2DEmscripten',
     'ngPixijsAdapter',
@@ -139,6 +140,9 @@ world.$add('ngLockOnViewPortOnShiftToIt');
 
 world.$add('ngLifeHandler');
 
+world.$add('ngConvert3DtoParallax');
+world.$add('ngSimpleParallax');
+
 //world.$add('ngBox2DDebugDraw', {
 //    domID: 'gameView', width: width, height: height
 //});
@@ -146,34 +150,6 @@ world.$add('ngLifeHandler');
 world.$add('ngStatsEnd', {
     domId: 'gameView'
 });
-
-// entities
-
-// test heap of rocks
-
-var rocksCount = 0;
-for (var i = 0, l = rocksCount; i < l; i++) {
-    var fixed = Math.random() > 0.5;
-    var boxType = Math.floor(1 + 3 * Math.random());
-    var box = world.$add(world.$e('obstacle_' + i, {
-//            'ngDOM': { color: fixed?'rgb(0, 255, 0)':'rgb(200, 200, 0)'},
-        //Get From : http://www.iconfinder.com/search/?q=iconset%3Aie_ICandies
-//            'ngSprite': { name: 'assets/box' + boxType + '.png', fitToSize: true },
-//        'ngSpriteAtlas' : { name: 'box' + boxType + '.png', url: 'assets/spritesheet.json', fitToSize: true},
-//            'ngMovieClip' : {url: 'assets/explosion.json', fitToSize: true, frames: ['Explosion_Sequence_A 1.png', 'Explosion_Sequence_A 2.png', 'Explosion_Sequence_A 3.png', 'Explosion_Sequence_A 4.png', 'Explosion_Sequence_A 5.png', 'Explosion_Sequence_A 6.png', 'Explosion_Sequence_A 7.png', 'Explosion_Sequence_A 8.png', 'Explosion_Sequence_A 9.png', 'Explosion_Sequence_A 10.png', 'Explosion_Sequence_A 11.png', 'Explosion_Sequence_A 12.png', 'Explosion_Sequence_A 13.png', 'Explosion_Sequence_A 14.png', 'Explosion_Sequence_A 15.png', 'Explosion_Sequence_A 16.png', 'Explosion_Sequence_A 17.png', 'Explosion_Sequence_A 18.png', 'Explosion_Sequence_A 19.png', 'Explosion_Sequence_A 20.png', 'Explosion_Sequence_A 21.png', 'Explosion_Sequence_A 22.png', 'Explosion_Sequence_A 23.png', 'Explosion_Sequence_A 24.png', 'Explosion_Sequence_A 25.png', 'Explosion_Sequence_A 26.png', 'Explosion_Sequence_A 27.png']},
-        'ng2D': {x : width / 2 + (width / 2) * Math.random(), y: 40 + (height - 40) * Math.random()},
-        'ng2DSize': {width:3, height:3},
-        //'ng2DCircle': {radius: 3},
-        'ng2DRotation': {},
-        'ngPhysic': {},
-        'ngDraggable': {}
-    }));
-//    (function(box) {
-//        setTimeout(function() {
-//            world.$remove(box);
-//        }, 10000 * Math.random());
-//    }) (box);
-}
 
 //vehicle
 
@@ -536,8 +512,7 @@ function buildCloudFront(ops) {
         }
     );
 
-    world.$e(
-        'doom-sky', {
+    world.$e('doom-sky', {
             'ng2D': {
                 x: frontStart - 320.0,
                 y: 0.0
@@ -765,6 +740,42 @@ buildCloudFront({
     useCloudFactory: true,
     cloudMinRate: 0.0,
     cloudMaxRate: 0.1
+});
+
+//moutains
+
+world.$e('mountain-0', {
+    ng3D: {
+        x: 1000,
+        y: 250,
+        z: 1
+    },
+    ngConvert3DtoParallax: {},
+    ngSpriteAtlas : {
+        name: 'mountain-0.png',
+        url: 'assets/spritesheet.json',
+        anchor: {
+            x: 0.0,
+            y: 0.0
+        }
+    }
+});
+
+world.$e('mountain-1', {
+    ng3D: {
+        x: 1500,
+        y: 250,
+        z: 0.9
+    },
+    ngConvert3DtoParallax: {},
+    ngSpriteAtlas : {
+        name: 'mountain-1.png',
+        url: 'assets/spritesheet.json',
+        anchor: {
+            x: 0.0,
+            y: 0.0
+        }
+    }
 });
 
 vehicle(400, 500, 'cabriolet', {
