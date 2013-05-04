@@ -220,35 +220,35 @@
                 this._target = document.getElementById(this.targetId);
             }
         },
-        $addNode: function($node) {
+        $addNode: function($entity) {
             var element = document.createElement("div");
             var style = element.style;
             style.position = 'relative';
 
-            $node._style = style;
-            $node._element = element;
+            $entity._style = style;
+            $entity._element = element;
             this._target.appendChild(element);
         },
-        $removeNode: function($node) {
+        $removeNode: function($entity) {
             //TODO:
-            this._target.removeChild($node._element);
+            this._target.removeChild($entity._element);
         },
-        $update: ['$node', function($node) {
-            var style = $node._style;
-            style.left = $node.ng2D.x + 'px';
-            style.top = $node.ng2D.y + 'px';
-            var ng2DSize = $node.ng2DSize;
+        $update: ['$entity', function($entity) {
+            var style = $entity._style;
+            style.left = $entity.ng2D.x + 'px';
+            style.top = $entity.ng2D.y + 'px';
+            var ng2DSize = $entity.ng2DSize;
             if (ng2DSize) {
                 style.width = ng2DSize.width + 'px';
                 style.height = ng2DSize.height + 'px';
             }
 
-            var ng2DRotation = $node.ng2DRotation;
+            var ng2DRotation = $entity.ng2DRotation;
             if (ng2DRotation) {
                 style['-ms-transform'] = style['-o-transform'] = style['-moz-transform'] = style['-webkit-transform'] = 'rotate(' + (ng2DRotation.rotation * 180/Math.PI) + 'deg)';
             }
 
-            style.backgroundColor = $node.ngDOM.color;
+            style.backgroundColor = $entity.ngDOM.color;
         }]
     });
 
@@ -260,39 +260,39 @@
 
         $require: ['ngLockOnViewPortOnShiftToIt', 'ngShiftMove', 'ng2D'],
 
-        $update: ['$node', 'ng2DViewPort', '$world', function($node, ng2DViewPort, $world) {
-            var ng2D = $node.ng2D;
+        $update: ['$entity', 'ng2DViewPort', '$world', function($entity, ng2DViewPort, $world) {
+            var ng2D = $entity.ng2D;
             var xEdge = ng2DViewPort.lookAt.x;
-            if (ng2D.x > xEdge && $node.ngShiftMove.dx > 0 ) {
-                this._lockX($node, $world);
-            } else if (ng2D.x < xEdge && $node.ngShiftMove.dx < 0 ) {
-                this._lockX($node, $world);
+            if (ng2D.x > xEdge && $entity.ngShiftMove.dx > 0 ) {
+                this._lockX($entity, $world);
+            } else if (ng2D.x < xEdge && $entity.ngShiftMove.dx < 0 ) {
+                this._lockX($entity, $world);
             }
         }],
 
-        _lockX: function($node, $world) {
-            if (!$node.ngLockViewPort) {
-                $node.$add('ngLockViewPort');
-                $node.ngLockViewPort.lockY = false;
+        _lockX: function($entity, $world) {
+            if (!$entity.ngLockViewPort) {
+                $entity.$add('ngLockViewPort');
+                $entity.ngLockViewPort.lockY = false;
             }
 
-            $node.ngLockViewPort.lockX = true;
-            $node.ngShiftMove.dx = 0.0;
-            $node.ng2D.x = 0;//0.5 * this.width;
+            $entity.ngLockViewPort.lockX = true;
+            $entity.ngShiftMove.dx = 0.0;
+            $entity.ng2D.x = 0;//0.5 * this.width;
 
-            var entitiesToRemove = $node.ngLockOnViewPortOnShiftToIt.entitiesToRemove;
+            var entitiesToRemove = $entity.ngLockOnViewPortOnShiftToIt.entitiesToRemove;
             for(var i = entitiesToRemove.length; i >= 0; i--) {
                 var entity = $world.$getByName(entitiesToRemove[i]);
                 if (entity) {
                     $world.$remove(entity);
                 }
             }
-            this._checkShiftMove($node);
+            this._checkShiftMove($entity);
         },
 
-        _checkShiftMove: function($node) {
-            if ($node.ngShiftMove.dx === 0 && $node.ngShiftMove.dy === 0) {
-                $node.$remove('ngShiftMove');
+        _checkShiftMove: function($entity) {
+            if ($entity.ngShiftMove.dx === 0 && $entity.ngShiftMove.dy === 0) {
+                $entity.$remove('ngShiftMove');
             }
         }
     });

@@ -7,6 +7,8 @@
 var width = 640;
 var height = 480;
 
+var game = angular.module('RedCabrioletGame', []);
+
 var world = darlingjs.world('myGame', [
     'myApp',
     'ngCommon',
