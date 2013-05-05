@@ -736,11 +736,13 @@ function buildCloudFront(ops) {
     }
 }
 
+/*
 buildCloudFront({
     useCloudFactory: true,
     cloudMinRate: 0.0,
     cloudMaxRate: 0.1
 });
+*/
 
 //moutains
 
@@ -748,9 +750,9 @@ world.$e('mountain-0', {
     ng3D: {
         x: 1000,
         y: 250,
-        z: 1
+        z: 2
     },
-    ngConvert3DtoParallax: {},
+    ngConvert3DtoParallax: null,
     ngSpriteAtlas : {
         name: 'mountain-0.png',
         url: 'assets/spritesheet.json',
@@ -763,11 +765,11 @@ world.$e('mountain-0', {
 
 world.$e('mountain-1', {
     ng3D: {
-        x: 1500,
+        x: 3500,
         y: 250,
-        z: 0.9
+        z: 1.9
     },
-    ngConvert3DtoParallax: {},
+    ngConvert3DtoParallax: null,
     ngSpriteAtlas : {
         name: 'mountain-1.png',
         url: 'assets/spritesheet.json',
