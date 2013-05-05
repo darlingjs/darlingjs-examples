@@ -124,9 +124,11 @@ world.$add('ngPixijsMovieClip');
 world.$add('ngPixijsSheetSprite');
 
 world.$add('ng2DShiftMovingSystem');
+world.$add('ng3DShiftMovingSystem');
 
 world.$add('ngRandomEmitterSystem');
 world.$add('ngSquareEmitterSystem');
+world.$add('ngCubicEmitterSystem');
 world.$add('ngRectangleZone');
 
 world.$add('ngRemoveIfDead');
@@ -175,7 +177,7 @@ function vehicle(x, y, name, newOps){
     //wheels
     //* left-wheel
     var leftWheelName = 'vehicle-left-wheel-' + name;
-    world.$add(world.$e(leftWheelName, {
+    world.$e(leftWheelName, {
         'ng2D': {
             x: x - ops.axleContainerDistance - 2 * ops.axleContainerHeight * Math.cos((90 - ops.axleAngle) * degreesToRadians),
             y: y + ops.axleContainerDepth + 2 * ops.axleContainerHeight * Math.sin((90 - ops.axleAngle) * degreesToRadians)
@@ -191,12 +193,14 @@ function vehicle(x, y, name, newOps){
         'ngCollisionGroup': {
             'neverWith': 'vehicle'
         },
+
+        ngPixijsSprite: false,
         'ngSpriteAtlas' : {
             name: name + '-wheel.png',
             url: 'assets/spritesheet.json',
             fitToSize: false
         }
-    }));
+    });
 
     //* right-wheel
     var rightWheelName = 'vehicle-right-wheel-' + name;
@@ -217,6 +221,8 @@ function vehicle(x, y, name, newOps){
         'ngCollisionGroup': {
             'neverWith': 'vehicle'
         },
+
+        ngPixijsSprite: false,
         'ngSpriteAtlas' : {
             name: name + '-wheel.png',
             url: 'assets/spritesheet.json',
@@ -268,15 +274,20 @@ function vehicle(x, y, name, newOps){
                 }
             ]
         },
+
         'ngLife': {
             life: 1.0
         },
+
         'ngOnLifeChange': {
             handler: function($node, life) {
                 console.log('life:' + life);
             }
         },
+
         'ngLive': {},
+
+        'ngPixijsSprite': false,
         'ngSpriteAtlas' : {
             name: name + '-body.png',
             url: 'assets/spritesheet.json',
@@ -286,6 +297,7 @@ function vehicle(x, y, name, newOps){
                 y: 0.76
             }
         },
+
         'ngScores': {
             score: 0.0
         }
@@ -472,6 +484,7 @@ world.$e('sky', {
     'ng2D': {
         x:0.0, y:0.0
     },
+    'ngPixijsSprite': false,
     'ngSpriteAtlas' : {
         name: 'blue-sky.png',
         url: 'assets/spritesheet.json',
@@ -527,6 +540,7 @@ function buildCloudFront(ops) {
                 entitiesToRemove: ['clouds-front', 'clouds-factory', 'sky']
             },
 
+            ngPixijsSprite: false,
             'ngSpriteAtlas' : {
                 name: 'doom.png',
                 url: 'assets/spritesheet.json',
@@ -556,6 +570,7 @@ function buildCloudFront(ops) {
                 dy: 0.0
             },
 
+            ngPixijsSprite: false,
             'ngSpriteAtlas' : {
                 name: 'doom-front.png',
                 url: 'assets/spritesheet.json',
@@ -599,36 +614,32 @@ function buildCloudFront(ops) {
                 generate: function(emitter) {
                     var edge = width;
                     var distance = Math.random();
-                    var ops = {
-                        move: { dx: 100 * (0.2 + 0.4 * distance) },
-                        basis: 0.2 + 0.4 * distance,
-                        type: Math.floor(3 * Math.random())
-                    };
 
                     return {
                         $name: 'cloud',
 
-                        'ng2D': {},
+                        ng2D: {},
 
                         'ng2DSize': {
                             width: 60.0,
                             height: 1.0
                         },
 
+                        ngPixijsSprite: false,
                         'ngSpriteAtlas' : {
-                            name: 'cloud-' + ops.type + '.png',
+                            name: 'cloud-' + Math.floor(3 * Math.random()) + '.png',
                             url: 'assets/spritesheet.json',
                             fitToSize: false
                         },
 
                         'ngShiftMove': {
-                            dx: ops.move.dx || 0.0,
-                            dy: ops.move.dy || 0.0
+                            dx: 100 * (0.2 + 0.4 * distance),
+                            dy: 0.0
                         },
 
-                        'ngRemoveIfDead': {},
+                        'ngRemoveIfDead': true,
 
-                        'ngLifeZone': {},
+                        'ngLifeZone': true,
 
                         'ngLife': {
                             life: 0.01
@@ -638,9 +649,9 @@ function buildCloudFront(ops) {
                             delta: 0.1
                         },
 
-                        'ngBindLifeToAlpha': {},
+                        'ngBindLifeToAlpha': true,
 
-                        'ngLive': {},
+                        'ngLive': true,
 
                         'ngRectangleZone': {
                             left: -edge + emitter.ng2D.x,
@@ -660,7 +671,10 @@ function buildCloudFront(ops) {
                                     var lightningType = Math.floor(2 * Math.random());
                                     return {
                                         '$name': 'lightning-of-' + emitter.$name,
+
                                         'ng2D': {x : emitter.ng2D.x, y: emitter.ng2D.y},
+
+                                        ngPixijsSprite: false,
                                         'ngSpriteAtlas' : {
                                             name: 'lightning-' + lightningType + '.png',
                                             url: 'assets/spritesheet.json',
@@ -675,29 +689,29 @@ function buildCloudFront(ops) {
                                             delta: -1.0
                                         },
 
-                                        'ngBindLifeToAlpha': {},
+                                        'ngBindLifeToAlpha': true,
 
-                                        'ngLive': {},
+                                        'ngLive': true,
 
-                                        'ngRemoveIfDead': {}
+                                        'ngRemoveIfDead': true
                                     };
                                 } else {
                                     return {
                                         '$name': 'drop-of-' + emitter.$name,
 
-                                        'drop': {},
+                                        'drop': true,
 
                                         'ng2D': {x : emitter.ng2D.x, y: emitter.ng2D.y},
 
                                         'ng2DCircle': {radius: 3},
 
-                                        'ng2DRotation': {},
+                                        'ng2DRotation': true,
 
                                         'ngPhysic': {
                                             density: 2.0
                                         },
-                                        'ngDraggable': {},
 
+                                        ngPixijsSprite: false,
                                         'ngSpriteAtlas' : {
                                             name: 'drop.png',
                                             url: 'assets/spritesheet.json',
@@ -712,11 +726,11 @@ function buildCloudFront(ops) {
                                             delta: 0.2
                                         },
 
-                                        'ngBindLifeToAlpha': {},
+                                        'ngBindLifeToAlpha': true,
 
-                                        'ngLive': {},
+                                        'ngLive': true,
 
-                                        'ngRemoveIfDead': {},
+                                        'ngRemoveIfDead': true,
 
                                         'ngWantsToCollide': {
                                             'with': [
@@ -736,49 +750,42 @@ function buildCloudFront(ops) {
     }
 }
 
-/*
+function buildMountain() {
+    var delta = 3000;
+    for(var i = 0, count = 4; i < count; i++) {
+        world.$e('mountain-' + i, {
+
+            ng2D: false,
+            ng3D: {
+                x: 1000 + i * delta,
+                y: 3550,
+                z: 1.8 + 0.2 * Math.random()
+            },
+
+            ngConvert3DtoParallax: null,
+
+            ngPixijsSprite: false,
+            ngSpriteAtlas : {
+                name: 'mountain-' + i + '.png',
+                url: 'assets/spritesheet.json',
+                anchor: {
+                    x: 0.0,
+                    y: 1.0
+                }
+            }
+        });
+    }
+}
+
+//constuct world env
+
 buildCloudFront({
     useCloudFactory: true,
     cloudMinRate: 0.0,
     cloudMaxRate: 0.1
 });
-*/
 
-//moutains
-
-world.$e('mountain-0', {
-    ng3D: {
-        x: 1000,
-        y: 250,
-        z: 2
-    },
-    ngConvert3DtoParallax: null,
-    ngSpriteAtlas : {
-        name: 'mountain-0.png',
-        url: 'assets/spritesheet.json',
-        anchor: {
-            x: 0.0,
-            y: 0.0
-        }
-    }
-});
-
-world.$e('mountain-1', {
-    ng3D: {
-        x: 3500,
-        y: 250,
-        z: 1.9
-    },
-    ngConvert3DtoParallax: null,
-    ngSpriteAtlas : {
-        name: 'mountain-1.png',
-        url: 'assets/spritesheet.json',
-        anchor: {
-            x: 0.0,
-            y: 0.0
-        }
-    }
-});
+buildMountain();
 
 vehicle(400, 500, 'cabriolet', {
     axleContainerDistance: 30,
@@ -876,10 +883,13 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                 x: x,
                 y: -lowHeight
             },
+
             'ng2DSize': {
                 width: 34,
                 height: -lowHeight
             },
+
+            ngPixijsSprite: false,
             'ngSpriteAtlas' : {
                 name: 'grass-0.png',
                 url: 'assets/spritesheet.json',
@@ -896,9 +906,12 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                 x: x,
                 y: -lowHeight
             },
+
             'ng2DRotation': {
                 rotation: angle
             },
+
+             ngPixijsSprite: false,
             'ngSpriteAtlas' : {
                 name: 'grass-top-0.png',
                 url: 'assets/spritesheet.json',
@@ -916,9 +929,12 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                     x: x,
                     y: -lowHeight
                 },
+
                 'ng2DRotation': {
                     rotation: angle
                 },
+
+                ngPixijsSprite: false,
                 'ngSpriteAtlas' : {
                     name: topItems[topItemsIndex],
                     url: 'assets/spritesheet.json',
@@ -937,6 +953,8 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                         x: x,
                         y: -lowHeight
                     },
+
+                    ngPixijsSprite: false,
                     'ngSpriteAtlas' : {
                         name: 'tree-0.png',
                         url: 'assets/spritesheet.json',
@@ -953,6 +971,8 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                         x: x,
                         y: -lowHeight
                     },
+
+                    ngPixijsSprite: false,
                     'ngSpriteAtlas' : {
                         name: 'tree-1.png',
                         url: 'assets/spritesheet.json',
@@ -969,6 +989,8 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                         x: x,
                         y: -lowHeight + 100 * Math.random() + 100
                     },
+
+                    ngPixijsSprite: false,
                     'ngSpriteAtlas' : {
                         name: 'fence-0.png',
                         url: 'assets/spritesheet.json',
@@ -985,6 +1007,8 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                         x: x,
                         y: -lowHeight
                     },
+
+                    ngPixijsSprite: false,
                     'ngSpriteAtlas' : {
                         name: 'rail-road-0.png',
                         url: 'assets/spritesheet.json',
@@ -1003,6 +1027,8 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                     x: x,
                     y: -lowHeight
                 },
+
+                ngPixijsSprite: false,
                 'ngSpriteAtlas' : {
                     name: 'flowers-0.png',
                     url: 'assets/spritesheet.json',
@@ -1032,16 +1058,22 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                     x: x,
                     y: -lowHeight - 42
                 },
+
                 'ngPhysic': {
                     type: 'static'
                 },
+
                 'ng2DCircle': {
                     radius: 16
                 },
-                'ngSensor': {},
+
+                'ngSensor': true,
+
                 'ngBonus': {
                     score: diamondScore
                 },
+
+                ngPixijsSprite: false,
                 'ngSpriteAtlas' : {
                     name: diamondType + '.png',
                     url: 'assets/spritesheet.json',
@@ -1249,7 +1281,7 @@ function parseMap(data) {
                                 break;
                             case 'revolute-joint':
                                 if (!components.ngRevoluteJoint) {
-                                    components.ngRevoluteJoint = {};
+                                    components.ngRevoluteJoint = true;
                                 }
                                 break;
                             case 'distance-joint':
@@ -1267,7 +1299,7 @@ function parseMap(data) {
                                 break;
                             case 'pulley-joint':
                                 if (!components.ngPulleyJoint) {
-                                    components.ngPulleyJoint = {};
+                                    components.ngPulleyJoint = true;
                                 }
                                 break;
                             case '':
