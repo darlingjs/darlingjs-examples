@@ -654,6 +654,7 @@ function buildCloudFront(ops) {
 
                         'ngRemoveIfDead': true,
 
+
                         'ngLifeZone': true,
 
                         'ngLife': {
