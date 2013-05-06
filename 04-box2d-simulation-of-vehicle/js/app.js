@@ -152,7 +152,7 @@ world.$add('ngSimpleParallax');
 
 world.$add('ngMarkIfOutsideOfTheViewPort');
 world.$add('ngMarkIfInsideOfTheViewPort');
-world.$add('ngCyclicLayer');
+world.$add('ngCyclic3DLayer');
 
 if (debugDraw) {
     world.$add('ngBox2DDebugDraw', {
@@ -906,7 +906,7 @@ buildCity({
     y: 1000,
     count: 3,
     depth: 1.3,
-    depthDeviation: 0.3
+    depthDeviation: 0.2
 });
 
 vehicle(400, 500, 'cabriolet', {
