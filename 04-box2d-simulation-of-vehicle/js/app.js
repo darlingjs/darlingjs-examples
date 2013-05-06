@@ -15,6 +15,7 @@ var world = darlingjs.world('myGame', [
     'myApp',
     'ngCommon',
     'ngFlatland',
+    'ngCyclic',
     'ng3D',
     'ngPhysics',
     'ngBox2DEmscripten',
@@ -151,12 +152,12 @@ world.$add('ngSimpleParallax');
 
 world.$add('ngMarkIfOutsideOfTheViewPort');
 world.$add('ngMarkIfInsideOfTheViewPort');
+world.$add('ngCyclicLayer');
 
 if (debugDraw) {
     world.$add('ngBox2DDebugDraw', {
         domID: 'gameView', width: width, height: height
     });
-
 }
 
 world.$add('ngStatsEnd', {
@@ -508,17 +509,16 @@ function buildCloudFront(ops) {
     var frontStart = 200.0,
         frontSpeed = 40.0;
 
-    world.$e(
-        'clouds-front-sensor', {
+    world.$e('clouds-front-sensor', {
             'cloudsFront': {},
 
             'ng2D': {
-                x: frontStart - 200,
+                x: frontStart - 512,
                 y: 500.0
             },
 
             'ng2DSize': {
-                width: 10,
+                width: 512,
                 height: 480
             },
 
@@ -766,61 +766,11 @@ function buildCloudFront(ops) {
 }
 
 function buildMountain() {
-    var pool = [],
-        count = 4,
-        step = 750,
-        left,
-        right;
-
-    var config = {
-        marker: {
-            ngMarkIfOutsideOfTheViewPort: {
-                handler: function($entity, leftEdge, rightEdge) {
-                    if (leftEdge) {
-                        //go right
-                        var rightEntity = getTheRightMost(pool);
-                        $entity.ng3D.x = rightEntity.ng3D.x + $entity.ng3DSize.width;
-                        $entity.$add('ngMarkIfInsideOfTheViewPort', config);
-                    } else if (rightEdge) {
-                        var leftEntity = getTheLeftMost(pool);
-                        $entity.ng3D.x = leftEntity.ng3D.x - $entity.ng3DSize.width;
-                        $entity.$add('ngMarkIfInsideOfTheViewPort', config);
-                    }
-                }
-            }
-        }
-    };
-
-    function getTheLeftMost(pool) {
-        var left = Number.MAX_VALUE,
-            leftEntity;
-        for (var i = 0, count = pool.length; i < count; i++) {
-            var x = pool[i].ng3D.x;
-            if (left > x) {
-                left = x;
-                leftEntity = pool[i];
-            }
-        }
-
-        return leftEntity;
-    }
-
-    function getTheRightMost(pool) {
-        var right = -Number.MAX_VALUE,
-            rightEntity;
-        for (var i = 0, count = pool.length; i < count; i++) {
-            var x = pool[i].ng3D.x;
-            if (right < x) {
-                right = x;
-                rightEntity = pool[i];
-            }
-        }
-
-        return rightEntity;
-    }
+    var count = 4,
+        step = 750;
 
     for(var i = 0; i < count; i++) {
-        pool.push(world.$e('mountain-' + i, {
+        world.$e('mountain-' + i, {
 
             ng2D: false,
             ng3D: {
@@ -828,6 +778,8 @@ function buildMountain() {
                 y: 1100,
                 z: 1.8 + 0.3 * Math.random()
             },
+
+            ngConvert3DtoParallax: true,
 
             ng3DSize: {
                 width: 1000
@@ -838,11 +790,15 @@ function buildMountain() {
                 height: 512
             },
 
-            ngMarkIfInsideOfTheViewPort: config,
-
-            ngRemoveIfDead: true,
-
-            ngConvert3DtoParallax: null,
+            ngCyclic: {
+                group: 'mountains',
+                step: {
+                    width: step,
+                    height: step
+                },
+                leftRight: true,
+                topBottom: false
+            },
 
             ngPixijsSprite: false,
             ngSpriteAtlas : {
@@ -853,11 +809,8 @@ function buildMountain() {
                     y: 1.0
                 }
             }
-        }));
+        });
     }
-
-    left = pool[0].ng3D.x;
-    right = pool[count - 1].ng3D.x;
 }
 
 //constuct world env
