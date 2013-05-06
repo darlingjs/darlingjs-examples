@@ -175,6 +175,10 @@
             <filename>drop.png</filename>
             <filename>lightning-0.png</filename>
             <filename>lightning-1.png</filename>
+            <filename>mountain-0.png</filename>
+            <filename>mountain-1.png</filename>
+            <filename>mountain-2.png</filename>
+            <filename>mountain-3.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

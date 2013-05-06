@@ -4,8 +4,10 @@
  * Copyright (c) 2013, Eugene-Krevenets
  */
 
-var width = 640;
-var height = 480;
+var width = 640,
+    height = 480,
+    debugDraw = true,
+    renderWithPixiJs = true;
 
 var game = angular.module('RedCabrioletGame', []);
 
@@ -112,19 +114,21 @@ world.$add('ngInfinity1DWorld', {
 world.$add('ngBindPositionToPhysics');
 
 world.$add('ngBindLifeToAlpha');
-world.$add('ngPixijsStage', {
-    domId: 'gameView',
-    width: width,
-    height: height,
-    useWebGL: true
-});
 
-world.$add('ngPixijsSprite');
-world.$add('ngPixijsMovieClip');
-world.$add('ngPixijsSheetSprite');
+if (renderWithPixiJs) {
+    world.$add('ngPixijsStage', {
+        domId: 'gameView',
+        width: width,
+        height: height,
+        useWebGL: true
+    });
+
+    world.$add('ngPixijsSprite');
+    world.$add('ngPixijsMovieClip');
+    world.$add('ngPixijsSheetSprite');
+}
 
 world.$add('ng2DShiftMovingSystem');
-world.$add('ng3DShiftMovingSystem');
 
 world.$add('ngRandomEmitterSystem');
 world.$add('ngSquareEmitterSystem');
@@ -145,9 +149,15 @@ world.$add('ngLifeHandler');
 world.$add('ngConvert3DtoParallax');
 world.$add('ngSimpleParallax');
 
-//world.$add('ngBox2DDebugDraw', {
-//    domID: 'gameView', width: width, height: height
-//});
+world.$add('ngMarkIfOutsideOfTheViewPort');
+world.$add('ngMarkIfInsideOfTheViewPort');
+
+if (debugDraw) {
+    world.$add('ngBox2DDebugDraw', {
+        domID: 'gameView', width: width, height: height
+    });
+
+}
 
 world.$add('ngStatsEnd', {
     domId: 'gameView'
@@ -531,6 +541,11 @@ function buildCloudFront(ops) {
                 y: 0.0
             },
 
+            'ng2DSize': {
+                width: width,
+                height: height
+            },
+
             'ngShiftMove': {
                 dx: frontSpeed,
                 dy: 0.0
@@ -544,7 +559,7 @@ function buildCloudFront(ops) {
             'ngSpriteAtlas' : {
                 name: 'doom.png',
                 url: 'assets/spritesheet.json',
-                fitToSize: false,
+                fitToSize: true,
                 anchor: {
                     x: 0.5,
                     y: 0.5
@@ -751,16 +766,81 @@ function buildCloudFront(ops) {
 }
 
 function buildMountain() {
-    var delta = 3000;
-    for(var i = 0, count = 4; i < count; i++) {
-        world.$e('mountain-' + i, {
+    var pool = [],
+        count = 4,
+        step = 750,
+        left,
+        right;
+
+    var config = {
+        marker: {
+            ngMarkIfOutsideOfTheViewPort: {
+                handler: function($entity, leftEdge, rightEdge) {
+                    if (leftEdge) {
+                        //go right
+                        var rightEntity = getTheRightMost(pool);
+                        $entity.ng3D.x = rightEntity.ng3D.x + $entity.ng3DSize.width;
+                        $entity.$add('ngMarkIfInsideOfTheViewPort', config);
+                    } else if (rightEdge) {
+                        var leftEntity = getTheLeftMost(pool);
+                        $entity.ng3D.x = leftEntity.ng3D.x - $entity.ng3DSize.width;
+                        $entity.$add('ngMarkIfInsideOfTheViewPort', config);
+                    }
+                }
+            }
+        }
+    };
+
+    function getTheLeftMost(pool) {
+        var left = Number.MAX_VALUE,
+            leftEntity;
+        for (var i = 0, count = pool.length; i < count; i++) {
+            var x = pool[i].ng3D.x;
+            if (left > x) {
+                left = x;
+                leftEntity = pool[i];
+            }
+        }
+
+        return leftEntity;
+    }
+
+    function getTheRightMost(pool) {
+        var right = -Number.MAX_VALUE,
+            rightEntity;
+        for (var i = 0, count = pool.length; i < count; i++) {
+            var x = pool[i].ng3D.x;
+            if (right < x) {
+                right = x;
+                rightEntity = pool[i];
+            }
+        }
+
+        return rightEntity;
+    }
+
+    for(var i = 0; i < count; i++) {
+        pool.push(world.$e('mountain-' + i, {
 
             ng2D: false,
             ng3D: {
-                x: 1000 + i * delta,
-                y: 3550,
-                z: 1.8 + 0.2 * Math.random()
+                x: 1000 + i * step,
+                y: 1100,
+                z: 1.8 + 0.3 * Math.random()
             },
+
+            ng3DSize: {
+                width: 1000
+            },
+
+            ng2DSize: {
+                width: 512,
+                height: 512
+            },
+
+            ngMarkIfInsideOfTheViewPort: config,
+
+            ngRemoveIfDead: true,
 
             ngConvert3DtoParallax: null,
 
@@ -773,8 +853,11 @@ function buildMountain() {
                     y: 1.0
                 }
             }
-        });
+        }));
     }
+
+    left = pool[0].ng3D.x;
+    right = pool[count - 1].ng3D.x;
 }
 
 //constuct world env
