@@ -774,7 +774,7 @@ function buildMountain() {
 
             ng2D: false,
             ng3D: {
-                x: 1000 + i * step,
+                x: i * step,
                 y: 1100,
                 z: 1.8 + 0.3 * Math.random()
             },
@@ -813,6 +813,84 @@ function buildMountain() {
     }
 }
 
+function buildCity(ops) {
+    var count = ops.count,
+        last;
+    for(var i = 0; i < count; i++) {
+        last = world.$e('city-' + i, {
+
+            ng2D: false,
+            ng3D: {
+                x: i * ops.step,
+                y: ops.y,
+                z: ops.depth + ops.depthDeviation * ( 2 * Math.random() - 1)
+            },
+
+            ngConvert3DtoParallax: true,
+
+            ng2DSize: {
+                width: 512,
+                height: 512
+            },
+
+            ng3DSize: {
+                width: ops.step
+            },
+
+            ngCyclic: {
+                group: 'city',
+                step: {
+                    width: ops.step,
+                    height: ops.step
+                },
+                leftRight: true,
+                topBottom: false
+            },
+
+            ngPixijsSprite: false,
+            ngSpriteAtlas : {
+                name: 'city-0.png',
+                url: 'assets/spritesheet.json',
+                anchor: {
+                    x: 0.0,
+                    y: 1.0
+                }
+            }
+        });
+    }
+
+    world.$e('city-last-entity', {
+
+        ng2D: false,
+        ng3D: {
+            x: last.ng2D.x + ops.step,
+            y: 1100,
+            z: 1.95
+        },
+
+        ngConvert3DtoParallax: true,
+
+        ng3DSize: {
+            width: 1000
+        },
+
+        ng2DSize: {
+            width: 512,
+            height: 512
+        },
+
+        ngCyclic: {
+            group: 'city',
+            step: {
+                width: ops.step,
+                height: ops.step
+            },
+            leftRight: true,
+            topBottom: false
+        }
+    });
+}
+
 //constuct world env
 
 buildCloudFront({
@@ -822,6 +900,14 @@ buildCloudFront({
 });
 
 buildMountain();
+
+buildCity({
+    step: 1000,
+    y: 1000,
+    count: 3,
+    depth: 1.3,
+    depthDeviation: 0.3
+});
 
 vehicle(400, 500, 'cabriolet', {
     axleContainerDistance: 30,

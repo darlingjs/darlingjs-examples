@@ -179,6 +179,7 @@
             <filename>mountain-1.png</filename>
             <filename>mountain-2.png</filename>
             <filename>mountain-3.png</filename>
+            <filename>../../../../../Dropbox/Burenkaz'N'Hyzhak Games/cabriolet/city-0.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
