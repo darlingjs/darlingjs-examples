@@ -36,7 +36,7 @@ world.$add('ng2DViewPort', {
     lookAt: {
         x: 400, y: 300
     },
-    width: width,
+    width: width + 200,
     height: height
 });
 
@@ -150,8 +150,8 @@ world.$add('ngLifeHandler');
 world.$add('ngConvert3DtoParallax');
 world.$add('ngSimpleParallax');
 
-world.$add('ngMarkIfOutsideOfTheViewPort');
-world.$add('ngMarkIfInsideOfTheViewPort');
+world.$add('ngMarkIfOutsideOfTheViewPortHorizontal3D');
+world.$add('ngMarkIfInsideOfTheViewPortHorizontal3D');
 world.$add('ngCyclic3DLayer');
 
 if (debugDraw) {
@@ -768,37 +768,26 @@ function buildCloudFront(ops) {
 
 function buildMountain() {
     var count = 4,
-        step = 750;
+        step = 1000;
 
     for(var i = 0; i < count; i++) {
         world.$e('mountain-' + i, {
 
-            ng2D: false,
             ng3D: {
                 x: i * step,
                 y: 1100,
                 z: 1.8 + 0.3 * Math.random()
             },
-
             ngConvert3DtoParallax: true,
-
-            ng3DSize: {
-                width: 1000
-            },
+            ng2D: false,
 
             ng2DSize: {
-                width: 512,
+                width: step,
                 height: 512
             },
 
             ngCyclic: {
-                group: 'mountains',
-                step: {
-                    width: step,
-                    height: step
-                },
-                leftRight: true,
-                topBottom: false
+                patternWidth: count * step + 2000
             },
 
             ngPixijsSprite: false,
@@ -806,7 +795,7 @@ function buildMountain() {
                 name: 'mountain-' + i + '.png',
                 url: 'assets/spritesheet.json',
                 anchor: {
-                    x: 0.0,
+                    x: 0.5,
                     y: 1.0
                 }
             }
@@ -820,32 +809,21 @@ function buildCity(ops) {
     for(var i = 0; i < count; i++) {
         last = world.$e('city-' + i, {
 
-            ng2D: false,
             ng3D: {
                 x: i * ops.step,
                 y: ops.y,
                 z: ops.depth + ops.depthDeviation * ( 2 * Math.random() - 1)
             },
-
             ngConvert3DtoParallax: true,
+            ng2D: false,
 
             ng2DSize: {
-                width: 512,
+                width: ops.step,
                 height: 512
             },
 
-            ng3DSize: {
-                width: ops.step
-            },
-
             ngCyclic: {
-                group: 'city',
-                step: {
-                    width: ops.step,
-                    height: ops.step
-                },
-                leftRight: true,
-                topBottom: false
+                patternWidth: (count + 2) * ops.step
             },
 
             ngPixijsSprite: false,
@@ -860,36 +838,30 @@ function buildCity(ops) {
         });
     }
 
-    world.$e('city-last-entity', {
-
-        ng2D: false,
-        ng3D: {
-            x: last.ng2D.x + ops.step,
-            y: 1100,
-            z: 1.95
-        },
-
-        ngConvert3DtoParallax: true,
-
-        ng3DSize: {
-            width: 1000
-        },
-
-        ng2DSize: {
-            width: 512,
-            height: 512
-        },
-
-        ngCyclic: {
-            group: 'city',
-            step: {
-                width: ops.step,
-                height: ops.step
-            },
-            leftRight: true,
-            topBottom: false
-        }
-    });
+//    world.$e('city-last-entity', {
+//
+//        ng2D: false,
+//        ng3D: {
+//            x: last.ng2D.x + ops.step,
+//            y: 1100,
+//            z: 1.95
+//        },
+//
+//        ngConvert3DtoParallax: true,
+//
+//        ng3DSize: {
+//            width: 1000
+//        },
+//
+//        ng2DSize: {
+//            width: 512,
+//            height: 512
+//        },
+//
+//        ngCyclic: {
+//            patternWidth: (count + 2) * ops.step
+//        }
+//    });
 }
 
 //constuct world env
@@ -904,8 +876,8 @@ buildMountain();
 
 buildCity({
     step: 1000,
-    y: 1000,
-    count: 3,
+    y: 900,
+    count: 2,
     depth: 1.3,
     depthDeviation: 0.2
 });
