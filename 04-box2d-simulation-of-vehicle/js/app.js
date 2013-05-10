@@ -6,7 +6,7 @@
 
 var width = 640,
     height = 480,
-    debugDraw = true,
+    debugDraw = false,
     renderWithPixiJs = true;
 
 var game = angular.module('RedCabrioletGame', []);
@@ -124,6 +124,23 @@ if (renderWithPixiJs) {
         useWebGL: true
     });
 
+    world.$add('ngPixijsStaticZ', {
+        layers: [
+            'background',
+            'mountain-2',
+            'mountain-1',
+            'mountain-0',
+            'city-2',
+            'city-1',
+            'city-0',
+            'clouds',
+            'road-1',
+            'car',
+            'road-0',
+            'foreground'
+        ]
+    });
+
     world.$add('ngPixijsSprite');
     world.$add('ngPixijsMovieClip');
     world.$add('ngPixijsSheetSprite');
@@ -180,7 +197,8 @@ function vehicle(x, y, name, newOps){
         wheelMaxSpeed: newOps.wheelMaxSpeed || 20.0,
         wheelAcceleration: newOps.wheelAcceleration || 1.0,
         rearWheelDrive: true,
-        frontWheelDrive: true
+        frontWheelDrive: true,
+        layerName: newOps.layerName
     };
 
     var degreesToRadians = Math.PI / 180.0;
@@ -210,6 +228,10 @@ function vehicle(x, y, name, newOps){
             name: name + '-wheel.png',
             url: 'assets/spritesheet.json',
             fitToSize: false
+        },
+
+        ngLayer: {
+            layerName: ops.layerName
         }
     });
 
@@ -238,6 +260,10 @@ function vehicle(x, y, name, newOps){
             name: name + '-wheel.png',
             url: 'assets/spritesheet.json',
             fitToSize: false
+        },
+
+        ngLayer: {
+            layerName: ops.layerName
         }
     });
 
@@ -307,6 +333,10 @@ function vehicle(x, y, name, newOps){
                 x: 0.52,
                 y: 0.76
             }
+        },
+
+        ngLayer: {
+            layerName: ops.layerName
         },
 
         'ngScores': {
@@ -501,6 +531,11 @@ world.$e('sky', {
         url: 'assets/spritesheet.json',
         fitToSize: false
     },
+
+    ngLayer: {
+        layerName: 'background'
+    },
+
     'ngLockViewPort': {
     }
 });
@@ -566,6 +601,10 @@ function buildCloudFront(ops) {
                 }
             },
 
+            ngLayer: {
+                layerName: 'background'
+            },
+
             'ngLockViewPort': {
                 lockX: false,
                 lockY: true
@@ -594,6 +633,10 @@ function buildCloudFront(ops) {
                     x: 0.0,
                     y: 0.5
                 }
+            },
+
+            ngLayer: {
+                layerName: 'background'
             },
 
             'ngLockViewPort': {
@@ -647,6 +690,10 @@ function buildCloudFront(ops) {
                             fitToSize: false
                         },
 
+                        ngLayer: {
+                            layerName: 'clouds'
+                        },
+
                         'ngShiftMove': {
                             dx: 100 * (0.2 + 0.4 * distance),
                             dy: 0.0
@@ -697,6 +744,10 @@ function buildCloudFront(ops) {
                                             fitToSize: false
                                         },
 
+                                        ngLayer: {
+                                            layerName: 'clouds'
+                                        },
+
                                         'ngLife': {
                                             life: 1.0
                                         },
@@ -734,6 +785,10 @@ function buildCloudFront(ops) {
                                             fitToSize: false
                                         },
 
+                                        ngLayer: {
+                                            layerName: 'clouds'
+                                        },
+
                                         'ngLife': {
                                             life: 0.01
                                         },
@@ -766,9 +821,10 @@ function buildCloudFront(ops) {
     }
 }
 
-function buildMountain() {
+function buildMountain(ops) {
     var count = 4,
-        step = 1000;
+        step = 1000,
+        distance =  Math.floor(3 * Math.random());
 
     for(var i = 0; i < count; i++) {
         world.$e('mountain-' + i, {
@@ -776,7 +832,8 @@ function buildMountain() {
             ng3D: {
                 x: i * step,
                 y: 1100,
-                z: 1.8 + 0.3 * Math.random()
+                //z: 1.8 + 0.3 * distance / 3,
+                z: ops.depth + ops.depthDeviation * ( 2 * distance / 3 - 1)
             },
             ngConvert3DtoParallax: true,
             ng2D: false,
@@ -798,6 +855,10 @@ function buildMountain() {
                     x: 0.5,
                     y: 1.0
                 }
+            },
+
+            ngLayer: {
+                layerName: 'mountain-' + distance
             }
         });
     }
@@ -805,14 +866,15 @@ function buildMountain() {
 
 function buildCity(ops) {
     var count = ops.count,
-        last;
+        last,
+        distance = Math.floor(3 * Math.random());
     for(var i = 0; i < count; i++) {
         last = world.$e('city-' + i, {
 
             ng3D: {
                 x: i * ops.step,
                 y: ops.y,
-                z: ops.depth + ops.depthDeviation * ( 2 * Math.random() - 1)
+                z: ops.depth + ops.depthDeviation * ( 2 * distance / 3 - 1)
             },
             ngConvert3DtoParallax: true,
             ng2D: false,
@@ -834,6 +896,10 @@ function buildCity(ops) {
                     x: 0.0,
                     y: 1.0
                 }
+            },
+
+            ngLayer: {
+                layerName: 'city-' + distance
             }
         });
     }
@@ -872,14 +938,17 @@ buildCloudFront({
     cloudMaxRate: 0.1
 });
 
-buildMountain();
+buildMountain({
+    depth: 1.8,
+    depthDeviation: 0.5
+});
 
 buildCity({
     step: 1000,
-    y: 900,
+    y: 950,
     count: 2,
     depth: 1.3,
-    depthDeviation: 0.2
+    depthDeviation: 0.3
 });
 
 vehicle(400, 500, 'cabriolet', {
@@ -887,7 +956,8 @@ vehicle(400, 500, 'cabriolet', {
     axleContainerHeight: 5,
     axleContainerDepth: 2.5,
     wheelRadius: 12,
-    wheelMaxSpeed: 30.0
+    wheelMaxSpeed: 30.0,
+    layerName: 'car'
 });
 
 world.$start();
@@ -993,6 +1063,10 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                     x: 0.0,
                     y: 0.0
                 }
+            },
+
+            ngLayer: {
+                layerName: 'foreground'
             }
         }));
 
@@ -1006,7 +1080,7 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                 rotation: angle
             },
 
-             ngPixijsSprite: false,
+            ngPixijsSprite: false,
             'ngSpriteAtlas' : {
                 name: 'grass-top-0.png',
                 url: 'assets/spritesheet.json',
@@ -1014,6 +1088,10 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                     x: 0.5,
                     y: 0.5
                 }
+            },
+
+            ngLayer: {
+                layerName: 'foreground'
             }
         }));
 
@@ -1037,6 +1115,10 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                         x: 0.5,
                         y: 0.5
                     }
+                },
+
+                ngLayer: {
+                    layerName: 'foreground'
                 }
             }));
         }
@@ -1058,6 +1140,10 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                             x: 0.5,
                             y: 1.0
                         }
+                    },
+
+                    ngLayer: {
+                        layerName: 'road-0'
                     }
                 }));
         } else if (seed < 20) {
@@ -1076,6 +1162,10 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                             x: 0.5,
                             y: 1.0
                         }
+                    },
+
+                    ngLayer: {
+                        layerName: 'road-1'
                     }
                 }));
         } else if (seed < 22) {
@@ -1094,6 +1184,10 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                             x: 0.5,
                             y: 0.5
                         }
+                    },
+
+                    ngLayer: {
+                        layerName: 'foreground'
                     }
                 }));
         } else if (seed > 99) {
@@ -1112,6 +1206,10 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                             x: 0.5,
                             y: 0.0
                         }
+                    },
+
+                    ngLayer: {
+                        layerName: 'foreground'
                     }
                 }));
         }
@@ -1132,6 +1230,10 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                         x: 0.5,
                         y: -4.0 * Math.random()
                     }
+                },
+
+                ngLayer: {
+                    layerName: 'foreground'
                 }
             }));
         }
@@ -1173,6 +1275,10 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                     name: diamondType + '.png',
                     url: 'assets/spritesheet.json',
                     fitToSize: false
+                },
+
+                ngLayer: {
+                    layerName: 'road-0'
                 }
             }));
         }
