@@ -1143,7 +1143,7 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                     },
 
                     ngLayer: {
-                        layerName: 'road-0'
+                        layerName: 'road-1'
                     }
                 }));
         } else if (seed < 20) {
@@ -1165,7 +1165,7 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                     },
 
                     ngLayer: {
-                        layerName: 'road-1'
+                        layerName: 'road-0'
                     }
                 }));
         } else if (seed < 22) {
