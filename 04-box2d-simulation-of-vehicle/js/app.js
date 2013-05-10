@@ -6,7 +6,7 @@
 
 var width = 640,
     height = 480,
-    debugDraw = false,
+    debugDraw = true,
     renderWithPixiJs = true;
 
 var game = angular.module('RedCabrioletGame', []);
@@ -36,7 +36,7 @@ world.$add('ng2DViewPort', {
     lookAt: {
         x: 400, y: 300
     },
-    width: width + 200,
+    width: width,
     height: height
 });
 
@@ -169,7 +169,7 @@ world.$add('ngSimpleParallax');
 
 world.$add('ngMarkIfOutsideOfTheViewPortHorizontal3D');
 world.$add('ngMarkIfInsideOfTheViewPortHorizontal3D');
-world.$add('ngCyclic3DLayer');
+world.$add('ng3DCyclicLayer');
 
 if (debugDraw) {
     world.$add('ngBox2DDebugDraw', {

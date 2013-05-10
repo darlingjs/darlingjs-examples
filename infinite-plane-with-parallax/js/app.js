@@ -41,7 +41,7 @@
     world.$add('ngMarkIfOutsideOfTheViewPortHorizontal3D');
     world.$add('ngMarkIfInsideOfTheViewPortVertical3D');
     world.$add('ngMarkIfInsideOfTheViewPortHorizontal3D');
-    world.$add('ngCyclic3DLayer');
+    world.$add('ng3DCyclicLayer');
 
     var time = 445;
     world.$s('', {
