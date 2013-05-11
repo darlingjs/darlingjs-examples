@@ -102,10 +102,10 @@ world.$add('ngInfinity1DWorld', {
                         hillWidth: 640 + 50 * Math.random(),
                         hillHeight: 50 * Math.random()
                     });
-                } else if (seed < 0.95) {
-                    generateByTiledFile(newTile, leftSeedTile, rightSeedTile, 'assets/maps/bridge-0.json');
-                } else {
+                } else if (false) {
                     generateStraightLine(newTile, leftSeedTile, rightSeedTile);
+                } else {
+                    generateByTiledFile(newTile, leftSeedTile, rightSeedTile, 'assets/maps/bridge-0.json');
                 }
             }
         }
