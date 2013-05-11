@@ -6,7 +6,7 @@
 
 var width = 640,
     height = 480,
-    debugDraw = true,
+    debugDraw = false,
     renderWithPixiJs = true;
 
 var game = angular.module('RedCabrioletGame', []);
@@ -1413,7 +1413,8 @@ function parseMap(data) {
                             case '':
                                 //TODO:
                                 console.log('undefined object', object);
-                                continue;
+                                //continue;
+                                break;
                             default:
                                 throw new Error('Need to implement new object type : "' + object.type + '"');
                                 break;

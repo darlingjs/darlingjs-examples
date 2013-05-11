@@ -9,7 +9,7 @@
                  "name":"",
                  "properties":
                     {
-
+                     "ngSprite":"{\"name\":\"bridge-segment.png\", \"spriteSheetUrl\":\"assets\/spritesheet.json\", \"layerName\": \"road-1\"}"
                     },
                  "type":"dynamic",
                  "visible":true,
@@ -22,7 +22,7 @@
                  "name":"",
                  "properties":
                     {
-
+                     "ngSprite":"{\"name\":\"bridge-segment.png\", \"spriteSheetUrl\":\"assets\/spritesheet.json\", \"layerName\": \"road-1\"}"
                     },
                  "type":"dynamic",
                  "visible":true,
@@ -35,7 +35,7 @@
                  "name":"",
                  "properties":
                     {
-
+                     "ngSprite":"{\"name\":\"bridge-segment.png\", \"spriteSheetUrl\":\"assets\/spritesheet.json\", \"layerName\": \"road-1\"}"
                     },
                  "type":"dynamic",
                  "visible":true,
@@ -48,7 +48,7 @@
                  "name":"",
                  "properties":
                     {
-
+                     "ngSprite":"{\"name\":\"bridge-segment.png\", \"spriteSheetUrl\":\"assets\/spritesheet.json\", \"layerName\": \"road-1\"}"
                     },
                  "type":"dynamic",
                  "visible":true,
@@ -61,7 +61,7 @@
                  "name":"",
                  "properties":
                     {
-
+                     "ngSprite":"{\"name\":\"bridge-segment.png\", \"spriteSheetUrl\":\"assets\/spritesheet.json\", \"layerName\": \"road-1\"}"
                     },
                  "type":"dynamic",
                  "visible":true,
@@ -74,7 +74,7 @@
                  "name":"",
                  "properties":
                     {
-
+                     "ngSprite":"{\"name\":\"bridge-segment.png\", \"spriteSheetUrl\":\"assets\/spritesheet.json\", \"layerName\": \"road-1\"}"
                     },
                  "type":"dynamic",
                  "visible":true,
@@ -87,7 +87,7 @@
                  "name":"",
                  "properties":
                     {
-
+                     "ngSprite":"{\"name\":\"bridge-segment.png\", \"spriteSheetUrl\":\"assets\/spritesheet.json\", \"layerName\": \"road-1\"}"
                     },
                  "type":"dynamic",
                  "visible":true,
@@ -100,7 +100,7 @@
                  "name":"",
                  "properties":
                     {
-
+                     "ngSprite":"{\"name\":\"bridge-segment.png\", \"spriteSheetUrl\":\"assets\/spritesheet.json\", \"layerName\": \"road-1\"}"
                     },
                  "type":"dynamic",
                  "visible":true,
@@ -113,7 +113,7 @@
                  "name":"",
                  "properties":
                     {
-
+                     "ngSprite":"{\"name\":\"bridge-segment.png\", \"spriteSheetUrl\":\"assets\/spritesheet.json\", \"layerName\": \"road-1\"}"
                     },
                  "type":"dynamic",
                  "visible":true,
@@ -126,7 +126,7 @@
                  "name":"",
                  "properties":
                     {
-
+                     "ngSprite":"{\"name\":\"bridge-segment.png\", \"spriteSheetUrl\":\"assets\/spritesheet.json\", \"layerName\": \"road-1\"}"
                     },
                  "type":"dynamic",
                  "visible":true,
@@ -139,7 +139,7 @@
                  "name":"",
                  "properties":
                     {
-
+                     "ngSprite":"{\"name\":\"bridge-segment.png\", \"spriteSheetUrl\":\"assets\/spritesheet.json\", \"layerName\": \"road-1\"}"
                     },
                  "type":"dynamic",
                  "visible":true,
@@ -152,7 +152,7 @@
                  "name":"",
                  "properties":
                     {
-
+                     "ngSprite":"{\"name\":\"bridge-segment.png\", \"spriteSheetUrl\":\"assets\/spritesheet.json\", \"layerName\": \"road-1\"}"
                     },
                  "type":"dynamic",
                  "visible":true,
@@ -165,7 +165,7 @@
                  "name":"",
                  "properties":
                     {
-
+                     "ngSprite":"{\"name\":\"bridge-segment.png\", \"spriteSheetUrl\":\"assets\/spritesheet.json\", \"layerName\": \"road-1\"}"
                     },
                  "type":"dynamic",
                  "visible":true,
@@ -178,7 +178,7 @@
                  "name":"",
                  "properties":
                     {
-
+                     "ngSprite":"{\"name\":\"bridge-segment.png\", \"spriteSheetUrl\":\"assets\/spritesheet.json\", \"layerName\": \"road-1\"}"
                     },
                  "type":"dynamic",
                  "visible":true,
@@ -191,7 +191,7 @@
                  "name":"",
                  "properties":
                     {
-
+                     "ngSprite":"{\"name\":\"bridge-segment.png\", \"spriteSheetUrl\":\"assets\/spritesheet.json\", \"layerName\": \"road-1\"}"
                     },
                  "type":"dynamic",
                  "visible":true,
@@ -204,7 +204,7 @@
                  "name":"",
                  "properties":
                     {
-
+                     "ngSprite":"{\"name\":\"bridge-segment.png\", \"spriteSheetUrl\":\"assets\/spritesheet.json\", \"layerName\": \"road-1\"}"
                     },
                  "type":"dynamic",
                  "visible":true,
@@ -217,7 +217,7 @@
                  "name":"",
                  "properties":
                     {
-
+                     "ngSprite":"{\"name\":\"bridge-segment.png\", \"spriteSheetUrl\":\"assets\/spritesheet.json\", \"layerName\": \"road-1\"}"
                     },
                  "type":"dynamic",
                  "visible":true,
@@ -230,7 +230,7 @@
                  "name":"",
                  "properties":
                     {
-
+                     "ngSprite":"{\"name\":\"bridge-segment.png\", \"spriteSheetUrl\":\"assets\/spritesheet.json\", \"layerName\": \"road-1\"}"
                     },
                  "type":"dynamic",
                  "visible":true,
@@ -250,67 +250,28 @@
          "name":"static",
          "objects":[
                 {
-                 "height":32,
+                 "height":376,
                  "name":"",
                  "properties":
                     {
-
+                     "ngSprite":"{\"name\":\"ground-tile.png\", \"spriteSheetUrl\":\"assets\/spritesheet.json\", \"layerName\": \"road-0\", \"tiled\": true}"
                     },
                  "type":"static",
                  "visible":true,
-                 "width":112,
-                 "x":0,
+                 "width":120,
+                 "x":-8,
                  "y":56
                 }, 
                 {
-                 "height":344,
+                 "height":376,
                  "name":"",
                  "properties":
                     {
-
+                     "ngSprite":"{\"name\":\"ground-tile.png\", \"spriteSheetUrl\":\"assets\/spritesheet.json\", \"layerName\": \"road-0\", \"tiled\": true}"
                     },
                  "type":"static",
                  "visible":true,
-                 "width":32,
-                 "x":80,
-                 "y":88
-                }, 
-                {
-                 "height":32,
-                 "name":"",
-                 "properties":
-                    {
-
-                    },
-                 "type":"static",
-                 "visible":true,
-                 "width":360,
-                 "x":80,
-                 "y":432
-                }, 
-                {
-                 "height":344,
-                 "name":"",
-                 "properties":
-                    {
-
-                    },
-                 "type":"static",
-                 "visible":true,
-                 "width":32,
-                 "x":400,
-                 "y":88
-                }, 
-                {
-                 "height":32,
-                 "name":"",
-                 "properties":
-                    {
-
-                    },
-                 "type":"static",
-                 "visible":true,
-                 "width":112,
+                 "width":120,
                  "x":400,
                  "y":56
                 }, 

@@ -28,8 +28,21 @@
                  "type":"static",
                  "visible":true,
                  "width":120,
-                 "x":120,
+                 "x":320,
                  "y":360
+                }, 
+                {
+                 "height":264,
+                 "name":"finish-house",
+                 "properties":
+                    {
+                     "ngSprite":"{\"name\":\"purple-pixel.jpg\", \"spriteSheetUrl\":\"assets\/spritesheet.json\", \"layerName\": \"road-1\", \"tiled\": true}"
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":208,
+                 "x":496,
+                 "y":184
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -56,16 +69,16 @@
                  "y":96
                 }, 
                 {
-                 "height":24,
+                 "height":104,
                  "name":"",
                  "properties":
                     {
-
+                     "ngSprite":"{\"name\":\"purple-pixel.jpg\", \"spriteSheetUrl\":\"assets\/spritesheet.json\", \"layerName\": \"road-1\", \"tiled\": true}"
                     },
                  "type":"static",
                  "visible":true,
-                 "width":1024,
-                 "x":0,
+                 "width":1032,
+                 "x":-8,
                  "y":440
                 }, 
                 {
@@ -93,19 +106,6 @@
                  "width":32,
                  "x":1008,
                  "y":416
-                }, 
-                {
-                 "height":32,
-                 "name":"",
-                 "properties":
-                    {
-
-                    },
-                 "type":"static",
-                 "visible":true,
-                 "width":432,
-                 "x":88,
-                 "y":112
                 }],
          "opacity":1,
          "type":"objectgroup",
