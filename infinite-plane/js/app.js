@@ -52,8 +52,8 @@
         domId: 'gameView'
     });
 
-    var xStep = 16,
-        yStep = 16,
+    var xStep = 32,
+        yStep = 32,
         icount = Math.ceil(width / xStep) + 1,
         jcount = Math.ceil(height / yStep) + 1,
         pixels = ['blue-pixel.jpg', 'green-pixel.jpg', 'yellow-pixel.jpg', 'purple-pixel.jpg'];
@@ -75,11 +75,7 @@
                 ngPixijsSprite: false,
                 ngSpriteAtlas : {
                     name: pixels[nodeId],
-//                    name: pixels[Math.floor(pixels.length * (depth + 1) / 2 + Math.random())%4],
-//                    name: pixels[Math.floor(i + 4.3 * (Math.sin(2 * Math.PI * j / jcount + 1 ) + 1)) % 4],
-//                    name: pixels[Math.floor(i) % 4],
                     url: 'assets/spritesheet.json',
-//                    fitToSize: true,
                     anchor: {
                         x: 0.0,
                         y: 1.0
