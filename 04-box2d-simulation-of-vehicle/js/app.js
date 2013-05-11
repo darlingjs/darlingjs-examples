@@ -124,6 +124,11 @@ if (renderWithPixiJs) {
         useWebGL: true
     });
 
+    world.$add('ngPixijsUpdateCycle');
+    world.$add('ngPixijsSpriteShiftUpdate');
+    world.$add('ngPixijsRotationUpdateCycle');
+    world.$add('ngPixijsViewPortUpdateCycle');
+
     world.$add('ngPixijsStaticZ', {
         layers: [
             'background',
@@ -141,9 +146,9 @@ if (renderWithPixiJs) {
         ]
     });
 
-    world.$add('ngPixijsSprite');
-    world.$add('ngPixijsMovieClip');
-    world.$add('ngPixijsSheetSprite');
+    world.$add('ngPixijsSpriteFactory');
+
+    //world.$add('ngPixijsMovieClip');
 }
 
 world.$add('ng2DShiftMovingSystem');
@@ -223,14 +228,9 @@ function vehicle(x, y, name, newOps){
             'neverWith': 'vehicle'
         },
 
-        'ngSpriteAtlas' : {
+        ngSprite: {
             name: name + '-wheel.png',
-            url: 'assets/spritesheet.json'
-        },
-        ngSimpleSprite: true,
-        ngPixijsSprite: false,
-
-        ngLayer: {
+            spriteSheetUrl: 'assets/spritesheet.json',
             layerName: ops.layerName
         }
     });
@@ -255,14 +255,9 @@ function vehicle(x, y, name, newOps){
             'neverWith': 'vehicle'
         },
 
-        'ngSpriteAtlas' : {
+        ngSprite: {
             name: name + '-wheel.png',
-            url: 'assets/spritesheet.json'
-        },
-        ngSimpleSprite: true,
-        ngPixijsSprite: false,
-
-        ngLayer: {
+            spriteSheetUrl: 'assets/spritesheet.json',
             layerName: ops.layerName
         }
     });
@@ -324,20 +319,14 @@ function vehicle(x, y, name, newOps){
 
         'ngLive': {},
 
-        ngSpriteAtlas : {
+        ngSprite: {
             name: name + '-body.png',
-            url: 'assets/spritesheet.json'
-        },
-        ngSimpleSprite: {
+            spriteSheetUrl: 'assets/spritesheet.json',
+            layerName: ops.layerName,
             anchor: {
                 x: 0.52,
                 y: 0.76
             }
-        },
-        ngPixijsSprite: false,
-
-        ngLayer: {
-            layerName: ops.layerName
         },
 
         'ngScores': {
@@ -527,14 +516,9 @@ world.$e('sky', {
         x:0.0, y:0.0
     },
 
-    ngSpriteAtlas : {
+    ngSprite: {
         name: 'blue-sky.png',
-        url: 'assets/spritesheet.json'
-    },
-    ngSimpleSprite: true,
-    ngPixijsSprite: false,
-
-    ngLayer: {
+        spriteSheetUrl: 'assets/spritesheet.json',
         layerName: 'background'
     },
 
@@ -592,14 +576,9 @@ function buildCloudFront(ops) {
                 entitiesToRemove: ['clouds-front', 'clouds-factory', 'sky']
             },
 
-            'ngSpriteAtlas' : {
+            ngSprite: {
                 name: 'doom.png',
-                url: 'assets/spritesheet.json'
-            },
-            ngSimpleSprite: true,
-            ngPixijsSprite: false,
-
-            ngLayer: {
+                spriteSheetUrl: 'assets/spritesheet.json',
                 layerName: 'background'
             },
 
@@ -622,20 +601,14 @@ function buildCloudFront(ops) {
                 dy: 0.0
             },
 
-            'ngSpriteAtlas' : {
+            ngSprite: {
                 name: 'doom-front.png',
-                url: 'assets/spritesheet.json'
-            },
-            ngSimpleSprite: {
+                spriteSheetUrl: 'assets/spritesheet.json',
+                layerName: 'background',
                 anchor: {
                     x: 0.0,
                     y: 0.5
                 }
-            },
-            ngPixijsSprite: false,
-
-            ngLayer: {
-                layerName: 'background'
             },
 
             'ngLockViewPort': {
@@ -682,14 +655,9 @@ function buildCloudFront(ops) {
                             height: 1.0
                         },
 
-                        'ngSpriteAtlas' : {
+                        ngSprite: {
                             name: 'cloud-' + Math.floor(3 * Math.random()) + '.png',
-                            url: 'assets/spritesheet.json'
-                        },
-                        ngSimpleSprite: true,
-                        ngPixijsSprite: false,
-
-                        ngLayer: {
+                            spriteSheetUrl: 'assets/spritesheet.json',
                             layerName: 'clouds'
                         },
 
@@ -736,14 +704,9 @@ function buildCloudFront(ops) {
 
                                         'ng2D': {x : emitter.ng2D.x, y: emitter.ng2D.y},
 
-                                        'ngSpriteAtlas' : {
+                                        ngSprite: {
                                             name: 'lightning-' + lightningType + '.png',
-                                            url: 'assets/spritesheet.json'
-                                        },
-                                        ngSimpleSprite: true,
-                                        ngPixijsSprite: false,
-
-                                        ngLayer: {
+                                            spriteSheetUrl: 'assets/spritesheet.json',
                                             layerName: 'clouds'
                                         },
 
@@ -777,14 +740,9 @@ function buildCloudFront(ops) {
                                             density: 2.0
                                         },
 
-                                        'ngSpriteAtlas' : {
+                                        ngSprite: {
                                             name: 'drop.png',
-                                            url: 'assets/spritesheet.json'
-                                        },
-                                        ngSimpleSprite: true,
-                                        ngPixijsSprite: false,
-
-                                        ngLayer: {
+                                            spriteSheetUrl: 'assets/spritesheet.json',
                                             layerName: 'clouds'
                                         },
 
@@ -846,20 +804,14 @@ function buildMountain(ops) {
                 patternWidth: count * step + 2000
             },
 
-            ngSpriteAtlas : {
+            ngSprite: {
                 name: 'mountain-' + i + '.png',
-                url: 'assets/spritesheet.json'
-            },
-            ngSimpleSprite: {
+                spriteSheetUrl: 'assets/spritesheet.json',
+                layerName: 'mountain-' + distance,
                 anchor: {
                     x: 0.5,
                     y: 1.0
                 }
-            },
-            ngPixijsSprite: false,
-
-            ngLayer: {
-                layerName: 'mountain-' + distance
             }
         });
     }
@@ -889,20 +841,14 @@ function buildCity(ops) {
                 patternWidth: (count + 2) * ops.step
             },
 
-            ngSpriteAtlas : {
+            ngSprite: {
                 name: 'city-0.png',
-                url: 'assets/spritesheet.json'
-            },
-            ngSimpleSprite: {
+                spriteSheetUrl: 'assets/spritesheet.json',
+                layerName: 'city-' + distance,
                 anchor: {
-                    x: 0.0,
+                    x: 0.5,
                     y: 1.0
                 }
-            },
-            ngPixijsSprite: false,
-
-            ngLayer: {
-                layerName: 'city-' + distance
             }
         });
     }
@@ -1057,20 +1003,14 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                 height: -lowHeight
             },
 
-            ngSpriteAtlas : {
+            ngSprite: {
                 name: 'grass-0.png',
-                url: 'assets/spritesheet.json'
-            },
-            ngSimpleSprite: {
+                spriteSheetUrl: 'assets/spritesheet.json',
                 fitToSize: true,
                 anchor: {
                     x: 0.0,
                     y: 0.0
-                }
-            },
-            ngPixijsSprite: false,
-
-            ngLayer: {
+                },
                 layerName: 'foreground'
             }
         }));
@@ -1085,134 +1025,110 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                 rotation: angle
             },
 
-            'ngSpriteAtlas' : {
+            ngSprite: {
                 name: 'grass-top-0.png',
-                url: 'assets/spritesheet.json'
-            },
-            ngSimpleSprite: true,
-            ngPixijsSprite: false,
-
-            ngLayer: {
+                spriteSheetUrl: 'assets/spritesheet.json',
                 layerName: 'foreground'
             }
         }));
 
-        if (false) {
-            var topItemsIndex = Math.floor(topItems.length * Math.random());
-            entities.push(world.$e('grass-top-0-' + x, {
+//        if (false) {
+//            var topItemsIndex = Math.floor(topItems.length * Math.random());
+//            entities.push(world.$e('grass-top-0-' + x, {
+//                'ng2D': {
+//                    x: x,
+//                    y: -lowHeight
+//                },
+//
+//                'ng2DRotation': {
+//                    rotation: angle
+//                },
+//
+//                ngPixijsSprite: false,
+//                'ngSpriteAtlas' : {
+//                    name: topItems[topItemsIndex],
+//                    url: 'assets/spritesheet.json',
+//                    anchor: {
+//                        x: 0.5,
+//                        y: 0.5
+//                    }
+//                },
+//
+//                ngLayer: {
+//                    layerName: 'foreground'
+//                }
+//            }));
+//        }
+
+        var seed = Math.floor(100 * Math.random());
+        if (seed < 10) {
+            entities.push(world.$e('three-0-' + x, {
                 'ng2D': {
                     x: x,
                     y: -lowHeight
                 },
 
-                'ng2DRotation': {
-                    rotation: angle
-                },
-
-                ngPixijsSprite: false,
-                'ngSpriteAtlas' : {
-                    name: topItems[topItemsIndex],
-                    url: 'assets/spritesheet.json',
+                ngSprite: {
+                    name: 'tree-0.png',
+                    spriteSheetUrl: 'assets/spritesheet.json',
+                    layerName: 'road-1',
                     anchor: {
                         x: 0.5,
-                        y: 0.5
+                        y: 1.0
                     }
-                },
-
-                ngLayer: {
-                    layerName: 'foreground'
                 }
             }));
-        }
-
-        var seed = Math.floor(100 * Math.random());
-        if (seed < 10) {
-                entities.push(world.$e('three-0-' + x, {
-                    'ng2D': {
-                        x: x,
-                        y: -lowHeight
-                    },
-
-                    'ngSpriteAtlas' : {
-                        name: 'tree-0.png',
-                        url: 'assets/spritesheet.json'
-                    },
-                    ngSimpleSprite: {
-                        anchor: {
-                            x: 0.5,
-                            y: 1.0
-                        }
-                    },
-                    ngPixijsSprite: false,
-
-                    ngLayer: {
-                        layerName: 'road-1'
-                    }
-                }));
         } else if (seed < 20) {
-                entities.push(world.$e('three-1-' + x, {
-                    'ng2D': {
-                        x: x,
-                        y: -lowHeight
-                    },
+            entities.push(world.$e('three-1-' + x, {
+                'ng2D': {
+                    x: x,
+                    y: -lowHeight
+                },
 
-                    'ngSpriteAtlas' : {
-                        name: 'tree-1.png',
-                        url: 'assets/spritesheet.json'
-                    },
-                    ngSimpleSprite: {
-                        anchor: {
-                            x: 0.5,
-                            y: 1.0
-                        }
-                    },
-                    ngPixijsSprite: false,
-
-                    ngLayer: {
-                        layerName: 'road-0'
+                ngSprite: {
+                    name: 'tree-1.png',
+                    spriteSheetUrl: 'assets/spritesheet.json',
+                    layerName: 'road-0',
+                    anchor: {
+                        x: 0.5,
+                        y: 1.0
                     }
-                }));
+                }
+            }));
         } else if (seed < 22) {
-                entities.push(world.$e('fence-0-' + x, {
-                    'ng2D': {
-                        x: x,
-                        y: -lowHeight + 100 * Math.random() + 100
-                    },
+            entities.push(world.$e('fence-0-' + x, {
+                'ng2D': {
+                    x: x,
+                    y: -lowHeight + 100 * Math.random() + 100
+                },
 
-                    ngSpriteAtlas : {
-                        name: 'fence-0.png',
-                        url: 'assets/spritesheet.json'
-                    },
-                    ngSimpleSprite: true,
-                    ngPixijsSprite: false,
-
-                    ngLayer: {
-                        layerName: 'foreground'
+                ngSprite: {
+                    name: 'fence-0.png',
+                    spriteSheetUrl: 'assets/spritesheet.json',
+                    layerName: 'foreground',
+                    anchor: {
+                        x: 0.5,
+                        y: 1.0
                     }
-                }));
+                }
+            }));
         } else if (seed > 99) {
-                entities.push(world.$e('rail-road-0-' + x, {
-                    'ng2D': {
-                        x: x,
-                        y: -lowHeight
-                    },
+            entities.push(world.$e('rail-road-0-' + x, {
+                'ng2D': {
+                    x: x,
+                    y: -lowHeight
+                },
 
-                    'ngSpriteAtlas' : {
-                        name: 'rail-road-0.png',
-                        url: 'assets/spritesheet.json'
-                    },
-                    ngSimpleSprite: {
-                        anchor: {
-                            x: 0.5,
-                            y: 0.0
-                        }
-                    },
-                    ngPixijsSprite: false,
-
-                    ngLayer: {
-                        layerName: 'foreground'
+                ngSprite: {
+                    name: 'rail-road-0.png',
+                    spriteSheetUrl: 'assets/spritesheet.json',
+                    layerName: 'foreground',
+                    anchor: {
+                        x: 0.5,
+                        y: 0.0
                     }
-                }));
+                }
+            }));
         }
 
         if (Math.random() > 0.5) {
@@ -1222,20 +1138,14 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                     y: -lowHeight
                 },
 
-                'ngSpriteAtlas' : {
+                ngSprite: {
                     name: 'flowers-0.png',
-                    url: 'assets/spritesheet.json'
-                },
-                ngSimpleSprite: {
+                    spriteSheetUrl: 'assets/spritesheet.json',
+                    layerName: 'foreground',
                     anchor: {
                         x: 0.5,
                         y: -4.0 * Math.random()
                     }
-                },
-                ngPixijsSprite: false,
-
-                ngLayer: {
-                    layerName: 'foreground'
                 }
             }));
         }
@@ -1272,14 +1182,9 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
                     score: diamondScore
                 },
 
-                ngSpriteAtlas : {
+                ngSprite: {
                     name: diamondType + '.png',
-                    url: 'assets/spritesheet.json'
-                },
-                ngSimpleSprite: true,
-                ngPixijsSprite: false,
-
-                ngLayer: {
+                    spriteSheetUrl: 'assets/spritesheet.json',
                     layerName: 'road-0'
                 }
             }));
@@ -1600,7 +1505,7 @@ function convertTiledPropertiesToComponents(properties) {
 
         var value;
         try {
-            value = eval(properties[key]);
+            value = JSON.parse(properties[key]);
         } catch(e) {
             value = properties[key];
         }

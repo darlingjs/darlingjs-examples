@@ -20,7 +20,7 @@
                  "name":"",
                  "properties":
                     {
-
+                     "ngSprite":"{\"name\":\"grass-top-0.png\", \"spriteSheetUrl\":\"assets\/spritesheet.json\", \"layerName\": \"road-1\", \"tiled\": true}"
                     },
                  "type":"static",
                  "visible":true,
@@ -29,11 +29,11 @@
                  "y":96
                 }, 
                 {
-                 "height":32,
-                 "name":"",
+                 "height":184,
+                 "name":"start-background",
                  "properties":
                     {
-
+                     "ngSprite":"{\"name\":\"grass-0.png\", \"spriteSheetUrl\":\"assets\/spritesheet.json\", \"layerName\": \"road-0\", \"tiled\": true}"
                     },
                  "type":"static",
                  "visible":true,
