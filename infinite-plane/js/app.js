@@ -11,8 +11,11 @@
         'ngFlatland',
         'ngCyclic',
         'ngPixijsAdapter',
-        'ngStats'
+        'ngStats',
+        'ngPerformance'
     ]);
+
+    world.$add('ngPerformanceStartLog');
 
     world.$add('ngStatsBegin');
 
@@ -51,6 +54,8 @@
     world.$add('ngStatsEnd', {
         domId: 'gameView'
     });
+
+    world.$add('ngPerformanceStopLog');
 
     var xStep = 32,
         yStep = 32,

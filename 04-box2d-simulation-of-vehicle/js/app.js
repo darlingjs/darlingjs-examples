@@ -21,6 +21,7 @@ var world = darlingjs.world('myGame', [
     'ngBox2DEmscripten',
     'ngPixijsAdapter',
     'ngStats',
+    'ngPerformance',
     'ngInfinity1DWorld',
     'ngPlayer',
     'ngParticleSystem'
@@ -30,7 +31,10 @@ var world = darlingjs.world('myGame', [
 
 // systems
 
+
 world.$add('ngStatsBegin');
+
+world.$add('ngPerformanceStartLog');
 
 world.$add('ng2DViewPort', {
     lookAt: {
@@ -181,6 +185,8 @@ if (debugDraw) {
         domID: 'gameView', width: width, height: height
     });
 }
+
+world.$add('ngPerformanceStopLog');
 
 world.$add('ngStatsEnd', {
     domId: 'gameView'

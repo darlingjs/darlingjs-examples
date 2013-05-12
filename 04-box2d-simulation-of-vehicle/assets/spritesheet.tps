@@ -186,6 +186,7 @@
             <filename>yellow-pixel.jpg</filename>
             <filename>bridge-segment.png</filename>
             <filename>ground-tile.png</filename>
+            <filename>p2.jpeg</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

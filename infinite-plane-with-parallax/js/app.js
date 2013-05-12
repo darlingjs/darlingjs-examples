@@ -12,8 +12,11 @@
         'ngCyclic',
         'ng3D',
         'ngPixijsAdapter',
-        'ngStats'
+        'ngStats',
+        'ngPerformance'
     ]);
+
+    world.$add('ngPerformanceStartLog');
 
     world.$add('ngStatsBegin');
 
@@ -32,7 +35,9 @@
         useWebGL: true
     });
 
-    world.$add('ngPixijsSheetSprite');
+    world.$add('ngPixijsUpdateCycle');
+    world.$add('ngPixijsViewPortUpdateCycle');
+    world.$add('ngPixijsSpriteFactory');
 
     world.$add('ngConvert3DtoParallax');
     world.$add('ngSimpleParallax');
@@ -55,6 +60,8 @@
     world.$add('ngStatsEnd', {
         domId: 'gameView'
     });
+
+    world.$add('ngPerformanceStopLog');
 
     var xStep = 16,
         yStep = 16,
@@ -92,12 +99,12 @@
                 },
 
                 ngPixijsSprite: false,
-                ngSpriteAtlas : {
+                ngSprite : {
 //                    name: pixels[nodeId],
 //                    name: pixels[Math.floor(pixels.length * (depth + 1) / 2 + Math.random())%4],
 //                    name: pixels[Math.floor(i + 4.3 * (Math.sin(2 * Math.PI * j / jcount + 1 ) + 1)) % 4],
                     name: pixels[Math.floor(i) % 4],
-                    url: 'assets/spritesheet.json',
+                    spriteSheetUrl: 'assets/spritesheet.json',
 //                    fitToSize: true,
                     anchor: {
                         x: 0.0,
