@@ -8,13 +8,13 @@
 
     var m = darlingjs.m('ngPerformance');
 
-    m.$s('ngPerformanceStartLog', {
+    m.$s('ngPerformanceLogBegin', {
         $beforeUpdate: function() {
             this.startTime = Date.now();
         }
     });
 
-    m.$s('ngPerformanceStopLog', {
+    m.$s('ngPerformanceLogEnd', {
         enabled: true,
 
         logToConsole: true,
@@ -61,8 +61,8 @@
                     console.log('fps avg : ' + avgFps + ' stdsqr : ' + Math.sqrt(stdFps));
                 }
 
-                if (this.logToGoogleAnalytics && ga) {
-                    ga('_trackEvent', 'performance-avg', 'performance-avg', avgPerformance);
+                if (this.logToGoogleAnalytics && window._gaq) {
+                    _gaq.push(['_trackEvent', 'performance-avg', 'performance-avg', avgPerformance]);
 
                     var performanceType;
                     if (avgFps < 40) {
@@ -71,7 +71,7 @@
                         performanceType = 'high-fps';
                     }
 
-                    ga('_trackEvent', 'fps-avg', performanceType, avgFps);
+                    _gaq.push(['_trackEvent', 'fps-avg', performanceType, avgFps]);
                 }
 
                 this._sampleIndex = 0;

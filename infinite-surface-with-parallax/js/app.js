@@ -27,7 +27,7 @@
     //any system add some abilities
 
     //start log performance
-    world.$add('ngPerformanceStartLog');
+    world.$add('ngPerformanceLogBegin');
 
     //start log statistics
     world.$add('ngStatsBegin');
@@ -90,7 +90,7 @@
     });
 
     //end of collecting performance
-    world.$add('ngPerformanceStopLog');
+    world.$add('ngPerformanceLogEnd');
 
     // ---------------------------------------------------------------
     //
