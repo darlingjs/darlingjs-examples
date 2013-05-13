@@ -894,7 +894,7 @@ buildCloudFront({
 });
 
 buildMountain({
-    depth: 1.8,
+    depth: 2.0,
     depthDeviation: 0.5
 });
 
@@ -902,7 +902,7 @@ buildCity({
     step: 1000,
     y: 950,
     count: 2,
-    depth: 1.3,
+    depth: 1.0,
     depthDeviation: 0.3
 });
 
