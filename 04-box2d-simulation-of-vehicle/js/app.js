@@ -34,7 +34,7 @@ var world = darlingjs.world('myGame', [
 
 world.$add('ngStatsBegin');
 
-world.$add('ngPerformanceStartLog');
+world.$add('ngPerformanceLogBegin');
 
 world.$add('ng2DViewPort', {
     lookAt: {
@@ -186,7 +186,7 @@ if (debugDraw) {
     });
 }
 
-world.$add('ngPerformanceStopLog');
+world.$add('ngPerformanceLogEnd');
 
 world.$add('ngStatsEnd', {
     domId: 'gameView'
