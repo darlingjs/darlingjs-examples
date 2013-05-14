@@ -15,9 +15,9 @@
         'ngPerformance'
     ]);
 
-    world.$add('ngPerformanceStartLog');
-
     world.$add('ngStatsBegin');
+
+    world.$add('ngPerformanceLogBegin');
 
     var ng2DViewPort = world.$add('ng2DViewPort', {
         lookAt: {
@@ -51,11 +51,11 @@
         }]
     });
 
+    world.$add('ngPerformanceLogEnd');
+
     world.$add('ngStatsEnd', {
         domId: 'gameView'
     });
-
-    world.$add('ngPerformanceStopLog');
 
     var xStep = 32,
         yStep = 32,

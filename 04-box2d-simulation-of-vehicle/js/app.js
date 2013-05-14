@@ -122,10 +122,11 @@ world.$add('ngBindLifeToAlpha');
 
 if (renderWithPixiJs) {
     world.$add('ngPixijsStage', {
-        domId: 'gameView',
+        domId: 'gameCanvas',
         width: width,
         height: height,
-        useWebGL: true
+        useWebGL: true,
+        fitToWindow: true
     });
 
     world.$add('ngPixijsUpdateCycle');
