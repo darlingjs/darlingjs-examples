@@ -19,8 +19,8 @@
     <article class="center">
       <section>
         <div id="gameView" class="gameview">
-          <div id="gameDiv">
-            <canvas id="gameCanvas"/>
+          <div style="position: absolute;top: 0px;">
+            <canvas id="gameCanvas" style="cursor: default;"/>
           </div>
         </div>
       </section>
@@ -54,6 +54,10 @@
 
     <script src="../../../GameEngine/src/extensions/particles/particleSystem.js"></script>
 
+    <script src="../../../GameEngine/vendor/howler/howler.js"></script>
+    <script src="../../../GameEngine/src/extensions/sound/sound.js"></script>
+    <script src="../../../GameEngine/src/extensions/sound/howlerAdapter.js"></script>
+
     <script src="../../../GameEngine/vendor/q/q.js"></script>
 
     <!--CDN-->
@@ -62,5 +66,25 @@
 
     <script src="js/common.js"></script>
     <script src="js/app.js"></script>
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','googleAnalytics');
+
+      googleAnalytics('create', 'UA-38043860-4', {
+        'cookieDomain': 'none'
+      });
+
+      googleAnalytics('send', 'pageview');
+
+      window.onerror = function(msg, url, line) {
+        var preventErrorAlert = true;
+        googleAnalytics('send', 'event', 'JS Error', msg, navigator.userAgent + ' -> ' + url + " : " + line, line);
+        console.log('send', 'event', 'JS Error', msg, navigator.userAgent + ' -> ' + url + " : " + line);
+        return preventErrorAlert;
+      };
+    </script>
 </body>
 </html>

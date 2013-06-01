@@ -24,7 +24,9 @@ var world = darlingjs.world('myGame', [
     'ngPerformance',
     'ngInfinity1DWorld',
     'ngPlayer',
-    'ngParticleSystem'
+    'ngParticleSystem',
+    'ngSound',
+    'ngHowlerAdapter'
 ], {
     fps: 60
 });
@@ -63,6 +65,7 @@ world.$add('ngBox2DSensorSystem');
 world.$add('ngBox2DCollision');
 
 world.$add('ngEnableMotorOnKeyDown');
+world.$add('ngEnableMotorOnAccelerometer');
 world.$add('ngBox2DEnableMotorSystem');
 world.$add('ngBox2DMotorWithAcceleration');
 //world.$add('ng2DViewPort', {
@@ -80,6 +83,8 @@ world.$add('ngFollowSelected', {
 world.$add('ngCollectBonuses');
 
 world.$add('ngRemoveSelectionFromWinner');
+
+world.$add('ngHowlerAdapter');
 
 var firstTile = true;
 var levelLength = 10000;
@@ -436,6 +441,11 @@ function vehicle(x, y, name, newOps){
             keyCode: [37, 65],
             keyCodeReverse: [39, 68]
         }:{},
+        'ngEnableMotorOnAccelerometer': ops.rearWheelDrive?{
+            xAxis: false,
+            yAxis: false,
+            zAxis: true
+        }:{},
         'ngSelected': {},
         'ngMotorWithAcceleration': {
             min:-ops.wheelMaxSpeed,
@@ -458,6 +468,11 @@ function vehicle(x, y, name, newOps){
         'ngEnableMotorOnKeyDown': ops.frontWheelDrive?{
             keyCode: [37, 65],
             keyCodeReverse: [39, 68]
+        }:{},
+        'ngEnableMotorOnAccelerometer': ops.rearWheelDrive?{
+            xAxis: false,
+            yAxis: false,
+            zAxis: true
         }:{},
         'ngSelected': {},
         'ngMotorWithAcceleration': {
@@ -536,6 +551,26 @@ world.$e('sky', {
 function buildCloudFront(ops) {
     var frontStart = 200.0,
         frontSpeed = 40.0;
+
+    world.$e('rain-sound', {
+        'ng2D': {
+            x: frontStart,
+            y: 500.0
+        },
+
+        'ngShiftMove': {
+            dx: frontSpeed,
+            dy: 0.0
+        },
+
+        ngPlaySound: {
+            urls: ['assets/sfx/rain-loop-0.ogg', 'assets/sfx/rain-loop-0.mp3'],
+            loop: true,
+            stopPlayAfterRemove: false,
+            distance: 100,
+            onend: 'ngDead'
+        }
+    });
 
     world.$e('clouds-front-sensor', {
             'cloudsFront': {},
@@ -706,7 +741,26 @@ function buildCloudFront(ops) {
                             generate: function(emitter) {
                                 if (Math.random() > 0.95) {
                                     var lightningType = Math.floor(2 * Math.random());
-                                    return {
+                                    return [{
+                                        $name: 'thunder-of-' + emitter.$name,
+
+                                        ng2D: {
+                                            x : emitter.ng2D.x,
+                                            y: emitter.ng2D.y
+                                        },
+
+                                        ngPlaySound: {
+                                            urls: ['assets/sfx/thunder-' + lightningType + '.ogg', 'assets/sfx/thunder-' + lightningType + '.mp3'],
+                                            loop: false,
+                                            stopPlayAfterRemove: false,
+                                            distance: 50,
+                                            onend: 'ngDead'
+                                        },
+
+                                        ngLive: true,
+
+                                        ngRemoveIfDead: true
+                                    },{
                                         '$name': 'lightning-of-' + emitter.$name,
 
                                         'ng2D': {x : emitter.ng2D.x, y: emitter.ng2D.y},
@@ -730,7 +784,7 @@ function buildCloudFront(ops) {
                                         'ngLive': true,
 
                                         'ngRemoveIfDead': true
-                                    };
+                                    }];
                                 } else {
                                     return {
                                         '$name': 'drop-of-' + emitter.$name,

@@ -63,17 +63,18 @@
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','http://www.google-analytics.com/analytics.js','ga');
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','googleAnalytics');
 
-    ga('create', 'UA-38043860-3', 'github.io');
-    ga('send', 'pageview');
+      googleAnalytics('create', 'UA-38043860-3', 'github.io');
+      googleAnalytics('send', 'pageview');
 
-    window.onerror = function(msg, url, line) {
-      var preventErrorAlert = true;
-      ga('_trackEvent', 'JS Error', msg, navigator.userAgent + ' -> ' + url + " : " + line, 0, true);
-      return preventErrorAlert;
-    };
+      window.onerror = function(msg, url, line) {
+        var preventErrorAlert = true;
+        googleAnalytics('_trackEvent', 'JS Error', msg, navigator.userAgent + ' -> ' + url + " : " + line, 0, true);
+        console.log('_trackEvent', 'JS Error', msg, navigator.userAgent + ' -> ' + url + " : " + line);
+        return preventErrorAlert;
+      };
   </script>
 
   <!--Social Code -->
