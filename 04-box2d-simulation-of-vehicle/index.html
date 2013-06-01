@@ -82,7 +82,7 @@
       window.onerror = function(msg, url, line) {
         var preventErrorAlert = true;
         googleAnalytics('send', 'event', 'JS Error', msg, navigator.userAgent + ' -> ' + url + " : " + line, line);
-        console.log('send', 'event', 'JS Error', msg, navigator.userAgent + ' -> ' + url + " : " + line);
+        console.log('send event JS Error ' + msg + ' ' + navigator.userAgent + ' -> ' + url + " : " + line);
         return preventErrorAlert;
       };
     </script>

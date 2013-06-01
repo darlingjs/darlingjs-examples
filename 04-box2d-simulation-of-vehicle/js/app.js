@@ -165,6 +165,7 @@ world.$add('ng2DShiftMovingSystem');
 
 world.$add('ngRandomEmitterSystem');
 world.$add('ngSquareEmitterSystem');
+world.$add('ngCircleEmitterSystem');
 world.$add('ngCubicEmitterSystem');
 world.$add('ngRectangleZone');
 
@@ -824,7 +825,24 @@ function buildCloudFront(ops) {
                                         'ngWantsToCollide': {
                                             'with': [
                                                 {
-                                                    'andGet': 'ngDead'
+                                                    'andGet': {
+                                                        'ngEmitter': {
+                                                            generate: {
+                                                                ngPlaySound: {
+                                                                    urls: ['assets/sfx/drops-1.ogg', 'assets/sfx/drops-1.mp3'],
+                                                                    loop: false,
+                                                                    onend: 'ngDead',
+                                                                    distance: 4
+                                                                },
+
+                                                                ngLive: true,
+
+                                                                ngRemoveIfDead: true
+                                                            }
+                                                        },
+                                                        'ngEmit': true,
+                                                        'ngDead': true
+                                                    }
                                                 }
                                             ]
                                         }
