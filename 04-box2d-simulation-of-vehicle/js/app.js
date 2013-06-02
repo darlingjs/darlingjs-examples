@@ -832,7 +832,7 @@ function buildCloudFront(ops) {
                                                                     urls: ['assets/sfx/drops-1.ogg', 'assets/sfx/drops-1.mp3'],
                                                                     loop: false,
                                                                     onend: 'ngDead',
-                                                                    distance: 4
+                                                                    distance: 10
                                                                 },
 
                                                                 ngLive: true,
