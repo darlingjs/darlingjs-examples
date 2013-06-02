@@ -1172,6 +1172,33 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
             }));
         }
 
+
+        if (Math.random() > 0.97) {
+            entities.push(world.$e('bird-nightingale-0-' + x, {
+                ng2D: {
+                    x: x,
+                    y: -lowHeight
+                },
+
+                ngSound: {
+                    urls: ['assets/sfx/bird-nightingale-0.ogg', 'assets/sfx/bird-nightingale-0.mp3'],
+                    volume: 1.3 + 0.3 * Math.random(),
+                    loop: true,
+                    stopPlayAfterRemove: true,
+                    distance: 5 + 3 * Math.random(),
+                    offset: 100 * Math.random()
+                }
+            }));
+        }
+
+
+        ngSound: {
+            "urls": ["assets/sfx/bird-nightingale-0.ogg", "assets/sfx/bird-nightingale-0.mp3"],
+            "volume": 1.3 + 0.3 * Math.random(),
+            "loop": true,
+            "offset": 100 * Math.random()
+        }
+
         var seed = Math.floor(100 * Math.random());
         if (seed < 10) {
             entities.push(world.$e('three-0-' + x, {
