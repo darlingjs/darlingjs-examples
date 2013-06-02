@@ -300,7 +300,25 @@ function vehicle(x, y, name, newOps){
                 },
                 {
                     'any': ['ngBonus'],
-                    'andGet': 'ngGetBonus'
+                    'andGet': {
+                        'ngGetBonus': true,
+                        'ngSound': function() {
+                            var soundName;
+                            if (Math.random() > 0.25) {
+                                soundName = 'pickup-bonus-A';
+                            } else {
+                                soundName = 'pickup-bonus-E';
+                            }
+                            return {
+                                urls: ['assets/sfx/' + soundName + '.ogg', 'assets/sfx/' + soundName + '.mp3'],
+                                volume: 0.3,
+                                loop: false,
+                                stopPlayAfterRemove: false,
+                                removeEntityOnEnd: false,
+                                removeComponentOnEnd: true
+                            };
+                        }
+                    }
                 },
                 {
                     'any': ['drop'],
