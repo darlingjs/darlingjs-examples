@@ -325,6 +325,14 @@ function vehicle(x, y, name, newOps){
                     'andGet': {
                         'ngDamage': {
                             damage: 0.1
+                        },
+                        'ngSound': {
+                            urls: ['assets/sfx/drops-damage.ogg', 'assets/sfx/drops-damage.mp3'],
+                            volume: 0.3,
+                            loop: false,
+                            stopPlayAfterRemove: false,
+                            removeEntityOnEnd: false,
+                            removeComponentOnEnd: true
                         }
                     }
                 },
