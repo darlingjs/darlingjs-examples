@@ -341,6 +341,14 @@ function vehicle(x, y, name, newOps){
                     'andGet': {
                         'ngContinuousDamage': {
                             damage: 0.5
+                        },
+                        'ngSound': {
+                            urls: ['assets/sfx/doom-damage-0.ogg', 'assets/sfx/doom-damage-0.mp3'],
+                            volume: 1.0,
+                            loop: false,
+                            stopPlayAfterRemove: false,
+                            removeEntityOnEnd: false,
+                            removeComponentOnEnd: true
                         }
                     }
                 }
