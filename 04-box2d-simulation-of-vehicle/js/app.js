@@ -84,7 +84,7 @@ world.$add('ngCollectBonuses');
 
 world.$add('ngRemoveSelectionFromWinner');
 
-world.$add('ngHowlerAdapter');
+var hawlerAdapter = world.$add('ngHowlerAdapter');
 world.$add('ngHowlerAmbientSoundAdapter');
 
 var firstTile = true;
@@ -1687,4 +1687,12 @@ function convertTiledPropertiesToComponents(properties) {
     }
 
     return components;
+}
+
+function soundSwitch() {
+    if (hawlerAdapter.isMute()) {
+        hawlerAdapter.unmute();
+    } else {
+        hawlerAdapter.mute();
+    }
 }
