@@ -564,12 +564,11 @@ function buildCloudFront(ops) {
             dy: 0.0
         },
 
-        ngPlaySound: {
+        ngSound: {
             urls: ['assets/sfx/rain-loop-0.ogg', 'assets/sfx/rain-loop-0.mp3'],
             loop: true,
-            stopPlayAfterRemove: false,
-            distance: 100,
-            onend: 'ngDead'
+            stopPlayAfterRemove: true,
+            distance: 100
         }
     });
 
@@ -750,17 +749,11 @@ function buildCloudFront(ops) {
                                             y: emitter.ng2D.y
                                         },
 
-                                        ngPlaySound: {
+                                        ngSound: {
                                             urls: ['assets/sfx/thunder-' + lightningType + '.ogg', 'assets/sfx/thunder-' + lightningType + '.mp3'],
                                             loop: false,
-                                            stopPlayAfterRemove: false,
-                                            distance: 50,
-                                            onend: 'ngDead'
-                                        },
-
-                                        ngLive: true,
-
-                                        ngRemoveIfDead: true
+                                            distance: 50
+                                        }
                                     },{
                                         '$name': 'lightning-of-' + emitter.$name,
 
@@ -828,16 +821,11 @@ function buildCloudFront(ops) {
                                                     'andGet': {
                                                         'ngEmitter': {
                                                             generate: {
-                                                                ngPlaySound: {
+                                                                ngSound: {
                                                                     urls: ['assets/sfx/drops-1.ogg', 'assets/sfx/drops-1.mp3'],
                                                                     loop: false,
-                                                                    onend: 'ngDead',
                                                                     distance: 10
-                                                                },
-
-                                                                ngLive: true,
-
-                                                                ngRemoveIfDead: true
+                                                                }
                                                             }
                                                         },
                                                         'ngEmit': true,
