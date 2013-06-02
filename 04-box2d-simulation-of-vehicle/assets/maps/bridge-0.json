@@ -300,6 +300,20 @@
                  "width":32,
                  "x":496,
                  "y":40
+                }, 
+                {
+                 "ellipse":true,
+                 "height":216,
+                 "name":"frogs",
+                 "properties":
+                    {
+                     "ngSound":"{\n\"urls\": [\"assets\/sfx\/frogs-0.ogg\", \"assets\/sfx\/frogs-0.mp3\"],\n\"volume\": 1.0,\n\"loop\": true\n}"
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":208,
+                 "x":160,
+                 "y":0
                 }],
          "opacity":1,
          "type":"objectgroup",

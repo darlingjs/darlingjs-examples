@@ -1191,14 +1191,6 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
             }));
         }
 
-
-        ngSound: {
-            "urls": ["assets/sfx/bird-nightingale-0.ogg", "assets/sfx/bird-nightingale-0.mp3"],
-            "volume": 1.3 + 0.3 * Math.random(),
-            "loop": true,
-            "offset": 100 * Math.random()
-        }
-
         var seed = Math.floor(100 * Math.random());
         if (seed < 10) {
             entities.push(world.$e('three-0-' + x, {
@@ -1501,7 +1493,6 @@ function parseMap(data) {
                         var components = {};
 
                         components = convertTiledPropertiesToComponents(object.properties);
-
                         switch(object.type) {
                             case 'right-edge':
                                 rightEdge.x = object.x + 0.5 * object.width;
@@ -1551,7 +1542,7 @@ function parseMap(data) {
                                 break;
                             case '':
                                 //TODO:
-                                console.log('undefined object', object);
+                                //console.log('undefined object', object);
                                 //continue;
                                 break;
                             default:
