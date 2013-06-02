@@ -85,6 +85,7 @@ world.$add('ngCollectBonuses');
 world.$add('ngRemoveSelectionFromWinner');
 
 world.$add('ngHowlerAdapter');
+world.$add('ngHowlerAmbientSoundAdapter');
 
 var firstTile = true;
 var levelLength = 10000;
@@ -447,6 +448,33 @@ function vehicle(x, y, name, newOps){
             yAxis: false,
             zAxis: true
         }:{},
+        ngAnyJoint: {
+            onEnabledReverse: {
+                ngAmbientSound : {
+                    urls: ['assets/sfx/engine-loop-0.ogg', 'assets/sfx/engine-loop-0.mp3'],
+                    volume: 0.03,
+                    loop: true,
+                    stopPlayAfterRemove: true
+                }
+            },
+            onEnabled: {
+                ngAmbientSound : {
+                    urls: ['assets/sfx/tires-squal-loop-0.ogg', 'assets/sfx/tires-squal-loop-0.mp3'],
+                    volume: 0.03,
+                    loop: true,
+                    stopPlayAfterRemove: true
+                }
+            }
+
+/*
+            onEnabled: function() {
+                console.log('motor is enabled');
+            },
+            onDisabled: function() {
+                console.log('motor is disabled');
+            }
+*/
+        },
         'ngSelected': {},
         'ngMotorWithAcceleration': {
             min:-ops.wheelMaxSpeed,
