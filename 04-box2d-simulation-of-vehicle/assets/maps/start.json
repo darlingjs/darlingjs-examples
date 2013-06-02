@@ -3,7 +3,21 @@
         {
          "height":64,
          "name":"dynamic",
-         "objects":[],
+         "objects":[
+                {
+                 "ellipse":true,
+                 "height":216,
+                 "name":"rock-drums",
+                 "properties":
+                    {
+                     "ngSound":"{\n\"urls\": [\"assets\/sfx\/rock-drums-120-0.ogg\", \"assets\/sfx\/rock-drums-120-0.mp3\"],\n\"volume\": 0.5,\n\"loop\": true\n}"
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":216,
+                 "x":336,
+                 "y":224
+                }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
