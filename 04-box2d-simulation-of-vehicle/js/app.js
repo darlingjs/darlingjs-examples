@@ -1155,6 +1155,23 @@ function hillGenerator(newTile, leftSeedTile, rightSeedTile, ops) {
 //            }));
 //        }
 
+        if (Math.random() > 0.95) {
+            entities.push(world.$e('cicada-0-' + x, {
+                ng2D: {
+                    x: x,
+                    y: -lowHeight
+                },
+
+                ngSound: {
+                    urls: ['assets/sfx/cicada-0.ogg', 'assets/sfx/cicada-0.mp3'],
+                    volume: 0.7 + 0.3 * Math.random(),
+                    loop: true,
+                    stopPlayAfterRemove: true,
+                    distance: 5 + 3 * Math.random()
+                }
+            }));
+        }
+
         var seed = Math.floor(100 * Math.random());
         if (seed < 10) {
             entities.push(world.$e('three-0-' + x, {
