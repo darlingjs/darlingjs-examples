@@ -36,7 +36,9 @@ var world = darlingjs.world('myGame', [
 
 var ngResourceLoader = world.$add('ngResourceLoader');
 ngResourceLoader.on('progress', function() {
-    console.log('ngResourceLoader.progress = ' + (ngResourceLoader.availableCount / ngResourceLoader.totalCount));
+    var progress = (ngResourceLoader.availableCount / ngResourceLoader.totalCount);
+    console.log('ngResourceLoader.progress = ' + progress);
+    document.getElementById('loading').innerHTML = 'ngResourceLoader.progress = ' + Math.floor(progress * 100) + '%';
 });
 
 ngResourceLoader.on('complete', function() {
@@ -44,6 +46,7 @@ ngResourceLoader.on('complete', function() {
     if (!isGameRunning) {
         startGame();
     }
+    document.getElementById('loading').innerHTML = 'loaded!';
 });
 
 //sounds
