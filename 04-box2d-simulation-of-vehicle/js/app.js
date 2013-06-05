@@ -26,1019 +26,1059 @@ var world = darlingjs.world('myGame', [
     'ngPlayer',
     'ngParticleSystem',
     'ngSound',
-    'ngHowlerAdapter'
+    'ngHowlerAdapter',
+    'ngResources'
 ], {
     fps: 60
 });
 
-// systems
+//resource loading
 
-
-world.$add('ngStatsBegin');
-
-world.$add('ngPerformanceLogBegin');
-
-world.$add('ng2DViewPort', {
-    lookAt: {
-        x: 400, y: 300
-    },
-    width: width,
-    height: height
+var ngResourceLoader = world.$add('ngResourceLoader');
+ngResourceLoader.on('progress', function() {
+    console.log('ngResourceLoader.progress = ' + (ngResourceLoader.availableCount / ngResourceLoader.totalCount));
 });
 
-world.$add('ngBox2DSystem', {
-    gravity: {
-        x: 0,
-        y: 9.8
-    },
-    velocityIterations: 7,
-    positionIterations: 7
-});
-
-//world.$add('ngBox2DDraggable', { domId: 'gameView', width: width, height: height });
-world.$add('ngBox2DFixRotation');
-world.$add('ngBox2DCollisionGroup');
-world.$add('ngBox2DRevoluteJoint');
-world.$add('ngBox2DPrismaticJoint');
-world.$add('ngBox2DDistanceJoint');
-world.$add('ngBox2DSensorSystem');
-world.$add('ngBox2DCollision');
-
-world.$add('ngEnableMotorOnKeyDown');
-world.$add('ngEnableMotorOnAccelerometer');
-world.$add('ngBox2DEnableMotorSystem');
-world.$add('ngBox2DMotorWithAcceleration');
-//world.$add('ng2DViewPort', {
-//    width: width,
-//    height: height
-//});
-
-world.$add('ngFollowSelected', {
-    shift: {
-        x: 100.0,
-        y: -100.0
+ngResourceLoader.on('complete', function() {
+    console.log('ngResourceLoader.complete');
+    if (!isGameRunning) {
+        startGame();
     }
 });
 
-world.$add('ngCollectBonuses');
+//sounds
+var ngHowlerResources = world.$add('ngHowlerResources');
+ngHowlerResources.load(['assets/sfx/pickup-bonus-A.ogg', 'assets/sfx/pickup-bonus-A.mp3'], ngResourceLoader);
+ngHowlerResources.load(['assets/sfx/pickup-bonus-E.ogg', 'assets/sfx/pickup-bonus-E.mp3'], ngResourceLoader);
+ngHowlerResources.load(['assets/sfx/drops-damage.ogg', 'assets/sfx/drops-damage.mp3'], ngResourceLoader);
+ngHowlerResources.load(['assets/sfx/doom-damage-0.ogg', 'assets/sfx/doom-damage-0.mp3'], ngResourceLoader);
+ngHowlerResources.load(['assets/sfx/engine-loop-0.ogg', 'assets/sfx/engine-loop-0.mp3'], ngResourceLoader);
+ngHowlerResources.load(['assets/sfx/tires-squal-loop-0.ogg', 'assets/sfx/tires-squal-loop-0.mp3'], ngResourceLoader);
+ngHowlerResources.load(['assets/sfx/rain-loop-0.ogg', 'assets/sfx/rain-loop-0.mp3'], ngResourceLoader);
+ngHowlerResources.load(['assets/sfx/thunder-0.ogg', 'assets/sfx/thunder-0.mp3'], ngResourceLoader);
+ngHowlerResources.load(['assets/sfx/thunder-1.ogg', 'assets/sfx/thunder-1.mp3'], ngResourceLoader);
+ngHowlerResources.load(['assets/sfx/drops-1.ogg', 'assets/sfx/drops-1.mp3'], ngResourceLoader);
+ngHowlerResources.load(['assets/sfx/cicada-0.ogg', 'assets/sfx/cicada-0.mp3'], ngResourceLoader);
+ngHowlerResources.load(['assets/sfx/bird-nightingale-0.ogg', 'assets/sfx/bird-nightingale-0.mp3'], ngResourceLoader);
+ngHowlerResources.load(['assets/sfx/frogs-0.ogg', 'assets/sfx/frogs-0.mp3'], ngResourceLoader);
 
-world.$add('ngRemoveSelectionFromWinner');
+//sound track
+ngHowlerResources.load(['assets/sfx/rock-drums-120-0.ogg', 'assets/sfx/rock-drums-120-0.mp3'], ngResourceLoader);
 
-var hawlerAdapter = world.$add('ngHowlerAdapter');
-world.$add('ngHowlerAmbientSoundAdapter');
+//images
+var ngPixijsResources = world.$add('ngPixijsResources');
+ngPixijsResources.load('assets/spritesheet.json', ngResourceLoader);
 
-var firstTile = true;
-var levelLength = 10000;
+var isGameRunning = false
+function startGame() {
+    isGameRunning = true;
 
-world.$add('ngInfinity1DWorld', {
-    seed: {
-        leftEdge: 0.0,
-        leftHeight: 0.0,
-        rightEdge: 0.0,
-        rightHeight: 600.0//140 + 200 * Math.random()
-    },
-    generator: function(newTile, leftSeedTile, rightSeedTile) {
-        if (leftSeedTile && leftSeedTile.rightEdge <= 0.0 || rightSeedTile && rightSeedTile.rightEdge <= 0.0) {
-            generateByTiledFile(newTile, leftSeedTile, rightSeedTile, 'assets/maps/start.json');
-            firstTile = false;
-        } else {
+    // systems
+    world.$add('ngStatsBegin');
 
-            if (leftSeedTile && leftSeedTile.rightEdge > levelLength) {
-                generateByTiledFile(newTile, leftSeedTile, rightSeedTile, 'assets/maps/finish.json');
+    world.$add('ngPerformanceLogBegin');
+
+    world.$add('ng2DViewPort', {
+        lookAt: {
+            x: 400, y: 300
+        },
+        width: width,
+        height: height
+    });
+
+    world.$add('ngBox2DSystem', {
+        gravity: {
+            x: 0,
+            y: 9.8
+        },
+        velocityIterations: 7,
+        positionIterations: 7
+    });
+
+    //world.$add('ngBox2DDraggable', { domId: 'gameView', width: width, height: height });
+    world.$add('ngBox2DFixRotation');
+    world.$add('ngBox2DCollisionGroup');
+    world.$add('ngBox2DRevoluteJoint');
+    world.$add('ngBox2DPrismaticJoint');
+    world.$add('ngBox2DDistanceJoint');
+    world.$add('ngBox2DSensorSystem');
+    world.$add('ngBox2DCollision');
+
+    world.$add('ngEnableMotorOnKeyDown');
+    world.$add('ngEnableMotorOnAccelerometer');
+    world.$add('ngBox2DEnableMotorSystem');
+    world.$add('ngBox2DMotorWithAcceleration');
+    //world.$add('ng2DViewPort', {
+    //    width: width,
+    //    height: height
+    //});
+
+    world.$add('ngFollowSelected', {
+        shift: {
+            x: 100.0,
+            y: -100.0
+        }
+    });
+
+    world.$add('ngCollectBonuses');
+
+    world.$add('ngRemoveSelectionFromWinner');
+
+    var hawlerAdapter = world.$add('ngHowlerAdapter');
+    world.$add('ngHowlerAmbientSoundAdapter');
+
+    var firstTile = true;
+    var levelLength = 10000;
+
+    world.$add('ngInfinity1DWorld', {
+        seed: {
+            leftEdge: 0.0,
+            leftHeight: 0.0,
+            rightEdge: 0.0,
+            rightHeight: 600.0//140 + 200 * Math.random()
+        },
+        generator: function(newTile, leftSeedTile, rightSeedTile) {
+            if (leftSeedTile && leftSeedTile.rightEdge <= 0.0 || rightSeedTile && rightSeedTile.rightEdge <= 0.0) {
+                generateByTiledFile(newTile, leftSeedTile, rightSeedTile, 'assets/maps/start.json');
+                firstTile = false;
             } else {
-                var seed = Math.random();
-                if (seed <= 0.9) {
-                    hillGenerator(newTile, leftSeedTile, rightSeedTile, {
-                        hillWidth: 640 + 50 * Math.random(),
-                        hillHeight: 50 * Math.random()
-                    });
-                } else if (false) {
-                    generateStraightLine(newTile, leftSeedTile, rightSeedTile);
+
+                if (leftSeedTile && leftSeedTile.rightEdge > levelLength) {
+                    generateByTiledFile(newTile, leftSeedTile, rightSeedTile, 'assets/maps/finish.json');
                 } else {
-                    generateByTiledFile(newTile, leftSeedTile, rightSeedTile, 'assets/maps/bridge-0.json');
+                    var seed = Math.random();
+                    if (seed <= 0.9) {
+                        hillGenerator(newTile, leftSeedTile, rightSeedTile, {
+                            hillWidth: 640 + 50 * Math.random(),
+                            hillHeight: 50 * Math.random()
+                        });
+                    } else if (false) {
+                        generateStraightLine(newTile, leftSeedTile, rightSeedTile);
+                    } else {
+                        generateByTiledFile(newTile, leftSeedTile, rightSeedTile, 'assets/maps/bridge-0.json');
+                    }
                 }
             }
         }
+    });
+
+    world.$add('ngBindPositionToPhysics');
+
+    world.$add('ngBindLifeToAlpha');
+
+    if (renderWithPixiJs) {
+        world.$add('ngPixijsStage', {
+            domId: 'gameCanvas',
+            width: width,
+            height: height,
+            useWebGL: true,
+            fitToWindow: true
+        });
+
+        world.$add('ngPixijsUpdateCycle');
+        world.$add('ngPixijsSpriteShiftUpdate');
+        world.$add('ngPixijsRotationUpdateCycle');
+        world.$add('ngPixijsViewPortUpdateCycle');
+
+        world.$add('ngPixijsStaticZ', {
+            layers: [
+                'background',
+                'mountain-2',
+                'mountain-1',
+                'mountain-0',
+                'city-2',
+                'city-1',
+                'city-0',
+                'clouds',
+                'road-1',
+                'car',
+                'road-0',
+                'foreground'
+            ]
+        });
+
+        world.$add('ngPixijsSpriteFactory');
+
+        //world.$add('ngPixijsMovieClip');
     }
-});
 
-world.$add('ngBindPositionToPhysics');
+    world.$add('ng2DShiftMovingSystem');
 
-world.$add('ngBindLifeToAlpha');
+    world.$add('ngRandomEmitterSystem');
+    world.$add('ngSquareEmitterSystem');
+    world.$add('ngCircleEmitterSystem');
+    world.$add('ngCubicEmitterSystem');
+    world.$add('ngRectangleZone');
 
-if (renderWithPixiJs) {
-    world.$add('ngPixijsStage', {
-        domId: 'gameCanvas',
-        width: width,
-        height: height,
-        useWebGL: true,
-        fitToWindow: true
+    world.$add('ngRemoveIfDead');
+    world.$add('ngReduceLifeIfOutOfLifeZone');
+    world.$add('ngDeadIfOutOfLife');
+    world.$add('ngLifeIsGrooving');
+    world.$add('ngDecreaseLifeOnDamage');
+    world.$add('ngDecreaseLifeOnContinuousDamage');
+
+    world.$add('ngLockOnViewPortOnShiftToIt');
+
+    world.$add('ngLifeHandler');
+
+    world.$add('ngConvert3DtoParallax');
+    world.$add('ngSimpleParallax');
+
+    world.$add('ngMarkIfOutsideOfTheViewPortHorizontal3D');
+    world.$add('ngMarkIfInsideOfTheViewPortHorizontal3D');
+    world.$add('ng3DCyclicLayer');
+
+    if (debugDraw) {
+        world.$add('ngBox2DDebugDraw', {
+            domID: 'gameView', width: width, height: height
+        });
+    }
+
+    world.$add('ngPerformanceLogEnd');
+
+    world.$add('ngStatsEnd', {
+        domId: 'gameView'
     });
+    //vehicle
 
-    world.$add('ngPixijsUpdateCycle');
-    world.$add('ngPixijsSpriteShiftUpdate');
-    world.$add('ngPixijsRotationUpdateCycle');
-    world.$add('ngPixijsViewPortUpdateCycle');
+    function vehicle(x, y, name, newOps){
+        newOps = newOps || {};
+        var ops = {
+            width: newOps.width || 45.0,
+            height: newOps.height || 10.0,
+            axleContainerDistance: newOps.axleContainerDistance || 30.0,
+            axleContainerWidth: newOps.axleContainerWidth ||  5.0,
+            axleContainerHeight: newOps.axleContainerHeight || 20.0,
+            axleContainerDepth: newOps.axleContainerDepth || 10.0,
+            axleAngle: newOps.axleAngle || 20.0,
+            wheelRadius: newOps.wheelRadius || 25.0,
+            wheelMaxSpeed: newOps.wheelMaxSpeed || 20.0,
+            wheelAcceleration: newOps.wheelAcceleration || 1.0,
+            rearWheelDrive: true,
+            frontWheelDrive: true,
+            layerName: newOps.layerName
+        };
 
-    world.$add('ngPixijsStaticZ', {
-        layers: [
-            'background',
-            'mountain-2',
-            'mountain-1',
-            'mountain-0',
-            'city-2',
-            'city-1',
-            'city-0',
-            'clouds',
-            'road-1',
-            'car',
-            'road-0',
-            'foreground'
-        ]
-    });
+        var degreesToRadians = Math.PI / 180.0;
 
-    world.$add('ngPixijsSpriteFactory');
+        //wheels
+        //* left-wheel
+        var leftWheelName = 'vehicle-left-wheel-' + name;
+        world.$e(leftWheelName, {
+            'ng2D': {
+                x: x - ops.axleContainerDistance - 2 * ops.axleContainerHeight * Math.cos((90 - ops.axleAngle) * degreesToRadians),
+                y: y + ops.axleContainerDepth + 2 * ops.axleContainerHeight * Math.sin((90 - ops.axleAngle) * degreesToRadians)
+            },
+            'ng2DCircle': {radius: ops.wheelRadius},
+            'ng2DRotation': {},
+            'ngDraggable': {},
+            'ngPhysic': {
+                restitution: 0.2,
+                friction: 15.0,
+                density: 1.0
+            },
+            'ngCollisionGroup': {
+                'neverWith': 'vehicle'
+            },
 
-    //world.$add('ngPixijsMovieClip');
-}
+            ngSprite: {
+                name: name + '-wheel.png',
+                spriteSheetUrl: 'assets/spritesheet.json',
+                layerName: ops.layerName
+            }
+        });
 
-world.$add('ng2DShiftMovingSystem');
+        //* right-wheel
+        var rightWheelName = 'vehicle-right-wheel-' + name;
+        world.$e(rightWheelName, {
+            'ng2D': {
+                x: x + ops.axleContainerDistance + 2 * ops.axleContainerHeight * Math.cos((90 - ops.axleAngle) * degreesToRadians),
+                y: y + ops.axleContainerDepth + 2 * ops.axleContainerHeight * Math.sin((90 - ops.axleAngle) * degreesToRadians)
+            },
+            'ng2DCircle': {radius: ops.wheelRadius},
+            'ng2DRotation': {},
+            'ngDraggable': {},
+            'ngPhysic': {
+                name: rightWheelName,
+                restitution: 0.2,
+                friction: 15.0,
+                density: 1.5
+            },
+            'ngCollisionGroup': {
+                'neverWith': 'vehicle'
+            },
 
-world.$add('ngRandomEmitterSystem');
-world.$add('ngSquareEmitterSystem');
-world.$add('ngCircleEmitterSystem');
-world.$add('ngCubicEmitterSystem');
-world.$add('ngRectangleZone');
+            ngSprite: {
+                name: name + '-wheel.png',
+                spriteSheetUrl: 'assets/spritesheet.json',
+                layerName: ops.layerName
+            }
+        });
 
-world.$add('ngRemoveIfDead');
-world.$add('ngReduceLifeIfOutOfLifeZone');
-world.$add('ngDeadIfOutOfLife');
-world.$add('ngLifeIsGrooving');
-world.$add('ngDecreaseLifeOnDamage');
-world.$add('ngDecreaseLifeOnContinuousDamage');
-
-world.$add('ngLockOnViewPortOnShiftToIt');
-
-world.$add('ngLifeHandler');
-
-world.$add('ngConvert3DtoParallax');
-world.$add('ngSimpleParallax');
-
-world.$add('ngMarkIfOutsideOfTheViewPortHorizontal3D');
-world.$add('ngMarkIfInsideOfTheViewPortHorizontal3D');
-world.$add('ng3DCyclicLayer');
-
-if (debugDraw) {
-    world.$add('ngBox2DDebugDraw', {
-        domID: 'gameView', width: width, height: height
-    });
-}
-
-world.$add('ngPerformanceLogEnd');
-
-world.$add('ngStatsEnd', {
-    domId: 'gameView'
-});
-
-//vehicle
-
-function vehicle(x, y, name, newOps){
-    newOps = newOps || {};
-    var ops = {
-        width: newOps.width || 45.0,
-        height: newOps.height || 10.0,
-        axleContainerDistance: newOps.axleContainerDistance || 30.0,
-        axleContainerWidth: newOps.axleContainerWidth ||  5.0,
-        axleContainerHeight: newOps.axleContainerHeight || 20.0,
-        axleContainerDepth: newOps.axleContainerDepth || 10.0,
-        axleAngle: newOps.axleAngle || 20.0,
-        wheelRadius: newOps.wheelRadius || 25.0,
-        wheelMaxSpeed: newOps.wheelMaxSpeed || 20.0,
-        wheelAcceleration: newOps.wheelAcceleration || 1.0,
-        rearWheelDrive: true,
-        frontWheelDrive: true,
-        layerName: newOps.layerName
-    };
-
-    var degreesToRadians = Math.PI / 180.0;
-
-    //wheels
-    //* left-wheel
-    var leftWheelName = 'vehicle-left-wheel-' + name;
-    world.$e(leftWheelName, {
-        'ng2D': {
-            x: x - ops.axleContainerDistance - 2 * ops.axleContainerHeight * Math.cos((90 - ops.axleAngle) * degreesToRadians),
-            y: y + ops.axleContainerDepth + 2 * ops.axleContainerHeight * Math.sin((90 - ops.axleAngle) * degreesToRadians)
-        },
-        'ng2DCircle': {radius: ops.wheelRadius},
-        'ng2DRotation': {},
-        'ngDraggable': {},
-        'ngPhysic': {
-            restitution: 0.2,
-            friction: 15.0,
-            density: 1.0
-        },
-        'ngCollisionGroup': {
-            'neverWith': 'vehicle'
-        },
-
-        ngSprite: {
-            name: name + '-wheel.png',
-            spriteSheetUrl: 'assets/spritesheet.json',
-            layerName: ops.layerName
-        }
-    });
-
-    //* right-wheel
-    var rightWheelName = 'vehicle-right-wheel-' + name;
-    world.$e(rightWheelName, {
-        'ng2D': {
-            x: x + ops.axleContainerDistance + 2 * ops.axleContainerHeight * Math.cos((90 - ops.axleAngle) * degreesToRadians),
-            y: y + ops.axleContainerDepth + 2 * ops.axleContainerHeight * Math.sin((90 - ops.axleAngle) * degreesToRadians)
-        },
-        'ng2DCircle': {radius: ops.wheelRadius},
-        'ng2DRotation': {},
-        'ngDraggable': {},
-        'ngPhysic': {
-            name: rightWheelName,
-            restitution: 0.2,
-            friction: 15.0,
-            density: 1.5
-        },
-        'ngCollisionGroup': {
-            'neverWith': 'vehicle'
-        },
-
-        ngSprite: {
-            name: name + '-wheel.png',
-            spriteSheetUrl: 'assets/spritesheet.json',
-            layerName: ops.layerName
-        }
-    });
-
-    //body
-    var bodyName = 'vehicle-body-' + name;
-    world.$e(bodyName, {
-        'ng2D': {x : x, y: y},
-        'ng2DSize': {width: 2.0 * ops.width, height: 2.0 * ops.height},
-        'ng2DRotation': {},
-        'ngDraggable': {},
-        'ngPhysic': {
-            restitution: 0.3,
-            friction: 3.0,
-            density: 0.5
-        },
-        'ngCollisionGroup': {
-            'neverWith': 'vehicle'
-        },
-        'ngSelected': {},
-        'ngWantsToCollide': {
-            'with': [
-                {
-                    'any': ['ngFinish'],
-                    'andGet': 'ngWinner'
-                },
-                {
-                    'any': ['ngBonus'],
-                    'andGet': {
-                        'ngGetBonus': true,
-                        'ngSound': function() {
-                            var soundName;
-                            if (Math.random() > 0.25) {
-                                soundName = 'pickup-bonus-A';
-                            } else {
-                                soundName = 'pickup-bonus-E';
+        //body
+        var bodyName = 'vehicle-body-' + name;
+        world.$e(bodyName, {
+            'ng2D': {x : x, y: y},
+            'ng2DSize': {width: 2.0 * ops.width, height: 2.0 * ops.height},
+            'ng2DRotation': {},
+            'ngDraggable': {},
+            'ngPhysic': {
+                restitution: 0.3,
+                friction: 3.0,
+                density: 0.5
+            },
+            'ngCollisionGroup': {
+                'neverWith': 'vehicle'
+            },
+            'ngSelected': {},
+            'ngWantsToCollide': {
+                'with': [
+                    {
+                        'any': ['ngFinish'],
+                        'andGet': 'ngWinner'
+                    },
+                    {
+                        'any': ['ngBonus'],
+                        'andGet': {
+                            'ngGetBonus': true,
+                            'ngSound': function() {
+                                var soundName;
+                                if (Math.random() > 0.25) {
+                                    soundName = 'pickup-bonus-A';
+                                } else {
+                                    soundName = 'pickup-bonus-E';
+                                }
+                                return {
+                                    urls: ['assets/sfx/' + soundName + '.ogg', 'assets/sfx/' + soundName + '.mp3'],
+                                    volume: 0.3,
+                                    loop: false,
+                                    stopPlayAfterRemove: false,
+                                    removeEntityOnEnd: false,
+                                    removeComponentOnEnd: true
+                                };
                             }
-                            return {
-                                urls: ['assets/sfx/' + soundName + '.ogg', 'assets/sfx/' + soundName + '.mp3'],
+                        }
+                    },
+                    {
+                        'any': ['drop'],
+                        'andGet': {
+                            'ngDamage': {
+                                damage: 0.1
+                            },
+                            'ngSound': {
+                                urls: ['assets/sfx/drops-damage.ogg', 'assets/sfx/drops-damage.mp3'],
                                 volume: 0.3,
                                 loop: false,
                                 stopPlayAfterRemove: false,
                                 removeEntityOnEnd: false,
                                 removeComponentOnEnd: true
-                            };
+                            }
+                        }
+                    },
+                    {
+                        'any': ['cloudsFront'],
+                        'andGet': {
+                            'ngContinuousDamage': {
+                                damage: 0.5
+                            },
+                            'ngSound': {
+                                urls: ['assets/sfx/doom-damage-0.ogg', 'assets/sfx/doom-damage-0.mp3'],
+                                volume: 1.0,
+                                loop: false,
+                                stopPlayAfterRemove: false,
+                                removeEntityOnEnd: false,
+                                removeComponentOnEnd: true
+                            }
                         }
                     }
-                },
-                {
-                    'any': ['drop'],
-                    'andGet': {
-                        'ngDamage': {
-                            damage: 0.1
-                        },
-                        'ngSound': {
-                            urls: ['assets/sfx/drops-damage.ogg', 'assets/sfx/drops-damage.mp3'],
-                            volume: 0.3,
-                            loop: false,
-                            stopPlayAfterRemove: false,
-                            removeEntityOnEnd: false,
-                            removeComponentOnEnd: true
-                        }
+                ]
+            },
+
+            'ngLife': {
+                life: 1.0
+            },
+
+            'ngOnLifeChange': {
+                handler: function($node, life) {
+                    console.log('life:' + life);
+                }
+            },
+
+            'ngLive': {},
+
+            ngSprite: {
+                name: name + '-body.png',
+                spriteSheetUrl: 'assets/spritesheet.json',
+                layerName: ops.layerName,
+                anchor: {
+                    x: 0.52,
+                    y: 0.76
+                }
+            },
+
+            'ngScores': {
+                score: 0.0
+            }
+        });
+
+        //suspension
+        //* left-container
+        world.$e('vehicle-left-suspension-container-' + name, {
+            'ng2D': {
+                x: x - ops.axleContainerDistance,
+                y: y + ops.axleContainerDepth},
+            'ng2DSize': {width: 2 * ops.axleContainerWidth, height: 2 * ops.axleContainerHeight},
+            'ng2DRotation': { rotation: ops.axleAngle*degreesToRadians },
+            'ngPhysic': {
+                partOf: bodyName,
+                restitution: 0.0,
+                friction: 200.0,
+                density: 1.0
+            },
+            'ngCollisionGroup': {
+                'neverWith': 'vehicle'
+            }
+        });
+
+        //* left-axle
+        var leftSuspensionAxleName = 'vehicle-left-suspension-axle-' + name;
+        var leftSuspensionAxleX = x - ops.axleContainerDistance - ops.axleContainerHeight * Math.cos((90 - ops.axleAngle) * degreesToRadians);
+        var leftSuspensionAxleY = y + ops.axleContainerDepth + ops.axleContainerHeight * Math.sin((90 - ops.axleAngle) * degreesToRadians);
+
+        world.$e(leftSuspensionAxleName, {
+            'ng2D': {
+                x: leftSuspensionAxleX,
+                y: leftSuspensionAxleY
+            },
+            'ng2DSize': {width: 2 + 2 * ops.axleContainerWidth / 2, height: 2 * ops.axleContainerHeight},
+            'ng2DRotation': { rotation: ops.axleAngle * degreesToRadians },
+            'ngPhysic': {
+                restitution: 0.0,
+                friction: 200.0,
+                density: 1.0
+            },
+            'ngCollisionGroup': {
+                'neverWith': 'vehicle'
+            }
+        });
+
+        //* right-container
+        world.$e('vehicle-left-suspension-container-' + name, {
+            'ng2D': {x : x + ops.axleContainerDistance, y: y + ops.axleContainerDepth},
+            'ng2DSize': {width: 2 * ops.axleContainerWidth, height: 2 * ops.axleContainerHeight},
+            'ng2DRotation': { rotation: -ops.axleAngle * degreesToRadians },
+            'ngPhysic': {
+                partOf: bodyName,
+                restitution: 0.0,
+                friction: 200.0,
+                density: 0.5
+            },
+            'ngCollisionGroup': {
+                'neverWith': 'vehicle'
+            }
+        });
+
+        //* right-axle
+        var rightSuspensionAxleName = 'vehicle-right-suspension-axle-' + name;
+        var rightSuspensionAxleX = x + ops.axleContainerDistance + ops.axleContainerHeight * Math.cos((90 - ops.axleAngle) * degreesToRadians);
+        var rightSuspensionAxleY = y + ops.axleContainerDepth + ops.axleContainerHeight * Math.sin((90 - ops.axleAngle) * degreesToRadians);
+
+        world.$e(rightSuspensionAxleName, {
+            'ng2D': {
+                x: rightSuspensionAxleX,
+                y: rightSuspensionAxleY
+            },
+            'ng2DSize': {width: 2 + 2 * ops.axleContainerWidth / 2, height: 2 * ops.axleContainerHeight},
+            'ng2DRotation': { rotation: -ops.axleAngle * degreesToRadians },
+            'ngPhysic': {
+                restitution: 0.0,
+                friction: 200.0,
+                density: 0.5
+            },
+            'ngCollisionGroup': {
+                'neverWith': 'vehicle'
+            }
+        });
+
+        //revolute-joints
+        //*left
+        world.$e('vehicle-left-wheel-revolute-joint-' + name, {
+            'ng2D': {
+                x: x - ops.axleContainerDistance - 2 * ops.axleContainerHeight * Math.cos((90 - ops.axleAngle) * degreesToRadians),
+                y: y + ops.axleContainerDepth + 2 * ops.axleContainerHeight * Math.sin((90 - ops.axleAngle) * degreesToRadians)
+            },
+            'ngRevoluteJoint': {
+                //maxMotorTorque: 20.0,
+                bodyA: leftWheelName,
+                bodyB: leftSuspensionAxleName
+            },
+            'ngEnableMotorOnKeyDown': ops.rearWheelDrive?{
+                keyCode: [37, 65],
+                keyCodeReverse: [39, 68]
+            }:{},
+            'ngEnableMotorOnAccelerometer': ops.rearWheelDrive?{
+                xAxis: false,
+                yAxis: false,
+                zAxis: true
+            }:{},
+            ngAnyJoint: {
+                onEnabledReverse: {
+                    ngAmbientSound : {
+                        urls: ['assets/sfx/engine-loop-0.ogg', 'assets/sfx/engine-loop-0.mp3'],
+                        volume: 0.03,
+                        loop: true,
+                        stopPlayAfterRemove: true
                     }
                 },
-                {
-                    'any': ['cloudsFront'],
-                    'andGet': {
-                        'ngContinuousDamage': {
-                            damage: 0.5
-                        },
-                        'ngSound': {
-                            urls: ['assets/sfx/doom-damage-0.ogg', 'assets/sfx/doom-damage-0.mp3'],
-                            volume: 1.0,
-                            loop: false,
-                            stopPlayAfterRemove: false,
-                            removeEntityOnEnd: false,
-                            removeComponentOnEnd: true
-                        }
+                onEnabled: {
+                    ngAmbientSound : {
+                        urls: ['assets/sfx/tires-squal-loop-0.ogg', 'assets/sfx/tires-squal-loop-0.mp3'],
+                        volume: 0.03,
+                        loop: true,
+                        stopPlayAfterRemove: true
                     }
                 }
-            ]
-        },
 
-        'ngLife': {
-            life: 1.0
-        },
-
-        'ngOnLifeChange': {
-            handler: function($node, life) {
-                console.log('life:' + life);
+    /*
+                onEnabled: function() {
+                    console.log('motor is enabled');
+                },
+                onDisabled: function() {
+                    console.log('motor is disabled');
+                }
+    */
+            },
+            'ngSelected': {},
+            'ngMotorWithAcceleration': {
+                min:-ops.wheelMaxSpeed,
+                max: ops.wheelMaxSpeed,
+                acceleration: ops.wheelAcceleration
             }
-        },
+        });
 
-        'ngLive': {},
+        //*right
+        world.$e('vehicle-right-wheel-revolute-joint-' + name, {
+            'ng2D': {
+                x: x + ops.axleContainerDistance + 2 * ops.axleContainerHeight * Math.cos((90 - ops.axleAngle) * degreesToRadians),
+                y: y + ops.axleContainerDepth + 2 * ops.axleContainerHeight * Math.sin((90 - ops.axleAngle) * degreesToRadians)
+            },
+            'ngRevoluteJoint': {
+                //maxMotorTorque: 20.0,
+                bodyA: rightWheelName,
+                bodyB: rightSuspensionAxleName
+            },
+            'ngEnableMotorOnKeyDown': ops.frontWheelDrive?{
+                keyCode: [37, 65],
+                keyCodeReverse: [39, 68]
+            }:{},
+            'ngEnableMotorOnAccelerometer': ops.rearWheelDrive?{
+                xAxis: false,
+                yAxis: false,
+                zAxis: true
+            }:{},
+            'ngSelected': {},
+            'ngMotorWithAcceleration': {
+                min:-ops.wheelMaxSpeed,
+                max: ops.wheelMaxSpeed,
+                acceleration: ops.wheelAcceleration
+            }
+        });
+
+        //prismatic-joints
+        //*left
+        world.$e('vehicle-left-wheel-prismatic-joint-' + name, {
+            'ng2D': {
+                x: leftSuspensionAxleX,
+                y: leftSuspensionAxleY
+            },
+            'ngPrismaticJoint': {
+                anchorA: {
+                    x: 0.0,
+                    y: 0.0
+                },
+                anchorB: {
+                    x: + ops.axleContainerDepth * Math.cos((90 - ops.axleAngle)*degreesToRadians),
+                    y: - ops.axleContainerDepth * Math.sin((90 - ops.axleAngle)*degreesToRadians)
+                },
+                bodyA: leftSuspensionAxleName,
+                bodyB: bodyName,
+                maxMotorForce: 10.0,
+                enableLimit: true,
+                enableMotor: true,
+                motorSpeed: 10.0
+            }
+        });
+
+        //*right
+
+        world.$e('vehicle-right-wheel-prismatic-joint-' + name, {
+            'ng2D': {
+                x: rightSuspensionAxleX,
+                y: rightSuspensionAxleY
+            },
+            'ngPrismaticJoint': {
+                anchorA: {
+                    x: 0.0,
+                    y: 0.0
+                },
+                anchorB: {
+                    x: - ops.axleContainerDepth * Math.cos((90 - ops.axleAngle) * degreesToRadians),
+                    y: - ops.axleContainerDepth * Math.sin((90 - ops.axleAngle) * degreesToRadians)
+                },
+                bodyA: rightSuspensionAxleName,
+                bodyB: bodyName,
+                maxMotorForce: 10.0,
+                enableLimit: true,
+                enableMotor: true,
+                motorSpeed: 10.0
+            }
+        });
+    }
+
+    world.$e('sky', {
+        'ng2D': {
+            x:0.0, y:0.0
+        },
 
         ngSprite: {
-            name: name + '-body.png',
+            name: 'blue-sky.png',
             spriteSheetUrl: 'assets/spritesheet.json',
-            layerName: ops.layerName,
-            anchor: {
-                x: 0.52,
-                y: 0.76
-            }
+            layerName: 'background'
         },
 
-        'ngScores': {
-            score: 0.0
+        'ngLockViewPort': {
         }
     });
 
-    //suspension
-    //* left-container
-    world.$e('vehicle-left-suspension-container-' + name, {
-        'ng2D': {
-            x: x - ops.axleContainerDistance,
-            y: y + ops.axleContainerDepth},
-        'ng2DSize': {width: 2 * ops.axleContainerWidth, height: 2 * ops.axleContainerHeight},
-        'ng2DRotation': { rotation: ops.axleAngle*degreesToRadians },
-        'ngPhysic': {
-            partOf: bodyName,
-            restitution: 0.0,
-            friction: 200.0,
-            density: 1.0
-        },
-        'ngCollisionGroup': {
-            'neverWith': 'vehicle'
-        }
-    });
+    function buildCloudFront(ops) {
+        var frontStart = 200.0,
+            frontSpeed = 40.0;
 
-    //* left-axle
-    var leftSuspensionAxleName = 'vehicle-left-suspension-axle-' + name;
-    var leftSuspensionAxleX = x - ops.axleContainerDistance - ops.axleContainerHeight * Math.cos((90 - ops.axleAngle) * degreesToRadians);
-    var leftSuspensionAxleY = y + ops.axleContainerDepth + ops.axleContainerHeight * Math.sin((90 - ops.axleAngle) * degreesToRadians);
-
-    world.$e(leftSuspensionAxleName, {
-        'ng2D': {
-            x: leftSuspensionAxleX,
-            y: leftSuspensionAxleY
-        },
-        'ng2DSize': {width: 2 + 2 * ops.axleContainerWidth / 2, height: 2 * ops.axleContainerHeight},
-        'ng2DRotation': { rotation: ops.axleAngle * degreesToRadians },
-        'ngPhysic': {
-            restitution: 0.0,
-            friction: 200.0,
-            density: 1.0
-        },
-        'ngCollisionGroup': {
-            'neverWith': 'vehicle'
-        }
-    });
-
-    //* right-container
-    world.$e('vehicle-left-suspension-container-' + name, {
-        'ng2D': {x : x + ops.axleContainerDistance, y: y + ops.axleContainerDepth},
-        'ng2DSize': {width: 2 * ops.axleContainerWidth, height: 2 * ops.axleContainerHeight},
-        'ng2DRotation': { rotation: -ops.axleAngle * degreesToRadians },
-        'ngPhysic': {
-            partOf: bodyName,
-            restitution: 0.0,
-            friction: 200.0,
-            density: 0.5
-        },
-        'ngCollisionGroup': {
-            'neverWith': 'vehicle'
-        }
-    });
-
-    //* right-axle
-    var rightSuspensionAxleName = 'vehicle-right-suspension-axle-' + name;
-    var rightSuspensionAxleX = x + ops.axleContainerDistance + ops.axleContainerHeight * Math.cos((90 - ops.axleAngle) * degreesToRadians);
-    var rightSuspensionAxleY = y + ops.axleContainerDepth + ops.axleContainerHeight * Math.sin((90 - ops.axleAngle) * degreesToRadians);
-
-    world.$e(rightSuspensionAxleName, {
-        'ng2D': {
-            x: rightSuspensionAxleX,
-            y: rightSuspensionAxleY
-        },
-        'ng2DSize': {width: 2 + 2 * ops.axleContainerWidth / 2, height: 2 * ops.axleContainerHeight},
-        'ng2DRotation': { rotation: -ops.axleAngle * degreesToRadians },
-        'ngPhysic': {
-            restitution: 0.0,
-            friction: 200.0,
-            density: 0.5
-        },
-        'ngCollisionGroup': {
-            'neverWith': 'vehicle'
-        }
-    });
-
-    //revolute-joints
-    //*left
-    world.$e('vehicle-left-wheel-revolute-joint-' + name, {
-        'ng2D': {
-            x: x - ops.axleContainerDistance - 2 * ops.axleContainerHeight * Math.cos((90 - ops.axleAngle) * degreesToRadians),
-            y: y + ops.axleContainerDepth + 2 * ops.axleContainerHeight * Math.sin((90 - ops.axleAngle) * degreesToRadians)
-        },
-        'ngRevoluteJoint': {
-            //maxMotorTorque: 20.0,
-            bodyA: leftWheelName,
-            bodyB: leftSuspensionAxleName
-        },
-        'ngEnableMotorOnKeyDown': ops.rearWheelDrive?{
-            keyCode: [37, 65],
-            keyCodeReverse: [39, 68]
-        }:{},
-        'ngEnableMotorOnAccelerometer': ops.rearWheelDrive?{
-            xAxis: false,
-            yAxis: false,
-            zAxis: true
-        }:{},
-        ngAnyJoint: {
-            onEnabledReverse: {
-                ngAmbientSound : {
-                    urls: ['assets/sfx/engine-loop-0.ogg', 'assets/sfx/engine-loop-0.mp3'],
-                    volume: 0.03,
-                    loop: true,
-                    stopPlayAfterRemove: true
-                }
-            },
-            onEnabled: {
-                ngAmbientSound : {
-                    urls: ['assets/sfx/tires-squal-loop-0.ogg', 'assets/sfx/tires-squal-loop-0.mp3'],
-                    volume: 0.03,
-                    loop: true,
-                    stopPlayAfterRemove: true
-                }
-            }
-
-/*
-            onEnabled: function() {
-                console.log('motor is enabled');
-            },
-            onDisabled: function() {
-                console.log('motor is disabled');
-            }
-*/
-        },
-        'ngSelected': {},
-        'ngMotorWithAcceleration': {
-            min:-ops.wheelMaxSpeed,
-            max: ops.wheelMaxSpeed,
-            acceleration: ops.wheelAcceleration
-        }
-    });
-
-    //*right
-    world.$e('vehicle-right-wheel-revolute-joint-' + name, {
-        'ng2D': {
-            x: x + ops.axleContainerDistance + 2 * ops.axleContainerHeight * Math.cos((90 - ops.axleAngle) * degreesToRadians),
-            y: y + ops.axleContainerDepth + 2 * ops.axleContainerHeight * Math.sin((90 - ops.axleAngle) * degreesToRadians)
-        },
-        'ngRevoluteJoint': {
-            //maxMotorTorque: 20.0,
-            bodyA: rightWheelName,
-            bodyB: rightSuspensionAxleName
-        },
-        'ngEnableMotorOnKeyDown': ops.frontWheelDrive?{
-            keyCode: [37, 65],
-            keyCodeReverse: [39, 68]
-        }:{},
-        'ngEnableMotorOnAccelerometer': ops.rearWheelDrive?{
-            xAxis: false,
-            yAxis: false,
-            zAxis: true
-        }:{},
-        'ngSelected': {},
-        'ngMotorWithAcceleration': {
-            min:-ops.wheelMaxSpeed,
-            max: ops.wheelMaxSpeed,
-            acceleration: ops.wheelAcceleration
-        }
-    });
-
-    //prismatic-joints
-    //*left
-    world.$e('vehicle-left-wheel-prismatic-joint-' + name, {
-        'ng2D': {
-            x: leftSuspensionAxleX,
-            y: leftSuspensionAxleY
-        },
-        'ngPrismaticJoint': {
-            anchorA: {
-                x: 0.0,
-                y: 0.0
-            },
-            anchorB: {
-                x: + ops.axleContainerDepth * Math.cos((90 - ops.axleAngle)*degreesToRadians),
-                y: - ops.axleContainerDepth * Math.sin((90 - ops.axleAngle)*degreesToRadians)
-            },
-            bodyA: leftSuspensionAxleName,
-            bodyB: bodyName,
-            maxMotorForce: 10.0,
-            enableLimit: true,
-            enableMotor: true,
-            motorSpeed: 10.0
-        }
-    });
-
-    //*right
-
-    world.$e('vehicle-right-wheel-prismatic-joint-' + name, {
-        'ng2D': {
-            x: rightSuspensionAxleX,
-            y: rightSuspensionAxleY
-        },
-        'ngPrismaticJoint': {
-            anchorA: {
-                x: 0.0,
-                y: 0.0
-            },
-            anchorB: {
-                x: - ops.axleContainerDepth * Math.cos((90 - ops.axleAngle) * degreesToRadians),
-                y: - ops.axleContainerDepth * Math.sin((90 - ops.axleAngle) * degreesToRadians)
-            },
-            bodyA: rightSuspensionAxleName,
-            bodyB: bodyName,
-            maxMotorForce: 10.0,
-            enableLimit: true,
-            enableMotor: true,
-            motorSpeed: 10.0
-        }
-    });
-}
-
-world.$e('sky', {
-    'ng2D': {
-        x:0.0, y:0.0
-    },
-
-    ngSprite: {
-        name: 'blue-sky.png',
-        spriteSheetUrl: 'assets/spritesheet.json',
-        layerName: 'background'
-    },
-
-    'ngLockViewPort': {
-    }
-});
-
-function buildCloudFront(ops) {
-    var frontStart = 200.0,
-        frontSpeed = 40.0;
-
-    world.$e('rain-sound', {
-        'ng2D': {
-            x: frontStart,
-            y: 500.0
-        },
-
-        'ngShiftMove': {
-            dx: frontSpeed,
-            dy: 0.0
-        },
-
-        ngSound: {
-            urls: ['assets/sfx/rain-loop-0.ogg', 'assets/sfx/rain-loop-0.mp3'],
-            loop: true,
-            stopPlayAfterRemove: true,
-            distance: 100
-        }
-    });
-
-    world.$e('clouds-front-sensor', {
-            'cloudsFront': {},
-
+        world.$e('rain-sound', {
             'ng2D': {
-                x: frontStart - 512,
+                x: frontStart,
                 y: 500.0
             },
 
-            'ng2DSize': {
-                width: 512,
-                height: 480
-            },
-
-            'ngPhysic': {},
-
-            'ngSensor': {},
-
-            'ngBindPositionToPhysics': {},
-
             'ngShiftMove': {
                 dx: frontSpeed,
                 dy: 0.0
+            },
+
+            ngSound: {
+                urls: ['assets/sfx/rain-loop-0.ogg', 'assets/sfx/rain-loop-0.mp3'],
+                loop: true,
+                stopPlayAfterRemove: true,
+                distance: 100
             }
-        }
-    );
+        });
 
-    world.$e('doom-sky', {
-            'ng2D': {
-                x: frontStart - 320.0,
-                y: 0.0
-            },
+        world.$e('clouds-front-sensor', {
+                'cloudsFront': {},
 
-            'ng2DSize': {
-                width: width,
-                height: height
-            },
+                'ng2D': {
+                    x: frontStart - 512,
+                    y: 500.0
+                },
 
-            'ngShiftMove': {
-                dx: frontSpeed,
-                dy: 0.0
-            },
+                'ng2DSize': {
+                    width: 512,
+                    height: 480
+                },
 
-            'ngLockOnViewPortOnShiftToIt': {
-                entitiesToRemove: ['clouds-front', 'clouds-factory', 'sky']
-            },
+                'ngPhysic': {},
 
-            ngSprite: {
-                name: 'doom.png',
-                spriteSheetUrl: 'assets/spritesheet.json',
-                layerName: 'background'
-            },
+                'ngSensor': {},
 
-            'ngLockViewPort': {
-                lockX: false,
-                lockY: true
-            }
-        }
-    );
+                'ngBindPositionToPhysics': {},
 
-    world.$e(
-        'clouds-front', {
-            'ng2D': {
-                x: frontStart - 3,
-                y: 0.0
-            },
-
-            'ngShiftMove': {
-                dx: frontSpeed,
-                dy: 0.0
-            },
-
-            ngSprite: {
-                name: 'doom-front.png',
-                spriteSheetUrl: 'assets/spritesheet.json',
-                layerName: 'background',
-                anchor: {
-                    x: 0.0,
-                    y: 0.5
+                'ngShiftMove': {
+                    dx: frontSpeed,
+                    dy: 0.0
                 }
-            },
-
-            'ngLockViewPort': {
-                lockX: false,
-                lockY: true
             }
-        }
-    );
+        );
 
-    if (ops.useCloudFactory) {
-        world.$e('clouds-factory', {
-            'ng2D': {
-                x: frontStart,
-                y: 275.0
-            },
+        world.$e('doom-sky', {
+                'ng2D': {
+                    x: frontStart - 320.0,
+                    y: 0.0
+                },
 
-            'ng2DSize': {
-                width: 1.0,
-                height: 200.0
-            },
+                'ng2DSize': {
+                    width: width,
+                    height: height
+                },
 
-            'ngShiftMove': {
-                dx: frontSpeed,
-                dy: 0.0
-            },
+                'ngShiftMove': {
+                    dx: frontSpeed,
+                    dy: 0.0
+                },
 
-            'ngEmitterRandomCounter': {
-                minRate: ops.cloudMinRate || 0.75,
-                maxRate: ops.cloudMaxRate || 2.0
-            },
+                'ngLockOnViewPortOnShiftToIt': {
+                    entitiesToRemove: ['clouds-front', 'clouds-factory', 'sky']
+                },
 
-            'ngEmitter': {
-                generate: function(emitter) {
-                    var edge = width;
-                    var distance = Math.random();
+                ngSprite: {
+                    name: 'doom.png',
+                    spriteSheetUrl: 'assets/spritesheet.json',
+                    layerName: 'background'
+                },
 
-                    return {
-                        $name: 'cloud',
+                'ngLockViewPort': {
+                    lockX: false,
+                    lockY: true
+                }
+            }
+        );
 
-                        ng2D: {},
+        world.$e(
+            'clouds-front', {
+                'ng2D': {
+                    x: frontStart - 3,
+                    y: 0.0
+                },
 
-                        'ng2DSize': {
-                            width: 60.0,
-                            height: 1.0
-                        },
+                'ngShiftMove': {
+                    dx: frontSpeed,
+                    dy: 0.0
+                },
 
-                        ngSprite: {
-                            name: 'cloud-' + Math.floor(3 * Math.random()) + '.png',
-                            spriteSheetUrl: 'assets/spritesheet.json',
-                            layerName: 'clouds'
-                        },
+                ngSprite: {
+                    name: 'doom-front.png',
+                    spriteSheetUrl: 'assets/spritesheet.json',
+                    layerName: 'background',
+                    anchor: {
+                        x: 0.0,
+                        y: 0.5
+                    }
+                },
 
-                        'ngShiftMove': {
-                            dx: 100 * (0.2 + 0.4 * distance),
-                            dy: 0.0
-                        },
+                'ngLockViewPort': {
+                    lockX: false,
+                    lockY: true
+                }
+            }
+        );
 
-                        'ngRemoveIfDead': true,
+        if (ops.useCloudFactory) {
+            world.$e('clouds-factory', {
+                'ng2D': {
+                    x: frontStart,
+                    y: 275.0
+                },
+
+                'ng2DSize': {
+                    width: 1.0,
+                    height: 200.0
+                },
+
+                'ngShiftMove': {
+                    dx: frontSpeed,
+                    dy: 0.0
+                },
+
+                'ngEmitterRandomCounter': {
+                    minRate: ops.cloudMinRate || 0.75,
+                    maxRate: ops.cloudMaxRate || 2.0
+                },
+
+                'ngEmitter': {
+                    generate: function(emitter) {
+                        var edge = width;
+                        var distance = Math.random();
+
+                        return {
+                            $name: 'cloud',
+
+                            ng2D: {},
+
+                            'ng2DSize': {
+                                width: 60.0,
+                                height: 1.0
+                            },
+
+                            ngSprite: {
+                                name: 'cloud-' + Math.floor(3 * Math.random()) + '.png',
+                                spriteSheetUrl: 'assets/spritesheet.json',
+                                layerName: 'clouds'
+                            },
+
+                            'ngShiftMove': {
+                                dx: 100 * (0.2 + 0.4 * distance),
+                                dy: 0.0
+                            },
+
+                            'ngRemoveIfDead': true,
 
 
-                        'ngLifeZone': true,
+                            'ngLifeZone': true,
 
-                        'ngLife': {
-                            life: 0.01
-                        },
+                            'ngLife': {
+                                life: 0.01
+                            },
 
-                        'ngLifeIsGrooving': {
-                            delta: 0.1
-                        },
+                            'ngLifeIsGrooving': {
+                                delta: 0.1
+                            },
 
-                        'ngBindLifeToAlpha': true,
+                            'ngBindLifeToAlpha': true,
 
-                        'ngLive': true,
+                            'ngLive': true,
 
-                        'ngRectangleZone': {
-                            left: -edge + emitter.ng2D.x,
-                            right: edge + emitter.ng2D.x,
-                            top:  -edge + emitter.ng2D.y,
-                            bottom:edge + emitter.ng2D.y
-                        },
+                            'ngRectangleZone': {
+                                left: -edge + emitter.ng2D.x,
+                                right: edge + emitter.ng2D.x,
+                                top:  -edge + emitter.ng2D.y,
+                                bottom:edge + emitter.ng2D.y
+                            },
 
-                        'ngEmitterRandomCounter': {
-                            minRate: 0.0,
-                            maxRate: 1.0
-                        },
+                            'ngEmitterRandomCounter': {
+                                minRate: 0.0,
+                                maxRate: 1.0
+                            },
 
-                        'ngEmitter': {
-                            generate: function(emitter) {
-                                if (Math.random() > 0.95) {
-                                    var lightningType = Math.floor(2 * Math.random());
-                                    return [{
-                                        $name: 'thunder-of-' + emitter.$name,
+                            'ngEmitter': {
+                                generate: function(emitter) {
+                                    if (Math.random() > 0.95) {
+                                        var lightningType = Math.floor(2 * Math.random());
+                                        return [{
+                                            $name: 'thunder-of-' + emitter.$name,
 
-                                        ng2D: {
-                                            x : emitter.ng2D.x,
-                                            y: emitter.ng2D.y
-                                        },
+                                            ng2D: {
+                                                x : emitter.ng2D.x,
+                                                y: emitter.ng2D.y
+                                            },
 
-                                        ngSound: {
-                                            urls: ['assets/sfx/thunder-' + lightningType + '.ogg', 'assets/sfx/thunder-' + lightningType + '.mp3'],
-                                            loop: false,
-                                            distance: 50
-                                        }
-                                    },{
-                                        '$name': 'lightning-of-' + emitter.$name,
+                                            ngSound: {
+                                                urls: ['assets/sfx/thunder-' + lightningType + '.ogg', 'assets/sfx/thunder-' + lightningType + '.mp3'],
+                                                loop: false,
+                                                distance: 50
+                                            }
+                                        },{
+                                            '$name': 'lightning-of-' + emitter.$name,
 
-                                        'ng2D': {x : emitter.ng2D.x, y: emitter.ng2D.y},
+                                            'ng2D': {x : emitter.ng2D.x, y: emitter.ng2D.y},
 
-                                        ngSprite: {
-                                            name: 'lightning-' + lightningType + '.png',
-                                            spriteSheetUrl: 'assets/spritesheet.json',
-                                            layerName: 'clouds'
-                                        },
+                                            ngSprite: {
+                                                name: 'lightning-' + lightningType + '.png',
+                                                spriteSheetUrl: 'assets/spritesheet.json',
+                                                layerName: 'clouds'
+                                            },
 
-                                        'ngLife': {
-                                            life: 1.0
-                                        },
+                                            'ngLife': {
+                                                life: 1.0
+                                            },
 
-                                        'ngLifeIsGrooving': {
-                                            delta: -1.0
-                                        },
+                                            'ngLifeIsGrooving': {
+                                                delta: -1.0
+                                            },
 
-                                        'ngBindLifeToAlpha': true,
+                                            'ngBindLifeToAlpha': true,
 
-                                        'ngLive': true,
+                                            'ngLive': true,
 
-                                        'ngRemoveIfDead': true
-                                    }];
-                                } else {
-                                    return {
-                                        '$name': 'drop-of-' + emitter.$name,
+                                            'ngRemoveIfDead': true
+                                        }];
+                                    } else {
+                                        return {
+                                            '$name': 'drop-of-' + emitter.$name,
 
-                                        'drop': true,
+                                            'drop': true,
 
-                                        'ng2D': {x : emitter.ng2D.x, y: emitter.ng2D.y},
+                                            'ng2D': {x : emitter.ng2D.x, y: emitter.ng2D.y},
 
-                                        'ng2DCircle': {radius: 3},
+                                            'ng2DCircle': {radius: 3},
 
-                                        'ng2DRotation': true,
+                                            'ng2DRotation': true,
 
-                                        'ngPhysic': {
-                                            density: 2.0
-                                        },
+                                            'ngPhysic': {
+                                                density: 2.0
+                                            },
 
-                                        ngSprite: {
-                                            name: 'drop.png',
-                                            spriteSheetUrl: 'assets/spritesheet.json',
-                                            layerName: 'clouds'
-                                        },
+                                            ngSprite: {
+                                                name: 'drop.png',
+                                                spriteSheetUrl: 'assets/spritesheet.json',
+                                                layerName: 'clouds'
+                                            },
 
-                                        'ngLife': {
-                                            life: 0.01
-                                        },
+                                            'ngLife': {
+                                                life: 0.01
+                                            },
 
-                                        'ngLifeIsGrooving': {
-                                            delta: 0.2
-                                        },
+                                            'ngLifeIsGrooving': {
+                                                delta: 0.2
+                                            },
 
-                                        'ngBindLifeToAlpha': true,
+                                            'ngBindLifeToAlpha': true,
 
-                                        'ngLive': true,
+                                            'ngLive': true,
 
-                                        'ngRemoveIfDead': true,
+                                            'ngRemoveIfDead': true,
 
-                                        'ngWantsToCollide': {
-                                            'with': [
-                                                {
-                                                    'andGet': {
-                                                        'ngEmitter': {
-                                                            generate: {
-                                                                ngSound: {
-                                                                    urls: ['assets/sfx/drops-1.ogg', 'assets/sfx/drops-1.mp3'],
-                                                                    loop: false,
-                                                                    distance: 10
+                                            'ngWantsToCollide': {
+                                                'with': [
+                                                    {
+                                                        'andGet': {
+                                                            'ngEmitter': {
+                                                                generate: {
+                                                                    ngSound: {
+                                                                        urls: ['assets/sfx/drops-1.ogg', 'assets/sfx/drops-1.mp3'],
+                                                                        loop: false,
+                                                                        distance: 10
+                                                                    }
                                                                 }
-                                                            }
-                                                        },
-                                                        'ngEmit': true,
-                                                        'ngDead': true
+                                                            },
+                                                            'ngEmit': true,
+                                                            'ngDead': true
+                                                        }
                                                     }
-                                                }
-                                            ]
-                                        }
-                                    };
+                                                ]
+                                            }
+                                        };
+                                    }
                                 }
                             }
-                        }
-                    };
+                        };
+                    }
                 }
-            }
-        });
-    }
-}
-
-function buildMountain(ops) {
-    var count = 4,
-        step = 1000,
-        distance =  Math.floor(3 * Math.random());
-
-    for(var i = 0; i < count; i++) {
-        world.$e('mountain-' + i, {
-
-            ng3D: {
-                x: i * step,
-                y: 1100,
-                //z: 1.8 + 0.3 * distance / 3,
-                z: ops.depth + ops.depthDeviation * ( 2 * distance / 3 - 1)
-            },
-            ngConvert3DtoParallax: true,
-            ng2D: false,
-
-            ng2DSize: {
-                width: step,
-                height: 512
-            },
-
-            ngCyclic: {
-                patternWidth: count * step + 2000
-            },
-
-            ngSprite: {
-                name: 'mountain-' + i + '.png',
-                spriteSheetUrl: 'assets/spritesheet.json',
-                layerName: 'mountain-' + distance,
-                anchor: {
-                    x: 0.5,
-                    y: 1.0
-                }
-            }
-        });
-    }
-}
-
-function buildCity(ops) {
-    var count = ops.count,
-        last,
-        distance = Math.floor(3 * Math.random());
-    for(var i = 0; i < count; i++) {
-        last = world.$e('city-' + i, {
-
-            ng3D: {
-                x: i * ops.step,
-                y: ops.y,
-                z: ops.depth + ops.depthDeviation * ( 2 * distance / 3 - 1)
-            },
-            ngConvert3DtoParallax: true,
-            ng2D: false,
-
-            ng2DSize: {
-                width: ops.step,
-                height: 512
-            },
-
-            ngCyclic: {
-                patternWidth: (count + 2) * ops.step
-            },
-
-            ngSprite: {
-                name: 'city-0.png',
-                spriteSheetUrl: 'assets/spritesheet.json',
-                layerName: 'city-' + distance,
-                anchor: {
-                    x: 0.5,
-                    y: 1.0
-                }
-            }
-        });
+            });
+        }
     }
 
-//    world.$e('city-last-entity', {
-//
-//        ng2D: false,
-//        ng3D: {
-//            x: last.ng2D.x + ops.step,
-//            y: 1100,
-//            z: 1.95
-//        },
-//
-//        ngConvert3DtoParallax: true,
-//
-//        ng3DSize: {
-//            width: 1000
-//        },
-//
-//        ng2DSize: {
-//            width: 512,
-//            height: 512
-//        },
-//
-//        ngCyclic: {
-//            patternWidth: (count + 2) * ops.step
-//        }
-//    });
+    function buildMountain(ops) {
+        var count = 4,
+            step = 1000,
+            distance =  Math.floor(3 * Math.random());
+
+        for(var i = 0; i < count; i++) {
+            world.$e('mountain-' + i, {
+
+                ng3D: {
+                    x: i * step,
+                    y: 1100,
+                    //z: 1.8 + 0.3 * distance / 3,
+                    z: ops.depth + ops.depthDeviation * ( 2 * distance / 3 - 1)
+                },
+                ngConvert3DtoParallax: true,
+                ng2D: false,
+
+                ng2DSize: {
+                    width: step,
+                    height: 512
+                },
+
+                ngCyclic: {
+                    patternWidth: count * step + 2000
+                },
+
+                ngSprite: {
+                    name: 'mountain-' + i + '.png',
+                    spriteSheetUrl: 'assets/spritesheet.json',
+                    layerName: 'mountain-' + distance,
+                    anchor: {
+                        x: 0.5,
+                        y: 1.0
+                    }
+                }
+            });
+        }
+    }
+
+    function buildCity(ops) {
+        var count = ops.count,
+            last,
+            distance = Math.floor(3 * Math.random());
+        for(var i = 0; i < count; i++) {
+            last = world.$e('city-' + i, {
+
+                ng3D: {
+                    x: i * ops.step,
+                    y: ops.y,
+                    z: ops.depth + ops.depthDeviation * ( 2 * distance / 3 - 1)
+                },
+                ngConvert3DtoParallax: true,
+                ng2D: false,
+
+                ng2DSize: {
+                    width: ops.step,
+                    height: 512
+                },
+
+                ngCyclic: {
+                    patternWidth: (count + 2) * ops.step
+                },
+
+                ngSprite: {
+                    name: 'city-0.png',
+                    spriteSheetUrl: 'assets/spritesheet.json',
+                    layerName: 'city-' + distance,
+                    anchor: {
+                        x: 0.5,
+                        y: 1.0
+                    }
+                }
+            });
+        }
+
+    //    world.$e('city-last-entity', {
+    //
+    //        ng2D: false,
+    //        ng3D: {
+    //            x: last.ng2D.x + ops.step,
+    //            y: 1100,
+    //            z: 1.95
+    //        },
+    //
+    //        ngConvert3DtoParallax: true,
+    //
+    //        ng3DSize: {
+    //            width: 1000
+    //        },
+    //
+    //        ng2DSize: {
+    //            width: 512,
+    //            height: 512
+    //        },
+    //
+    //        ngCyclic: {
+    //            patternWidth: (count + 2) * ops.step
+    //        }
+    //    });
+    }
+
+    //constuct world env
+
+    buildCloudFront({
+        useCloudFactory: true,
+        cloudMinRate: 0.0,
+        cloudMaxRate: 0.1
+    });
+
+    buildMountain({
+        depth: 2.0,
+        depthDeviation: 0.5
+    });
+
+    buildCity({
+        step: 1000,
+        y: 950,
+        count: 2,
+        depth: 1.0,
+        depthDeviation: 0.3
+    });
+
+    vehicle(400, 500, 'cabriolet', {
+        axleContainerDistance: 30,
+        axleContainerHeight: 5,
+        axleContainerDepth: 2.5,
+        wheelRadius: 12,
+        wheelMaxSpeed: 30.0,
+        layerName: 'car'
+    });
+
+    world.$start();
 }
-
-//constuct world env
-
-buildCloudFront({
-    useCloudFactory: true,
-    cloudMinRate: 0.0,
-    cloudMaxRate: 0.1
-});
-
-buildMountain({
-    depth: 2.0,
-    depthDeviation: 0.5
-});
-
-buildCity({
-    step: 1000,
-    y: 950,
-    count: 2,
-    depth: 1.0,
-    depthDeviation: 0.3
-});
-
-vehicle(400, 500, 'cabriolet', {
-    axleContainerDistance: 30,
-    axleContainerHeight: 5,
-    axleContainerDepth: 2.5,
-    wheelRadius: 12,
-    wheelMaxSpeed: 30.0,
-    layerName: 'car'
-});
-
-world.$start();
 
 //Generators
 
