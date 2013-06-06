@@ -13,12 +13,14 @@ game.config(['$routeProvider', function($routeProvider) {
         otherwise({redirectTo: '/menu'});
 }]);
 
-game.controller('MainMenuCtrl', function($scope) {
-});
+game.controller('MainMenuCtrl', ['$scope', 'GameWorld', function($scope, GameWorld) {
+    GameWorld.stop();
+}]);
 
-game.controller('MapCtrl', function($scope) {
-});
+game.controller('MapCtrl', ['$scope', 'GameWorld', function($scope, GameWorld) {
+    GameWorld.stop();
+}]);
 
-game.controller('AboutCtrl', function($scope) {
-});
-
+game.controller('AboutCtrl', ['$scope', 'GameWorld', function($scope, GameWorld) {
+    GameWorld.stop();
+}]);
