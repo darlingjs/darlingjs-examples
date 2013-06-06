@@ -22,5 +22,3 @@ game.controller('MapCtrl', function($scope) {
 game.controller('AboutCtrl', function($scope) {
 });
 
-game.controller('GameCtrl', function($scope) {
-});

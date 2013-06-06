@@ -1,2 +1,11 @@
 <h1>Game</h1>
 <a href="#/menu/">menu</a>
+<section>
+  <div id="gameView" class="gameview">
+    <div style="position: absolute;top: 0px;">
+      <canvas id="gameCanvas" style="cursor: default;"/>
+    </div>
+  </div>
+  <button ng-click="soundSwitch()">sound {{soundStateSwitchTo}}</button>
+  <div id="loading"></div>
+</section>
