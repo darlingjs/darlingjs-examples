@@ -34,15 +34,19 @@ game.controller('GameCtrl', ['$scope', 'GameWorld', function($scope, GameWorld) 
     }
 }]);
 
+/**
+ * Game World Service deal with all game interaction
+ */
 game.factory('GameWorld', ['$rootScope', function($rootScope) {
     'use strict';
 
-    var width = 640,
+    var world,
+        width = 640,
         height = 480,
         debugDraw = false,
         renderWithPixiJs = true;
 
-    var world = darlingjs.world('myGame', [
+    world = darlingjs.world('myGame', [
         'myApp',
         'ngCommon',
         'ngFlatland',
@@ -64,43 +68,38 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
     });
 
     //resource loading
-
     var ngResourceLoader = world.$add('ngResourceLoader');
     ngResourceLoader.on('progress', function() {
-        var progress = (ngResourceLoader.availableCount / ngResourceLoader.totalCount);
-        console.log('ngResourceLoader.progress = ' + progress);
-        //document.getElementById('loading').innerHTML = 'ngResourceLoader.progress = ' + Math.floor(progress * 100) + '%';
         $rootScope.$broadcast('loadProgress', ngResourceLoader);
     });
 
     ngResourceLoader.on('complete', function() {
-        console.log('ngResourceLoader.complete');
-        //if (!isStarted) {
-        //    startGame();
-        //}
-        //document.getElementById('loading').innerHTML = 'loaded!';
-        assetsIsLoaded = true;
+        assetsHaveLoaded = true;
+        assetsAreLoading = false;
         $rootScope.$broadcast('loadComplete', ngResourceLoader);
     });
 
+    var assetsAreLoading = false,
+        assetsHaveLoaded = false;
 
-    var assetsIsLoading = false,
-        assetsIsLoaded = false;
-
+    /**
+     * Have resources loaded?
+     * @returns {boolean}
+     */
     function isLoaded() {
-        return assetsIsLoaded;
+        return assetsHaveLoaded;
     }
 
     /**
-     * load all assets
+     * load all resources
      */
     function load() {
-        //TODO : if assets is already loaded don't do it twice
-        if (assetsIsLoading) {
+        if (assetsAreLoading || assetsHaveLoaded) {
             return;
         }
 
-        assetsIsLoading = true;
+        assetsAreLoading = true;
+
         //sounds
         var ngHowlerResources = world.$add('ngHowlerResources');
         ngHowlerResources.load(['assets/sfx/pickup-bonus-A.ogg', 'assets/sfx/pickup-bonus-A.mp3'], ngResourceLoader);
@@ -140,6 +139,9 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
         restoreMutedSound = false;
     }
 
+    /**
+     * @private
+     */
     function muteGame() {
         if (!hawlerAdapter) {
             return;
@@ -157,6 +159,9 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
         unMuteGame();
     }
 
+    /**
+     * @private
+     */
     function unMuteGame() {
         if (!hawlerAdapter) {
             return;
@@ -171,7 +176,7 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
      */
     function isMute() {
         return darlingutil.isDefined(hawlerAdapter)? hawlerAdapter.isMute(): false;
-    };
+    }
 
     var restoreMutedSound = false;
 
@@ -194,12 +199,15 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
             muteGame();
         }
         world.isStarted = false;
-    };
+    }
 
     /**
      * Start the game
+     *
+     * @param {number} levelId      Build World of levelId
+     * @param {boolean} [rebuild]   Rebuild the World is it already exist
      */
-    function start() {
+    function start(levelId, rebuild) {
         if (restoreMutedSound) {
             unMuteGame();
         }
@@ -214,7 +222,7 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
             pixijsStage.show();
         }
         world.$start();
-    };
+    }
 
 
     /**
@@ -224,12 +232,13 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
     world.isBuilded = false;
 
     /**
-     * Build game
+     * Build the Game World
      */
     function build() {
         if (world.isBuilded) {
             return;
         }
+
         world.isBuilded = true;
         // systems
         world.$add('ngStatsBegin');
@@ -443,9 +452,11 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
             wheelMaxSpeed: 30.0,
             layerName: 'car'
         });
-    };
+    }
 
-    //Generators
+    /**
+     *  Generators
+     */
 
     /**
      * Hill Generator
@@ -899,7 +910,7 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
     }
 
     /**
-     *
+     * @private
      * @param file
      * @return Promise https://github.com/kriskowal/q
      */
@@ -1904,13 +1915,19 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
         }
     }
 
-
+    /**
+     * API of Game Service
+     */
     return {
         isLoaded: isLoaded,
+        load: load,
+
+        build: build,
+        destroy: null,
+
         start: start,
         stop: stop,
-        load: load,
-        build: build,
+
         isMute: isMute,
         unMute: unMute,
         mute: mute
