@@ -6,7 +6,7 @@
 game.controller('GameCtrl', ['$scope', 'GameWorld', function($scope, GameWorld) {
     'use strict';
 
-    if (GameWorld.isLoaded) {
+    if (GameWorld.isLoaded()) {
         $scope.loadProgress = '';
         GameWorld.start();
     } else {
@@ -25,7 +25,7 @@ game.controller('GameCtrl', ['$scope', 'GameWorld', function($scope, GameWorld) 
     $scope.soundStateSwitchTo = 'off';
     $scope.soundSwitch = function() {
         if (GameWorld.isMute()) {
-            GameWorld.unmute();
+            GameWorld.unMute();
             $scope.soundStateSwitchTo = 'on'
         } else {
             GameWorld.mute();
@@ -79,19 +79,22 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
         //    startGame();
         //}
         //document.getElementById('loading').innerHTML = 'loaded!';
-        world.isLoaded = true;
+        assetsIsLoaded = true;
         $rootScope.$broadcast('loadComplete', ngResourceLoader);
     });
 
 
-    var assetsIsLoading = false;
+    var assetsIsLoading = false,
+        assetsIsLoaded = false;
 
-    world.isLoaded = false;
+    function isLoaded() {
+        return assetsIsLoaded;
+    }
 
     /**
      * load all assets
      */
-    world.load = function() {
+    function load() {
         //TODO : if assets is already loaded don't do it twice
         if (assetsIsLoading) {
             return;
@@ -129,7 +132,7 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
     /**
      * Mute the sound
      */
-    world.mute = function() {
+    function mute() {
         if (!hawlerAdapter) {
             return;
         }
@@ -147,17 +150,18 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
     /**
      * unmute the sound
      */
-    world.unmute = function() {
+    function unMute() {
         if (!hawlerAdapter) {
             return;
         }
-        unmuteGame();
+        unMuteGame();
     }
 
-    function unmuteGame() {
+    function unMuteGame() {
         if (!hawlerAdapter) {
             return;
         }
+
         hawlerAdapter.unmute();
     }
 
@@ -165,7 +169,7 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
      * Return state of sound on/off
      * @returns {boolean}
      */
-    world.isMute = function() {
+    function isMute() {
         return darlingutil.isDefined(hawlerAdapter)? hawlerAdapter.isMute(): false;
     };
 
@@ -180,12 +184,12 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
     /**
      * Stop the game
      */
-    world.stop = function() {
+    function stop() {
         world.$stop();
         if (pixijsStage) {
             pixijsStage.hide();
         }
-        restoreMutedSound = !world.isMute();
+        restoreMutedSound = !isMute();
         if (restoreMutedSound) {
             muteGame();
         }
@@ -195,9 +199,9 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
     /**
      * Start the game
      */
-    world.start = function() {
+    function start() {
         if (restoreMutedSound) {
-            unmuteGame();
+            unMuteGame();
         }
 
         if (world.isStarted) {
@@ -222,7 +226,7 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
     /**
      * Build game
      */
-    world.build = function() {
+    function build() {
         if (world.isBuilded) {
             return;
         }
@@ -326,7 +330,7 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
                 domId: 'gameCanvas',
                 width: width,
                 height: height,
-                useWebGL: false,
+                useWebGL: true,
                 fitToWindow: true
             });
 
@@ -1901,5 +1905,14 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
     }
 
 
-    return world;
+    return {
+        isLoaded: isLoaded,
+        start: start,
+        stop: stop,
+        load: load,
+        build: build,
+        isMute: isMute,
+        unMute: unMute,
+        mute: mute
+    };
 }]);
