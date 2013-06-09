@@ -1,0 +1,10 @@
+<h1>Map</h1>
+<ul>
+  <li ng-repeat="level in levels">
+    <a href="#/game/{{$index}}">
+      Level : {{level.name}}
+      <img ng-src="{{level.imgUrl}}" width="32" height="32"/>
+      {{level.state}}
+    </a>
+  </li>
+</ul>

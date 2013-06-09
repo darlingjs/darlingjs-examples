@@ -3,11 +3,15 @@
  * Copyright (c) 2013, Eugene-Krevenets
  */
 
-game.controller('GameCtrl', ['$scope', 'GameWorld', function($scope, GameWorld) {
+game.controller('GameCtrl', ['$scope', 'GameWorld', '$routeParams', '$location', function($scope, GameWorld, $routeParams, $location) {
     'use strict';
+
+    console.log('current level is ' + Number($routeParams.levelId));
 
     if (GameWorld.isLoaded()) {
         $scope.loadProgress = '';
+        GameWorld.destroy();
+        GameWorld.build();
         GameWorld.start();
     } else {
         GameWorld.load();
@@ -192,12 +196,18 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
     function stop() {
         world.$stop();
         if (pixijsStage) {
-            pixijsStage.hide();
+            //pixijsStage.hide();
         }
+
         restoreMutedSound = !isMute();
         if (restoreMutedSound) {
             muteGame();
         }
+
+        if (!world.isStarted ) {
+            return;
+        }
+
         world.isStarted = false;
     }
 
@@ -219,27 +229,61 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
         world.isStarted = true;
 
         if (pixijsStage) {
-            pixijsStage.show();
+            //pixijsStage.show();
         }
+
         world.$start();
     }
 
+    /**
+     * Destory the Game World
+     */
+    function destroy() {
+        if (!isBuilded) {
+            return;
+        }
+
+        isBuilded = false;
+
+        darlingjs.removeWorld('myGame');
+        world = darlingjs.world('myGame', [
+            'myApp',
+            'ngCommon',
+            'ngFlatland',
+            'ngCyclic',
+            'ng3D',
+            'ngPhysics',
+            'ngBox2DEmscripten',
+            'ngPixijsAdapter',
+            'ngStats',
+            'ngPerformance',
+            'ngInfinity1DWorld',
+            'ngPlayer',
+            'ngParticleSystem',
+            'ngSound',
+            'ngHowlerAdapter',
+            'ngResources'
+        ], {
+            fps: 60
+        });
+    }
 
     /**
      * Is game is builded
      * @type {boolean}
      */
-    world.isBuilded = false;
+    var isBuilded = false;
 
     /**
      * Build the Game World
      */
     function build() {
-        if (world.isBuilded) {
+        if (isBuilded) {
             return;
         }
 
-        world.isBuilded = true;
+        isBuilded = true;
+
         // systems
         world.$add('ngStatsBegin');
 
@@ -1923,7 +1967,7 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
         load: load,
 
         build: build,
-        destroy: null,
+        destroy: destroy,
 
         start: start,
         stop: stop,
