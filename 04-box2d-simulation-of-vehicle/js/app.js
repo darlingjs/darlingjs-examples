@@ -3,7 +3,7 @@
  * Copyright (c) 2013, Eugene-Krevenets
  */
 
-var game = angular.module('RedCabrioletGame', []);
+var game = angular.module('RedCabrioletGame', ['LocalStorageModule']);
 game.config(['$routeProvider', function($routeProvider) {
     $routeProvider.
         when('/menu',           {templateUrl: 'partials/menu.html',     controller: 'MainMenuCtrl'}).
@@ -25,27 +25,8 @@ game.controller('AboutCtrl', ['$scope', 'GameWorld', function($scope, GameWorld)
     GameWorld.stop();
 }]);
 
-game.controller('MapCtrl', ['$scope', 'GameWorld', function($scope, GameWorld) {
+game.controller('MapCtrl', ['$scope', 'GameWorld', 'Levels', function($scope, GameWorld, Levels) {
     GameWorld.stop();
 
-    //get badges from Mozilla : https://badges.webmaker.org/
-
-    $scope.levels = [
-        {
-            name: 1,
-            imgUrl: "https://badges.webmaker.org/badge/image/code-whisperer.png"
-        },
-        {
-            name: 2,
-            imgUrl: "https://badges.webmaker.org/badge/image/editor.png"
-        },
-        {
-            name: 3,
-            imgUrl: "https://badges.webmaker.org/badge/image/image-maker.png"
-        },
-        {
-            name: 4,
-            imgUrl: "https://badges.webmaker.org/badge/image/i-am-a-webmaker.png"
-        }
-    ];
+    $scope.levels = Levels.getLevels();
 }]);

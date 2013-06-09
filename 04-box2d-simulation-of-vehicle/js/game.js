@@ -3,10 +3,18 @@
  * Copyright (c) 2013, Eugene-Krevenets
  */
 
-game.controller('GameCtrl', ['$scope', 'GameWorld', '$routeParams', '$location', function($scope, GameWorld, $routeParams, $location) {
+game.controller('GameCtrl', ['GameWorld', 'Levels', '$scope', '$routeParams', '$location', function(GameWorld, Levels, $scope, $routeParams, $location) {
     'use strict';
 
-    console.log('current level is ' + Number($routeParams.levelId));
+    var levelId = Number($routeParams.levelId);
+
+    var level = Levels.getLevelAt(levelId);
+    if (!level || !level.available) {
+        $location.url('/menu');
+        return;
+    }
+
+    Levels.winLevel(levelId);
 
     if (GameWorld.isLoaded()) {
         $scope.loadProgress = '';
