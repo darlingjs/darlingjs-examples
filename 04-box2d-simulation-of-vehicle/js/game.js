@@ -178,7 +178,8 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
     }
 
     var hawlerAdapter,
-        pixijsStage;
+        pixijsStage,
+        enableMotorOnKeyDownSystem;
 
     /**
      * Mute the sound
@@ -303,7 +304,7 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
      * @public
      */
     function stopVehicle() {
-
+        world.$remove(enableMotorOnKeyDownSystem);
     }
 
     /**
@@ -393,7 +394,7 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
         world.$add('ngBox2DSensorSystem');
         world.$add('ngBox2DCollision');
 
-        world.$add('ngEnableMotorOnKeyDown');
+        enableMotorOnKeyDownSystem = world.$add('ngEnableMotorOnKeyDown');
         world.$add('ngEnableMotorOnAccelerometer');
         world.$add('ngBox2DEnableMotorSystem');
         world.$add('ngBox2DMotorWithAcceleration');
@@ -1359,8 +1360,8 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
         world.$e(bodyName, {
             'ng2D': {x : x, y: y},
             'ng2DSize': {width: 2.0 * ops.width, height: 2.0 * ops.height},
-            'ng2DRotation': {},
-            'ngDraggable': {},
+            'ng2DRotation': true,
+            'ngDraggable': true,
             'ngPhysic': {
                 restitution: 0.3,
                 friction: 3.0,
@@ -1369,7 +1370,7 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
             'ngCollisionGroup': {
                 'neverWith': 'vehicle'
             },
-            'ngSelected': {},
+            'ngSelected': true,
             'ngWantsToCollide': {
                 'with': [
                     {
@@ -1588,7 +1589,7 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
                  }
                  */
             },
-            'ngSelected': {},
+            'ngSelected': true,
             'ngMotorWithAcceleration': {
                 min:-ops.wheelMaxSpeed,
                 max: ops.wheelMaxSpeed,
@@ -1616,7 +1617,7 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
                 yAxis: false,
                 zAxis: true
             }:{},
-            'ngSelected': {},
+            'ngSelected': true,
             'ngMotorWithAcceleration': {
                 min:-ops.wheelMaxSpeed,
                 max: ops.wheelMaxSpeed,
@@ -1710,31 +1711,6 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
                 }
             });
         }
-
-        //    world.$e('city-last-entity', {
-        //
-        //        ng2D: false,
-        //        ng3D: {
-        //            x: last.ng2D.x + ops.step,
-        //            y: 1100,
-        //            z: 1.95
-        //        },
-        //
-        //        ngConvert3DtoParallax: true,
-        //
-        //        ng3DSize: {
-        //            width: 1000
-        //        },
-        //
-        //        ng2DSize: {
-        //            width: 512,
-        //            height: 512
-        //        },
-        //
-        //        ngCyclic: {
-        //            patternWidth: (count + 2) * ops.step
-        //        }
-        //    });
     }
 
 
