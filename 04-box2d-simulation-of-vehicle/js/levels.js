@@ -10,15 +10,31 @@
  */
 game.factory('Levels', ['localStorageService', function(localStorageService) {
     'use strict';
-    var version = '0.0.2';
-
-    //TODO: restore game state
 
     //get badges from Mozilla : https://badges.webmaker.org/
-    var levels = JSON.parse(localStorageService.get('levels-' + version));
-    if (!levels) {
-        toDefault();
-    }
+    var levels = [
+        {
+            name: 0,
+            imgUrl: "https://badges.webmaker.org/badge/image/code-whisperer.png",
+            next: [1]
+        },
+        {
+            name: 1,
+            imgUrl: "https://badges.webmaker.org/badge/image/editor.png",
+            next: [2]
+        },
+        {
+            name: 2,
+            imgUrl: "https://badges.webmaker.org/badge/image/image-maker.png",
+            next: [3]
+        },
+        {
+            name: 3,
+            imgUrl: "https://badges.webmaker.org/badge/image/i-am-a-webmaker.png",
+            next: [],
+            final: true
+        }
+    ];
 
     function numLevels() {
         return levels.length;
@@ -32,63 +48,7 @@ game.factory('Levels', ['localStorageService', function(localStorageService) {
     }
 
     function getLevels() {
-        return levels
-    }
-
-    function winLevel(index, score) {
-        var level = getLevelAt(index);
-        level.passed = true;
-        if (level.maxScore < score) {
-            level.maxScore = score;
-        }
-
-        localStorageService.set('levels-' + version, JSON.stringify(levels));
-
-        for(var i = 0, count = level.next.length; i < count; i++) {
-            var nextLevel = getLevelAt(level.next[i]);
-            if (nextLevel) {
-                nextLevel.available = true;
-            }
-        }
-    }
-
-    function toDefault() {
-        //TODO:
-        levels = [
-            {
-                name: 0,
-                imgUrl: "https://badges.webmaker.org/badge/image/code-whisperer.png",
-                maxScore: 0,
-                available: true,
-                passed: false,
-                next: [1]
-            },
-            {
-                name: 1,
-                imgUrl: "https://badges.webmaker.org/badge/image/editor.png",
-                maxScore: 0,
-                available: false,
-                passed: false,
-                next: [2]
-            },
-            {
-                name: 2,
-                imgUrl: "https://badges.webmaker.org/badge/image/image-maker.png",
-                maxScore: 0,
-                available: false,
-                passed: false,
-                next: [3]
-            },
-            {
-                name: 3,
-                imgUrl: "https://badges.webmaker.org/badge/image/i-am-a-webmaker.png",
-                maxScore: 0,
-                available: false,
-                passed: false,
-                next: [],
-                final: true
-            }
-        ];
+        return levels;
     }
 
     return {
@@ -96,10 +56,6 @@ game.factory('Levels', ['localStorageService', function(localStorageService) {
 
         getLevelAt: getLevelAt,
 
-        getLevels: getLevels,
-
-        winLevel: winLevel,
-
-        toDefault: toDefault
+        getLevels: getLevels
     }
 }]);

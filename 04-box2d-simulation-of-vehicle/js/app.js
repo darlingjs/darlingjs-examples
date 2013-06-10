@@ -25,8 +25,16 @@ game.controller('AboutCtrl', ['$scope', 'GameWorld', function($scope, GameWorld)
     GameWorld.stop();
 }]);
 
-game.controller('MapCtrl', ['$scope', 'GameWorld', 'Levels', function($scope, GameWorld, Levels) {
+game.controller('MapCtrl', ['$scope', 'GameWorld', 'Player', function($scope, GameWorld, Player) {
     GameWorld.stop();
 
-    $scope.levels = Levels.getLevels();
+    $scope.levels = Player.getPlayedLevels();
+}]);
+
+game.controller('GameOverCtrl', ['$scope', function($scope) {
+    $scope.levelId = 0;
+    $scope.score = 999;
+    $scope.shareResult = function() {
+
+    };
 }]);
