@@ -179,7 +179,8 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
 
     var hawlerAdapter,
         pixijsStage,
-        enableMotorOnKeyDownSystem;
+        enableMotorOnKeyDownSystem,
+        playerVehicle;
 
     /**
      * Mute the sound
@@ -305,6 +306,7 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
      */
     function stopVehicle() {
         world.$remove(enableMotorOnKeyDownSystem);
+        playerVehicle.stop();
     }
 
     /**
@@ -567,7 +569,7 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
             depthDeviation: 0.3
         });
 
-        vehicle(400, 500, 'cabriolet', {
+        playerVehicle = buildVehicle(400, 500, 'cabriolet', {
             axleContainerDistance: 30,
             axleContainerHeight: 5,
             axleContainerDepth: 2.5,
@@ -1281,7 +1283,7 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
 
     //vehicle
 
-    function vehicle(x, y, name, newOps){
+    function buildVehicle(x, y, name, newOps){
         newOps = newOps || {};
         var ops = {
             width: newOps.width || 45.0,
@@ -1298,6 +1300,9 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
             frontWheelDrive: true,
             layerName: newOps.layerName
         };
+
+        var leftWheelRevoluteJoint,
+            rightWheelRevoluteJoint;
 
         var degreesToRadians = Math.PI / 180.0;
 
@@ -1543,7 +1548,7 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
 
         //revolute-joints
         //*left
-        world.$e('vehicle-left-wheel-revolute-joint-' + name, {
+        leftWheelRevoluteJoint = world.$e('vehicle-left-wheel-revolute-joint-' + name, {
             'ng2D': {
                 x: x - ops.axleContainerDistance - 2 * ops.axleContainerHeight * Math.cos((90 - ops.axleAngle) * degreesToRadians),
                 y: y + ops.axleContainerDepth + 2 * ops.axleContainerHeight * Math.sin((90 - ops.axleAngle) * degreesToRadians)
@@ -1598,7 +1603,7 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
         });
 
         //*right
-        world.$e('vehicle-right-wheel-revolute-joint-' + name, {
+        rightWheelRevoluteJoint = world.$e('vehicle-right-wheel-revolute-joint-' + name, {
             'ng2D': {
                 x: x + ops.axleContainerDistance + 2 * ops.axleContainerHeight * Math.cos((90 - ops.axleAngle) * degreesToRadians),
                 y: y + ops.axleContainerDepth + 2 * ops.axleContainerHeight * Math.sin((90 - ops.axleAngle) * degreesToRadians)
@@ -1674,6 +1679,17 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
                 motorSpeed: 10.0
             }
         });
+
+        function stop() {
+            leftWheelRevoluteJoint.$remove('ngEnableMotor');
+            leftWheelRevoluteJoint.$remove('ngEnableMotorReverse');
+            rightWheelRevoluteJoint.$remove('ngEnableMotor');
+            rightWheelRevoluteJoint.$remove('ngEnableMotorReverse');
+        }
+
+        return {
+            stop: stop
+        }
     }
 
     function buildCity(ops) {
