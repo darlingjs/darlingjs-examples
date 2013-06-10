@@ -8,6 +8,9 @@ game.controller('GameCtrl', ['GameWorld', 'Levels', 'Player', '$scope', '$routeP
 
     'use strict';
 
+    $scope.life = 1;
+    $scope.score = 0;
+
     var levelId = Number($routeParams.levelId);
 
     var level = Levels.getLevelAt(levelId);
@@ -23,12 +26,16 @@ game.controller('GameCtrl', ['GameWorld', 'Levels', 'Player', '$scope', '$routeP
         GameWorld.start();
     } else {
         GameWorld.load();
-        $scope.$on('loadProgress', function(evt) {
-            $scope.loadProgress = (evt.availableCount / evt.totalCount) + '%';
+        $scope.$on('loadProgress', function(name, evt) {
+            $scope.$apply(function() {
+                $scope.loadProgress = Math.floor(100 * (evt.availableCount / evt.totalCount)) + '%';
+            });
         });
 
         $scope.$on('loadComplete', function() {
-            $scope.loadProgress = '';
+            $scope.$apply(function() {
+                $scope.loadProgress = '';
+            });
             GameWorld.build();
             GameWorld.start();
         });
@@ -43,17 +50,28 @@ game.controller('GameCtrl', ['GameWorld', 'Levels', 'Player', '$scope', '$routeP
             GameWorld.mute();
             $scope.soundStateSwitchTo = 'off'
         }
-    }
+    };
 
     $scope.$on('world/finish', function() {
         Player.finishLevel(levelId, $scope.score + 1000);
         GameWorld.stopVehicle();
-        GameWorld.stop();
+
         //TODO : show congratulation you're win!
     });
 
-    $scope.$on('world/lifeChanging', function(name, live) {
-        $scope.live = Math.floor(100 * live);
+    $scope.$on('world/lifeChanging', function(name, life) {
+        if (life <= 0) {
+            $scope.$apply(function() {
+                $scope.life = 0;
+            });
+            GameWorld.stopVehicle();
+
+            //TODO : game over, replay!
+        } else {
+            $scope.$apply(function() {
+                $scope.life = life;
+            });
+        }
     });
 
     $scope.$on('world/scoreChanging', function(name, score) {
