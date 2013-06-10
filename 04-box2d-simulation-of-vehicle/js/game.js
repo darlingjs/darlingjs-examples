@@ -47,16 +47,19 @@ game.controller('GameCtrl', ['GameWorld', 'Levels', 'Player', '$scope', '$routeP
 
     $scope.$on('world/finish', function() {
         Player.finishLevel(levelId, $scope.score + 1000);
+        GameWorld.stopVehicle();
         GameWorld.stop();
         //TODO : show congratulation you're win!
     });
 
-    $scope.$on('world/lifeChanging', function(live) {
+    $scope.$on('world/lifeChanging', function(name, live) {
         $scope.live = Math.floor(100 * live);
     });
 
-    $scope.$on('world/scoreChanging', function(score) {
-        $scope.score = score
+    $scope.$on('world/scoreChanging', function(name, score) {
+        $scope.$apply(function() {
+            $scope.score = score;
+        });
     });
 }]);
 
@@ -276,6 +279,13 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
         }
 
         world.$start();
+    }
+
+    /**
+     * @public
+     */
+    function stopVehicle() {
+
     }
 
     /**
@@ -549,6 +559,11 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
     }
 
     /**
+     * Handlers
+     *
+     */
+
+    /**
      * Finish handler
      *
      * @private
@@ -575,7 +590,7 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
      * @param $entity
      * @param score
      */
-    function onScoreChanging($entity, score) {
+    function onScoreChanging(score) {
         $rootScope.$broadcast('world/scoreChanging', score);
     }
 
@@ -2053,6 +2068,8 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
 
         start: start,
         stop: stop,
+
+        stopVehicle: stopVehicle,
 
         isMute: isMute,
         unMute: unMute,
