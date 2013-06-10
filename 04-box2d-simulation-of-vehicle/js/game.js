@@ -3,7 +3,9 @@
  * Copyright (c) 2013, Eugene-Krevenets
  */
 
-game.controller('GameCtrl', ['GameWorld', 'Levels', '$scope', '$routeParams', '$location', function(GameWorld, Levels, $scope, $routeParams, $location) {
+game.controller('GameCtrl', ['GameWorld', 'Levels', 'Player', '$scope', '$routeParams', '$location',
+    function(GameWorld, Levels, Player, $scope, $routeParams, $location) {
+
     'use strict';
 
     var levelId = Number($routeParams.levelId);
@@ -13,8 +15,6 @@ game.controller('GameCtrl', ['GameWorld', 'Levels', '$scope', '$routeParams', '$
         $location.url('/menu');
         return;
     }
-
-    Levels.winLevel(levelId);
 
     if (GameWorld.isLoaded()) {
         $scope.loadProgress = '';
@@ -44,6 +44,20 @@ game.controller('GameCtrl', ['GameWorld', 'Levels', '$scope', '$routeParams', '$
             $scope.soundStateSwitchTo = 'off'
         }
     }
+
+    $scope.$on('world/finish', function() {
+        Player.finishLevel(levelId, $scope.score + 1000);
+        GameWorld.stop();
+        //TODO : show congratulation you're win!
+    });
+
+    $scope.$on('world/lifeChanging', function(live) {
+        $scope.live = Math.floor(100 * live);
+    });
+
+    $scope.$on('world/scoreChanging', function(score) {
+        $scope.score = score
+    });
 }]);
 
 /**
@@ -96,6 +110,8 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
 
     /**
      * Have resources loaded?
+     * @public
+     *
      * @returns {boolean}
      */
     function isLoaded() {
@@ -104,6 +120,9 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
 
     /**
      * load all resources
+     *
+     * @public
+     *
      */
     function load() {
         if (assetsAreLoading || assetsHaveLoaded) {
@@ -142,6 +161,9 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
 
     /**
      * Mute the sound
+     *
+     * @public
+     *
      */
     function mute() {
         if (!hawlerAdapter) {
@@ -163,6 +185,9 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
 
     /**
      * unmute the sound
+     *
+     * @public
+     *
      */
     function unMute() {
         if (!hawlerAdapter) {
@@ -184,6 +209,9 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
 
     /**
      * Return state of sound on/off
+     *
+     * @public
+     *
      * @returns {boolean}
      */
     function isMute() {
@@ -194,12 +222,17 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
 
     /**
      * Is game is started
+     * @private
      * @type {boolean}
      */
     world.isStarted = false;
 
     /**
+     *
      * Stop the game
+     *
+     * @public
+     *
      */
     function stop() {
         world.$stop();
@@ -221,6 +254,8 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
 
     /**
      * Start the game
+     *
+     * @public
      *
      * @param {number} levelId      Build World of levelId
      * @param {boolean} [rebuild]   Rebuild the World is it already exist
@@ -244,7 +279,9 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
     }
 
     /**
-     * Destory the Game World
+     * Destroy the Game World
+     *
+     * @public
      */
     function destroy() {
         if (!isBuilded) {
@@ -278,12 +315,17 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
 
     /**
      * Is game is builded
+     * @private
      * @type {boolean}
      */
     var isBuilded = false;
 
     /**
+     *
      * Build the Game World
+     *
+     * @public
+     *
      */
     function build() {
         if (isBuilded) {
@@ -504,6 +546,37 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
             wheelMaxSpeed: 30.0,
             layerName: 'car'
         });
+    }
+
+    /**
+     * Finish handler
+     *
+     * @private
+     *
+     */
+    function onCrossedTheFinishLine() {
+        $rootScope.$broadcast('world/finish');
+        return true;
+    }
+
+    /**
+     * Handle life changing
+     *
+     * @param $entity
+     * @param life
+     */
+    function onLifeChanging($entity, life) {
+        $rootScope.$broadcast('world/lifeChanging', life);
+    }
+
+    /**
+     * Handle score changing
+     *
+     * @param $entity
+     * @param score
+     */
+    function onScoreChanging($entity, score) {
+        $rootScope.$broadcast('world/scoreChanging', score);
     }
 
     /**
@@ -1268,7 +1341,9 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
                 'with': [
                     {
                         'any': ['ngFinish'],
-                        'andGet': 'ngWinner'
+                        'andGet': {
+                            'ngWinner' : onCrossedTheFinishLine
+                        }
                     },
                     {
                         'any': ['ngBonus'],
@@ -1332,9 +1407,7 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
             },
 
             'ngOnLifeChange': {
-                handler: function($node, life) {
-                    console.log('life:' + life);
-                }
+                handler: onLifeChanging
             },
 
             'ngLive': {},
@@ -1350,7 +1423,8 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
             },
 
             'ngScores': {
-                score: 0.0
+                score: 0.0,
+                handler: onScoreChanging
             }
         });
 
