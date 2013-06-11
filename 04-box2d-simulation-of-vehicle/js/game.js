@@ -1306,6 +1306,7 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
 
         var degreesToRadians = Math.PI / 180.0;
 
+        var wheelAngularDamping = 0.9;
         //wheels
         //* left-wheel
         var leftWheelName = 'vehicle-left-wheel-' + name;
@@ -1320,7 +1321,8 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
             'ngPhysic': {
                 restitution: 0.2,
                 friction: 15.0,
-                density: 1.0
+                density: 1.0,
+                angularDamping: wheelAngularDamping
             },
             'ngCollisionGroup': {
                 'neverWith': 'vehicle'
@@ -1347,7 +1349,8 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
                 name: rightWheelName,
                 restitution: 0.2,
                 friction: 15.0,
-                density: 1.5
+                density: 1.5,
+                angularDamping: wheelAngularDamping
             },
             'ngCollisionGroup': {
                 'neverWith': 'vehicle'
