@@ -93,6 +93,23 @@ game.factory('Player', ['Levels', 'localStorageService', function(Levels, localS
     }
 
     /**
+     * Return level with state of playing
+     *
+     * @param {number} i
+     *
+     * @returns {level}
+     */
+    function getPlayedLevelAt(i) {
+        var level = Levels.getLevelAt(i);
+        var playedLevel = playedLevels[i];
+        level.maxScore = playedLevel.maxScore;
+        level.available = playedLevel.available;
+        level.passed = playedLevel.passed;
+
+        return level;
+    }
+
+    /**
      * @public
      */
     function clear() {
@@ -114,6 +131,7 @@ game.factory('Player', ['Levels', 'localStorageService', function(Levels, localS
         getScore: getScore,
         finishLevel: finishLevel,
         getPlayedLevels: getPlayedLevels,
+        getPlayedLevelAt: getPlayedLevelAt,
 
         clear: clear
     };

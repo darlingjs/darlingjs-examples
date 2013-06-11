@@ -13,7 +13,7 @@ game.controller('GameCtrl', ['GameWorld', 'Levels', 'Player', '$scope', '$routeP
 
     var levelId = Number($routeParams.levelId);
 
-    var level = Levels.getLevelAt(levelId);
+    var level = Player.getPlayedLevelAt(levelId);
     if (!level || !level.available) {
         $location.url('/menu');
         return;
@@ -400,6 +400,9 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
         world.$add('ngEnableMotorOnAccelerometer');
         world.$add('ngBox2DEnableMotorSystem');
         world.$add('ngBox2DMotorWithAcceleration');
+
+        world.$add('ngBindAngularDampingToPhysics');
+
         //world.$add('ng2DViewPort', {
         //    width: width,
         //    height: height
@@ -1302,15 +1305,19 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
         };
 
         var leftWheelRevoluteJoint,
-            rightWheelRevoluteJoint;
+            rightWheelRevoluteJoint,
+            leftWheel,
+            rightWheel;
 
         var degreesToRadians = Math.PI / 180.0;
 
-        var wheelAngularDamping = 0.9;
+        var wheelAngularDampingNormal = 1.0,
+            wheelAngularDampingOnStop = 10.0;
+
         //wheels
         //* left-wheel
         var leftWheelName = 'vehicle-left-wheel-' + name;
-        world.$e(leftWheelName, {
+        leftWheel = world.$e(leftWheelName, {
             'ng2D': {
                 x: x - ops.axleContainerDistance - 2 * ops.axleContainerHeight * Math.cos((90 - ops.axleAngle) * degreesToRadians),
                 y: y + ops.axleContainerDepth + 2 * ops.axleContainerHeight * Math.sin((90 - ops.axleAngle) * degreesToRadians)
@@ -1318,11 +1325,12 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
             'ng2DCircle': {radius: ops.wheelRadius},
             'ng2DRotation': {},
             'ngDraggable': {},
+            'ngBindAngularDampingToPhysics': true,
             'ngPhysic': {
                 restitution: 0.2,
                 friction: 15.0,
                 density: 1.0,
-                angularDamping: wheelAngularDamping
+                angularDamping: wheelAngularDampingNormal
             },
             'ngCollisionGroup': {
                 'neverWith': 'vehicle'
@@ -1337,7 +1345,7 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
 
         //* right-wheel
         var rightWheelName = 'vehicle-right-wheel-' + name;
-        world.$e(rightWheelName, {
+        rightWheel = world.$e(rightWheelName, {
             'ng2D': {
                 x: x + ops.axleContainerDistance + 2 * ops.axleContainerHeight * Math.cos((90 - ops.axleAngle) * degreesToRadians),
                 y: y + ops.axleContainerDepth + 2 * ops.axleContainerHeight * Math.sin((90 - ops.axleAngle) * degreesToRadians)
@@ -1345,12 +1353,13 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
             'ng2DCircle': {radius: ops.wheelRadius},
             'ng2DRotation': {},
             'ngDraggable': {},
+            'ngBindAngularDampingToPhysics': true,
             'ngPhysic': {
                 name: rightWheelName,
                 restitution: 0.2,
                 friction: 15.0,
                 density: 1.5,
-                angularDamping: wheelAngularDamping
+                angularDamping: wheelAngularDampingNormal
             },
             'ngCollisionGroup': {
                 'neverWith': 'vehicle'
@@ -1688,6 +1697,8 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
             leftWheelRevoluteJoint.$remove('ngEnableMotorReverse');
             rightWheelRevoluteJoint.$remove('ngEnableMotor');
             rightWheelRevoluteJoint.$remove('ngEnableMotorReverse');
+            leftWheel.ngPhysic.angularDamping = wheelAngularDampingOnStop;
+            rightWheel.ngPhysic.angularDamping = wheelAngularDampingOnStop;
         }
 
         return {
