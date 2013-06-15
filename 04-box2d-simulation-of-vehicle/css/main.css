@@ -67,7 +67,7 @@ a:link {
 }
 
 a:hover {
-    color: #ff537b;
+    color: #ff7597;
 }
 
 a:visited {
@@ -76,4 +76,71 @@ a:visited {
 
 a:active {
     color: #ff537b;
+}
+
+.page-container {
+    position:absolute;
+    width: 640px;
+}
+
+.page-enter, .page-leave {
+    -webkit-transition:all cubic-bezier(0.420, 0.000, 1.000, 1.000) 0.5s;
+    -moz-transition:all cubic-bezier(0.420, 0.000, 1.000, 1.000) 0.5s;
+    -o-transition:all cubic-bezier(0.420, 0.000, 1.000, 1.000) 0.5s;
+    transition:all cubic-bezier(0.420, 0.000, 1.000, 1.000) 0.5s;
+}
+
+.page-enter {
+    position:absolute;
+    left:100px;
+    opacity: 0;
+}
+
+.page-enter-active {
+    position:absolute;
+    left: 0;
+    opacity: 1;
+}
+
+.page-leave {
+    position:absolute;
+    left:0;
+    opacity: 1;
+}
+
+.page-leave-active {
+    position:absolute;
+    left:-100px;
+    opacity: 0;
+}
+
+.wave-enter, .wave-leave {
+    -webkit-transition:all cubic-bezier(0.420, 0.000, 1.000, 1.000) 0.5s;
+    -moz-transition:all cubic-bezier(0.420, 0.000, 1.000, 1.000) 0.5s;
+    -o-transition:all cubic-bezier(0.420, 0.000, 1.000, 1.000) 0.5s;
+    transition:all cubic-bezier(0.420, 0.000, 1.000, 1.000) 0.5s;
+}
+
+.wave-enter {
+    position:absolute;
+    top:-100px;
+    opacity: 0;
+}
+
+.wave-enter-active {
+    position:absolute;
+    top:0;
+    opacity: 1;
+}
+
+.wave-leave {
+    position:absolute;
+    top:0;
+    opacity: 1;
+}
+
+.wave-leave-active {
+    position:absolute;
+    top:100px;
+    opacity: 0;
 }

@@ -7,20 +7,20 @@
     <title>Red Cabriolet</title>
 </head>
 <body>
-    <header>
+    <header ng-controller="HeaderCtrl">
       <div class="center desktop">
-        <h1>Red Cabriolet (in progress)</h1>
-        <div class="add-a-little-space-up-and-down">
-          <small>Powered by <a href="http://darlingjs.github.io/" target="_blank">darlingJS</a> Game Engine</small>
-        </div>
+        <h1>Red Cabriolet v{{version}}</h1>
       </div>
     </header>
     <nav></nav>
-    <article class="center" ng-view>>
-    </article>
-    <aside>
-    </aside>
+    <div class="center">
+      <article class="page-container" ng-view ng-animate="'page'">
+      </article>
+    </div>
     <footer class="center desktop">
+      <div class="add-a-little-space-up-and-down">
+        <small>Powered by <a href="http://darlingjs.github.io/" target="_blank">darlingJS</a> Game Engine</small>
+      </div>
     </footer>
 
     <script src="../../engine/build/darling.js"></script>
@@ -57,7 +57,7 @@
     <script src="../../engine/vendor/q/q.js"></script>
 
     <!--CDN-->
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.4/angular.min.js"></script>-->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>-->
     <script src="components/angular/angular.js"></script>
     <script src="components/angular/localStorageModule.js"></script>
 
@@ -86,5 +86,9 @@
         return preventErrorAlert;
       };
     </script>
+
+    <noscript>
+      <img src="https://lh4.googleusercontent.com/--BwdjZS5wZk/UXLxxVdcZuI/AAAAAAAAaac/ktkB6nzgF3I/s0/2013-04-20_21-31-27.png" width="640" height="480">
+    </noscript>
 </body>
 </html>

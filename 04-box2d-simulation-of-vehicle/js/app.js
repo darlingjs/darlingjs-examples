@@ -3,6 +3,7 @@
  * Copyright (c) 2013, Eugene-Krevenets
  */
 
+var version = '1.0';
 var game = angular.module('RedCabrioletGame', ['LocalStorageModule']);
 game.config(['$routeProvider', function($routeProvider) {
     $routeProvider.
@@ -11,6 +12,10 @@ game.config(['$routeProvider', function($routeProvider) {
         when('/about',          {templateUrl: 'partials/about.html',    controller: 'AboutCtrl'}).
         when('/game/:levelId',  {templateUrl: 'partials/game.html',     controller: 'GameCtrl'}).
         otherwise({redirectTo: '/menu'});
+}]);
+
+game.controller('HeaderCtrl', ['$scope', function($scope) {
+    $scope.version = version;
 }]);
 
 game.controller('MainMenuCtrl', ['$scope', 'GameWorld', function($scope, GameWorld) {

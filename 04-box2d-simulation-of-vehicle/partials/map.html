@@ -1,18 +1,20 @@
-<h1>Map</h1>
-<ul>
-  <a href="#/menu">Menu</a>
-  <li ng-repeat="level in levels">
-    Level : {{level.name}}
-    {{level.state}}
-    <div ng-switch="{{level.available}}">
-      <div ng-switch-when="true">
-        <a href="#/game/{{$index}}"><img ng-src="{{level.imgUrl}}" width="32" height="32"/></a>
-        <p>score: {{level.maxScore}}</p>
-        <p>available</p>
+<div>
+  <h1>Map</h1>
+  <ul>
+    <a href="#/menu">Menu</a>
+    <li ng-repeat="level in levels">
+      Level : {{level.name}}
+      {{level.state}}
+      <div ng-switch="{{level.available}}">
+        <div ng-switch-when="true">
+          <a href="#/game/{{$index}}"><img ng-src="{{level.imgUrl}}" width="32" height="32"/></a>
+          <p>score: {{level.maxScore}}</p>
+          <p>available</p>
+        </div>
+        <div ng-switch-default="">
+          <img ng-src="{{level.imgUrl}}" width="32" height="32"/>
+        </div>
       </div>
-      <div ng-switch-default="">
-        <img ng-src="{{level.imgUrl}}" width="32" height="32"/>
-      </div>
-    </div>
-  </li>
-</ul>
+    </li>
+  </ul>
+</div>

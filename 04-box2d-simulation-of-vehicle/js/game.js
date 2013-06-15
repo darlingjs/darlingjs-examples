@@ -11,6 +11,8 @@ game.controller('GameCtrl', ['GameWorld', 'Levels', 'Player', '$scope', '$routeP
     $scope.life = 1;
     $scope.score = 0;
 
+    $scope.gameState = 'preparing';
+
     var levelId = Number($routeParams.levelId);
 
     var level = Player.getPlayedLevelAt(levelId);
@@ -20,7 +22,9 @@ game.controller('GameCtrl', ['GameWorld', 'Levels', 'Player', '$scope', '$routeP
     }
 
     if (GameWorld.isLoaded()) {
-        $scope.loadProgress = '';
+        $scope.loadProgress = 0.0;
+        $scope.loadProgressInPercent = '0';
+        $scope.gameState = 'playing';
         GameWorld.destroy();
         GameWorld.build();
         GameWorld.start();
@@ -28,13 +32,15 @@ game.controller('GameCtrl', ['GameWorld', 'Levels', 'Player', '$scope', '$routeP
         GameWorld.load();
         $scope.$on('loadProgress', function(name, evt) {
             $scope.$apply(function() {
-                $scope.loadProgress = Math.floor(100 * (evt.availableCount / evt.totalCount)) + '%';
+                $scope.loadProgress = (evt.availableCount / evt.totalCount);
+                $scope.loadProgressInPercent = Math.floor(evt.availableCount / evt.totalCount * 100);
             });
         });
 
         $scope.$on('loadComplete', function() {
             $scope.$apply(function() {
-                $scope.loadProgress = '';
+                $scope.loadProgress = 1;
+                $scope.gameState = 'playing';
             });
             GameWorld.build();
             GameWorld.start();
@@ -56,13 +62,23 @@ game.controller('GameCtrl', ['GameWorld', 'Levels', 'Player', '$scope', '$routeP
         Player.finishLevel(levelId, $scope.score + 1000);
         GameWorld.stopVehicle();
 
-        //TODO : show congratulation you're win!
+        var currentLevel = Levels.getLevelAt(levelId);
+        if (currentLevel.final) {
+            $scope.$apply(function() {
+                $scope.gameState = 'game-completed';
+            });
+        } else {
+            $scope.$apply(function() {
+                $scope.gameState = 'level-completed';
+            });
+        }
     });
 
     $scope.$on('world/lifeChanging', function(name, life) {
         if (life <= 0) {
             $scope.$apply(function() {
                 $scope.life = 0;
+                $scope.gameState = 'game-over';
             });
             GameWorld.stopVehicle();
 
