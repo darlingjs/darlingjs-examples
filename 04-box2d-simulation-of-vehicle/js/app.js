@@ -16,6 +16,11 @@ game.config(['$routeProvider', function($routeProvider) {
 
 game.controller('HeaderCtrl', ['$scope', function($scope) {
     $scope.version = version;
+
+    $scope.$on('$routeChangeSuccess', sendGoogleAnalyticsPageView);
+    function sendGoogleAnalyticsPageView() {
+        googleAnalytics('send', 'pageview');
+    }
 }]);
 
 game.controller('MainMenuCtrl', ['$scope', 'GameWorld', function($scope, GameWorld) {
