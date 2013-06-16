@@ -1,6 +1,5 @@
 <div>
-
-  <h1>Game</h1>
+  <h2>Game</h2>
   <a href="#/menu/">menu</a>
   <section style="position: relative">
     <div id="gameView" class="gameview">
@@ -37,7 +36,7 @@
       </div>
       <div ng-switch-when="game-over">
         <h1>Game Over</h1>
-        <a href="#/game/{{levelId}}">Try Again</a>
+        <a href="#/game/{{urlToReplay}}">Try Again</a>
         <a href="#/map">Map</a>
         <a href="#/menu">Menu</a>
       </div>

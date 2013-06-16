@@ -55,7 +55,7 @@ game.factory('Player', ['Levels', 'localStorageService', function(Levels, localS
      */
     function finishLevel(levelId, score) {
         var playedLevel = playedLevels[levelId];
-        if (playedLevel.maxScore < score) {
+        if (darlingutil.isUndefined(playedLevel.maxScore) || playedLevel.maxScore < score) {
             playedLevel.maxScore = score;
         }
 

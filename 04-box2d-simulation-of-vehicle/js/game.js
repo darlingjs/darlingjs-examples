@@ -13,7 +13,7 @@ game.controller('GameCtrl', ['GameWorld', 'Levels', 'Player', '$scope', '$routeP
 
     $scope.gameState = 'preparing';
 
-    var levelId = Number($routeParams.levelId);
+    var levelId = Math.floor(Number($routeParams.levelId));
 
     var level = Player.getPlayedLevelAt(levelId);
     if (!level || !level.available) {
@@ -21,13 +21,20 @@ game.controller('GameCtrl', ['GameWorld', 'Levels', 'Player', '$scope', '$routeP
         return;
     }
 
+    $scope.levelId = levelId;
+    GameWorld.selectLevel(levelId);
+    $scope.urlToReplay = levelId + Math.random();
+
     if (GameWorld.isLoaded()) {
         $scope.loadProgress = 0.0;
         $scope.loadProgressInPercent = '0';
         $scope.gameState = 'playing';
         GameWorld.destroy();
-        GameWorld.build();
-        GameWorld.start();
+        setTimeout(function() {
+            //wait a second to show
+            GameWorld.build();
+            GameWorld.start(levelId);
+        }, 1000);
     } else {
         GameWorld.load();
         $scope.$on('loadProgress', function(name, evt) {
@@ -43,7 +50,7 @@ game.controller('GameCtrl', ['GameWorld', 'Levels', 'Player', '$scope', '$routeP
                 $scope.gameState = 'playing';
             });
             GameWorld.build();
-            GameWorld.start();
+            GameWorld.start(levelId);
         });
     }
 
@@ -106,8 +113,11 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
     var world,
         width = 640,
         height = 480,
-        debugDraw = false,
-        renderWithPixiJs = true;
+        debugDraw = true,
+        renderWithPixiJs = true,
+        levelId,
+        levelProgress,
+        currentTile = 'unknown';
 
     world = darlingjs.world('myGame', [
         'myApp',
@@ -129,6 +139,8 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
     ], {
         fps: 60
     });
+
+    world.$c('ground', {});
 
     //resource loading
     var ngResourceLoader = world.$add('ngResourceLoader');
@@ -292,14 +304,21 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
     }
 
     /**
+     *
+     * @param {number} levelId      Build World of levelId
+     */
+    function selectLevel(newLevelId) {
+        levelId = newLevelId;
+    }
+
+    /**
      * Start the game
      *
      * @public
      *
-     * @param {number} levelId      Build World of levelId
      * @param {boolean} [rebuild]   Rebuild the World is it already exist
      */
-    function start(levelId, rebuild) {
+    function start(rebuild) {
         if (restoreMutedSound) {
             unMuteGame();
         }
@@ -358,6 +377,7 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
         ], {
             fps: 60
         });
+        world.$c('ground', {});
     }
 
     /**
@@ -453,10 +473,14 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
                 if (leftSeedTile && leftSeedTile.rightEdge <= 0.0 || rightSeedTile && rightSeedTile.rightEdge <= 0.0) {
                     generateByTiledFile(newTile, leftSeedTile, rightSeedTile, 'assets/maps/start.json');
                     firstTile = false;
+                    if (leftSeedTile) {
+                        updateLevelProgress('start', leftSeedTile.rightEdge / levelLength);
+                    }
                 } else {
 
                     if (leftSeedTile && leftSeedTile.rightEdge > levelLength) {
                         generateByTiledFile(newTile, leftSeedTile, rightSeedTile, 'assets/maps/finish.json');
+                        updateLevelProgress('finish', leftSeedTile.rightEdge / levelLength);
                     } else {
                         var seed = Math.random();
                         if (seed <= 0.9) {
@@ -464,10 +488,13 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
                                 hillWidth: 640 + 50 * Math.random(),
                                 hillHeight: 50 * Math.random()
                             });
+                            currentTile = 'hill';
                         } else if (false) {
                             generateStraightLine(newTile, leftSeedTile, rightSeedTile);
+                            updateLevelProgress('straight-line', leftSeedTile.rightEdge / levelLength);
                         } else {
                             generateByTiledFile(newTile, leftSeedTile, rightSeedTile, 'assets/maps/bridge-0.json');
+                            updateLevelProgress('bridge', leftSeedTile.rightEdge / levelLength);
                         }
                     }
                 }
@@ -598,6 +625,14 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
         });
     }
 
+    function updateLevelProgress(tile, progress) {
+        currentTile = tile;
+
+        levelProgress = darlingutil.clamp(progress);
+
+        googleAnalytics('send', 'event', 'game', 'progress', currentTile, levelId + levelProgress);
+    }
+
     /**
      * Handlers
      *
@@ -622,6 +657,23 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
      */
     function onLifeChanging($entity, life) {
         $rootScope.$broadcast('world/lifeChanging', life);
+    }
+
+    /**
+     * Handle RollOver the Vehicle
+     *
+     * @param $entity
+     */
+    function onRollOverTheVehicle($entity) {
+        if ($entity.ngLife.value <= 0) {
+            return;
+        }
+        $entity.ngLife.value = 0.0;
+        onLifeChanging($entity, 0);
+        googleAnalytics('send', 'event', 'game', 'roll-over', currentTile, levelId + levelProgress);
+    }
+
+    function onChangeCurrentTile() {
     }
 
     /**
@@ -713,7 +765,8 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
                     'ngPhysic': {
                         partOf: 'ground',
                         type: 'static', restitution: 0.0
-                    }
+                    },
+                    'ground': true
                 })
             );
 
@@ -1388,6 +1441,25 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
             }
         });
 
+        var TwoPI = 2 * Math.PI,
+            HalfPI = 0.5 * Math.PI;
+
+        /**
+         * Map angle to interval [0, 2*pi]
+         * @param angle
+         */
+        function mapAngleToZeroAndTwoPI(angle) {
+            while(angle < 0) {
+                angle += TwoPI;
+            }
+
+            while(angle > TwoPI) {
+                angle -= TwoPI;
+            }
+
+            return angle;
+        }
+
         //body
         var bodyName = 'vehicle-body-' + name;
         world.$e(bodyName, {
@@ -1463,6 +1535,19 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
                                 stopPlayAfterRemove: false,
                                 removeEntityOnEnd: false,
                                 removeComponentOnEnd: true
+                            }
+                        }
+                    },
+                    {
+                        'any': ['ground'],
+                        'andGet' : function() {
+                            console.log('hit the ground');
+                            console.log('this.ng2DRotation.rotation', this.ng2DRotation.rotation);
+                            var angle = mapAngleToZeroAndTwoPI(this.ng2DRotation.rotation);
+                            console.log('angle = ' + angle);
+                            if (3 * Math.PI / 4 < angle && angle < 6 * Math.PI / 4) {
+                                //dead
+                                onRollOverTheVehicle(this);
                             }
                         }
                     }
@@ -2105,6 +2190,8 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
 
         build: build,
         destroy: destroy,
+
+        selectLevel: selectLevel,
 
         start: start,
         stop: stop,

@@ -154,3 +154,13 @@ a:active {
     top:100px;
     opacity: 0;
 }
+
+.level-badge {
+    text-align: center;
+}
+
+.level-selector {
+    float: left;
+    list-style: none;
+    width: 80px;
+}

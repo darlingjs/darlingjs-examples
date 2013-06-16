@@ -1,11 +1,11 @@
 <div class="page">
-  <h1>Map</h1>
+  <h2>Map</h2>
+  <a href="#/menu">Menu</a>
   <ul>
-    <a href="#/menu">Menu</a>
-    <li ng-repeat="level in levels">
-      Level : {{level.name}}
-      {{level.state}}
-      <div ng-switch="{{level.available}}">
+    <li ng-repeat="level in levels" class="level-selector">
+      <p>Level : {{level.name}}</p>
+      <p>{{level.state}}</p>
+      <div ng-switch="{{level.available}}" class="level-badge">
         <div ng-switch-when="true">
           <a href="#/game/{{$index}}"><img ng-src="{{level.imgUrl}}" width="32" height="32"/></a>
           <p>score: {{level.maxScore}}</p>
@@ -17,4 +17,5 @@
       </div>
     </li>
   </ul>
+  <p style="clear: both">Select Level to play</p>
 </div>

@@ -3,7 +3,8 @@
  * Copyright (c) 2013, Eugene-Krevenets
  */
 
-var version = '1.0';
+var version = '0.2';
+
 var game = angular.module('RedCabrioletGame', ['LocalStorageModule']);
 game.config(['$routeProvider', function($routeProvider) {
     $routeProvider.

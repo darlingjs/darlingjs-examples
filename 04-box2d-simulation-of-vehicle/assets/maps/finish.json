@@ -87,6 +87,7 @@
                  "name":"",
                  "properties":
                     {
+                     "ground":"",
                      "ngSprite":"{\"name\":\"purple-pixel.jpg\", \"spriteSheetUrl\":\"assets\/spritesheet.json\", \"layerName\": \"road-1\", \"tiled\": true}"
                     },
                  "type":"static",

@@ -47,6 +47,7 @@
                  "name":"start-background",
                  "properties":
                     {
+                     "ground":"",
                      "ngSprite":"{\"name\":\"green-pixel.jpg\", \"spriteSheetUrl\":\"assets\/spritesheet.json\", \"layerName\": \"road-0\", \"tiled\": true}"
                     },
                  "type":"static",
