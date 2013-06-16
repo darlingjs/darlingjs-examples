@@ -1,16 +1,21 @@
 <div>
-  <h2>Game</h2>
-  <a href="#/menu/">menu</a>
   <section style="position: relative">
-    <div id="gameView" class="gameview">
+    <div id="gameView" class="gameview" style="z-index: -100">
       <div style="position: absolute;top: 0px;">
         <canvas id="gameCanvas" style="cursor: default;"/>
       </div>
     </div>
-    <button ng-click="soundSwitch()">sound {{soundStateSwitchTo}}</button>
-    <button ng-click="pause()">pause {{paused}}</button>
-    <div ng-switch="gameState" style="position: absolute; top:0px" ng-animate="'wave'">
-      <div ng-switch-when="preparing">
+    <div style="margin-top: -40px">
+      <button ng-click="soundSwitch()">sound {{soundStateSwitchTo}}</button>
+      <button ng-click="pause()">pause {{paused}}</button>
+    </div>
+
+    <div style="top: 20px;left: 100px;position: absolute;"><a href="#/menu/">menu</a></div>
+    <div style="top: 20px;left: 300px;position: absolute;">Life: {{life}}</div>
+    <div style="top: 20px;left: 560px;position: absolute;">Score: {{score}}</div>
+
+    <div ng-switch="gameState" style="position: relative; margin-top: -300px" ng-animate="'game-info'">
+      <div ng-switch-when="preparing" class="game-info">
         <h1>Instruction:</h1>
         <p>1. Just use Left/Right to ride the car.</p>
         <p>2. You need avoid the rain.</p>
@@ -21,13 +26,13 @@
           <p>Press any key to play!</p>
         </div>
       </div>
-      <div ng-switch-when="game-completed">
+      <div ng-switch-when="game-completed" class="game-info">
         <h1>Level Complete</h1>
         <p>Got scores: {{score}}</p>
         <a href="#/menu">Map</a>
         <a>Publish results</a>
       </div>
-      <div ng-switch-when="level-completed">
+      <div ng-switch-when="level-completed" class="game-info">
         <h1>Level Complete</h1>
         <p>Got scores: {{score}}</p>
         <a href="#/menu">Menu</a>
@@ -35,14 +40,12 @@
         <a href="#/game/{{levelId + 1}}">Next</a>
         <a>Publish results</a>
       </div>
-      <div ng-switch-when="game-over">
+      <div ng-switch-when="game-over" class="game-info">
         <h1>Game Over</h1>
         <a href="#/game/{{urlToReplay}}">Try Again</a>
         <a href="#/map">Map</a>
         <a href="#/menu">Menu</a>
       </div>
     </div>
-    <div>Score: {{score}}</div>
-    <div>Life: {{life}}</div>
   </section>
 </div>

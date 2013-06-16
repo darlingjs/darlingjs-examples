@@ -127,7 +127,7 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
     var world,
         width = 640,
         height = 480,
-        debugDraw = true,
+        debugDraw = false,
         renderWithPixiJs = true,
         levelId,
         levelProgress,

@@ -82,6 +82,10 @@ a:active {
     float: left;
 }
 
+.page-content {
+    margin-top: -480px;
+}
+
 .page-container {
     /*position:relative;
     width: 640px;*/
@@ -124,33 +128,48 @@ a:active {
     clear: both;
 }
 
-.wave-enter, .wave-leave {
+.game-info {
+    position:relative;
+    float: left;
+    text-align: center;
+    margin-right: auto;
+    margin-left: auto;
+    width: 400px;
+}
+
+.game-info-enter, .game-info-leave, .game-info-enter-active, .game-info-leave-active {
+    position:relative;
+    margin-right: -300px;
+    float: left;
+}
+
+.game-info-enter, .game-info-leave {
     -webkit-transition:all cubic-bezier(0.420, 0.000, 1.000, 1.000) 0.5s;
     -moz-transition:all cubic-bezier(0.420, 0.000, 1.000, 1.000) 0.5s;
     -o-transition:all cubic-bezier(0.420, 0.000, 1.000, 1.000) 0.5s;
     transition:all cubic-bezier(0.420, 0.000, 1.000, 1.000) 0.5s;
 }
 
-.wave-enter {
-    position:absolute;
+.game-info-enter {
+    position:relative;
     top:-100px;
     opacity: 0;
 }
 
-.wave-enter-active {
-    position:absolute;
+.game-info-enter-active {
+    position:relative;
     top:0;
     opacity: 1;
 }
 
-.wave-leave {
-    position:absolute;
+.game-info-leave {
+    position:relative;
     top:0;
     opacity: 1;
 }
 
-.wave-leave-active {
-    position:absolute;
+.game-info-leave-active {
+    position:relative;
     top:100px;
     opacity: 0;
 }
