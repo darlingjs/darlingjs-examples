@@ -78,9 +78,19 @@ a:active {
     color: #ff537b;
 }
 
+.page {
+    float: left;
+}
+
 .page-container {
-    position:absolute;
-    width: 640px;
+    /*position:relative;
+    width: 640px;*/
+}
+
+.page-enter, .page-leave, .page-enter-active, .page-leave-active {
+    position:relative;
+    margin-right: -100%;
+    float: left;
 }
 
 .page-enter, .page-leave {
@@ -91,27 +101,27 @@ a:active {
 }
 
 .page-enter {
-    position:absolute;
     left:100px;
     opacity: 0;
 }
 
 .page-enter-active {
-    position:absolute;
     left: 0;
     opacity: 1;
 }
 
 .page-leave {
-    position:absolute;
     left:0;
     opacity: 1;
 }
 
 .page-leave-active {
-    position:absolute;
     left:-100px;
     opacity: 0;
+}
+
+.footer {
+    clear: both;
 }
 
 .wave-enter, .wave-leave {
