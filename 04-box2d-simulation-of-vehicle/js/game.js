@@ -56,14 +56,28 @@ game.controller('GameCtrl', ['GameWorld', 'Levels', 'Player', '$scope', '$routeP
 
     $scope.soundStateSwitchTo = 'off';
     $scope.soundSwitch = function() {
+        if (GameWorld.isPaused()) {
+            return;
+        }
         if (GameWorld.isMute()) {
             GameWorld.unMute();
-            $scope.soundStateSwitchTo = 'on'
+            $scope.soundStateSwitchTo = 'off'
         } else {
             GameWorld.mute();
-            $scope.soundStateSwitchTo = 'off'
+            $scope.soundStateSwitchTo = 'on'
         }
     };
+
+    $scope.paused = false;
+    $scope.pause = function() {
+        if (GameWorld.isPaused()) {
+            GameWorld.unPause();
+            $scope.paused = false;
+        } else {
+            GameWorld.pause();
+            $scope.paused = true;
+        }
+    }
 
     $scope.$on('world/finish', function() {
         Player.finishLevel(levelId, $scope.score + 1000);
@@ -210,6 +224,8 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
         enableMotorOnKeyDownSystem,
         playerVehicle;
 
+    var muted = false;
+
     /**
      * Mute the sound
      *
@@ -217,11 +233,12 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
      *
      */
     function mute() {
-        if (!hawlerAdapter) {
+        if (!hawlerAdapter || muted) {
             return;
         }
         muteGame();
         restoreMutedSound = false;
+        muted = true;
     }
 
     /**
@@ -241,10 +258,11 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
      *
      */
     function unMute() {
-        if (!hawlerAdapter) {
+        if (!hawlerAdapter || !muted) {
             return;
         }
         unMuteGame();
+        muted = false;
     }
 
     /**
@@ -266,7 +284,8 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
      * @returns {boolean}
      */
     function isMute() {
-        return darlingutil.isDefined(hawlerAdapter)? hawlerAdapter.isMute(): false;
+        //return darlingutil.isDefined(hawlerAdapter)? hawlerAdapter.isMute(): false;
+        return muted;
     }
 
     var restoreMutedSound = false;
@@ -334,6 +353,32 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
         }
 
         world.$start();
+    }
+
+    /**
+     * Is game paused
+     * @returns {*}
+     */
+    function isPaused() {
+        return !world.$playing;
+    }
+
+    /**
+     * set game on pause
+     */
+    function pause() {
+        world.$stop();
+        muteGame();
+    }
+
+    /**
+     * resume game from pause
+     */
+    function unpause() {
+        world.$start();
+        if (!isMute()) {
+            unMuteGame();
+        }
     }
 
     /**
@@ -2195,6 +2240,10 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
 
         start: start,
         stop: stop,
+
+        isPaused: isPaused,
+        pause: pause,
+        unPause: unpause,
 
         stopVehicle: stopVehicle,
 

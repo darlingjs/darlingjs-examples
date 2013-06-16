@@ -8,6 +8,7 @@
       </div>
     </div>
     <button ng-click="soundSwitch()">sound {{soundStateSwitchTo}}</button>
+    <button ng-click="pause()">pause {{paused}}</button>
     <div ng-switch="gameState" style="position: absolute; top:0px" ng-animate="'wave'">
       <div ng-switch-when="preparing">
         <h1>Instruction:</h1>
