@@ -84,6 +84,7 @@ a:active {
 
 .page-content {
     margin-top: -480px;
+    height: 480px;
 }
 
 .page-container {

@@ -7,6 +7,7 @@ game.controller('GameCtrl', ['GameWorld', 'Levels', 'Player', '$scope', '$routeP
     function(GameWorld, Levels, Player, $scope, $routeParams, $location) {
 
     'use strict';
+    var bonusForLevelFinish = 1000;
 
     $scope.life = 1;
     $scope.score = 0;
@@ -80,7 +81,8 @@ game.controller('GameCtrl', ['GameWorld', 'Levels', 'Player', '$scope', '$routeP
     }
 
     $scope.$on('world/finish', function() {
-        Player.finishLevel(levelId, $scope.score + 1000);
+        $scope.score+=bonusForLevelFinish;
+        Player.finishLevel(levelId, $scope.score);
         GameWorld.stopVehicle();
 
         var currentLevel = Levels.getLevelAt(levelId);
