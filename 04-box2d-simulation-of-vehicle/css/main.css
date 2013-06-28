@@ -1,3 +1,7 @@
+body {
+    margin: 0;
+}
+
 canvas {
     image-rendering: optimizeSpeed;
     image-rendering: -moz-crisp-edges;
@@ -8,47 +12,206 @@ canvas {
     -ms-interpolation-mode: nearest-neighbor;
 }
 
+#gameView {
+    position: relative;
+    /*
+    height: 480px;
+    width: 640px;
+    position:relative;
+    */
+    /*z-index: -100;*/
+}
+
 /* Desktop */
 @media (min-width: 641px) {
+    .header {
+        text-align: center;
+    }
+
+    #gameCanvas {
+        margin: 0 auto;
+        width: 640px;
+    }
     .desktop {
         visibility: visible;
     }
-    #gameView {
-        height: 480px;
-        width: 640px;
-        position:relative;
-    }
     .center {
-        /*margin-left: -25%;*/
-        padding-left: 25%;
-        /*text-align: center;*/
+        /*width: 640px;*/
+        margin: 0 auto;
     }
     .add-a-little-space-up-and-down {
         margin-bottom: 32px;
         margin-top: 32px;
     }
+
+    .game-view-width {
+        width: 640px;
+    }
+
+    .background-image-size {
+        width: 640px;
+        height: 480px;
+    }
+
+    .page-content {
+        margin-top: -480px;
+        height: 480px;
+    }
+
+    .menu-button-in-game-placement {
+        position: absolute;
+        top: 4px;
+        left: 100px;
+    }
+
+    .life-in-game-placement {
+        position: absolute;
+        top: 4px;
+        left: 160px;
+    }
+
+    .score-in-game-placement {
+        position: absolute;
+        top: 4px;
+        right: 65px;
+    }
+
+    .sound-button-in-game-placement {
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        /* margin-top: -40px */
+    }
+
+    .game-info-panel {
+        display: table-cell;
+        vertical-align: middle;
+        position: static;
+    }
+
+    #gameUI {
+        margin-top: -480px;
+        width: 640px;
+        height: 480px;
+    }
 }
 
 /* Mobile */
 @media (max-width: 641px) {
-    canvas {
+
+    .header {
+        margin: 16px;
+    }
+
+    .center {
+        margin: 0 auto;
+        /*
         position: fixed;
         left: 0;
         right: 0;
         top: 0;
         bottom: 0;
         margin: auto;
+        /*text-align: center;*/
+    }
+
+    #gameCanvas {
+
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+
         /*
         -webkit-transform: rotate(0.25turn);
         -moz-transform: rotate(0.25turn);
         transform: rotate(0.25turn);
         */
     }
+    #gameUI {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        width: 400px;height: 300px;
+    }
     .desktop {
         visibility: hidden;
     }
     body {
-        overflow: hidden;
+        overflow-x: hidden;
+    }
+    .game-view-width {
+        width: 400px;
+    }
+    .background-image-size {
+        width: 400px;
+        height: 300px;
+    }
+    .page-content {
+        margin-top: -300px;
+        height: 300px;
+    }
+
+    .menu-button-in-game-placement {
+        position: absolute;
+        top: 4px;
+        left: 100px;
+        /*top: 20px;
+        left: 100px;
+        position: absolute;*/
+    }
+
+    .life-in-game-placement {
+        position: absolute;
+        top: 4px;
+        left: 160px;
+        /*
+        top: 20px;
+        left: 180px;
+        position: absolute;
+        */
+    }
+
+    .score-in-game-placement {
+        position: absolute;
+        top: 4px;
+        right: 65px;
+        /*
+        top: 20px;
+        left: 360px;
+        position: absolute;
+        */
+    }
+
+    .sound-button-in-game-placement {
+        /*
+        top: 50px;
+        left: 60px;
+        position: absolute;
+        */
+        position: absolute;
+        top: 4px;
+        right: 4px;
+    }
+
+    .game-info-panel {
+        display: table-cell;
+        vertical-align: middle;
+        position: static;
+        /*
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+
+        margin: auto;
+        */
     }
 }
 
@@ -82,20 +245,9 @@ a:active {
     float: left;
 }
 
-.page-content {
-    margin-top: -480px;
-    height: 480px;
-}
-
 .page-container {
     /*position:relative;
     width: 640px;*/
-}
-
-.page-enter, .page-leave, .page-enter-active, .page-leave-active {
-    position:relative;
-    margin-right: -100%;
-    float: left;
 }
 
 .page-enter, .page-leave {
@@ -103,6 +255,12 @@ a:active {
     -moz-transition:all cubic-bezier(0.420, 0.000, 1.000, 1.000) 0.5s;
     -o-transition:all cubic-bezier(0.420, 0.000, 1.000, 1.000) 0.5s;
     transition:all cubic-bezier(0.420, 0.000, 1.000, 1.000) 0.5s;
+}
+
+.page-enter, .page-leave, .page-enter-active, .page-leave-active {
+    position:relative;
+    margin-right: -100%;
+    float: left;
 }
 
 .page-enter {
@@ -135,7 +293,6 @@ a:active {
     text-align: center;
     margin-right: auto;
     margin-left: auto;
-    width: 400px;
 }
 
 .game-info-enter, .game-info-leave, .game-info-enter-active, .game-info-leave-active {

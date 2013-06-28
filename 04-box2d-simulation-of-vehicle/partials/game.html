@@ -1,51 +1,51 @@
-<div class="page">
-  <section style="position: relative; height: 480px">
-    <div id="gameView" class="gameview" style="z-index: -100">
-      <div style="position: absolute;top: 0px;">
-        <canvas id="gameCanvas" style="cursor: default;"/>
-      </div>
-    </div>
-    <div style="margin-top: -40px">
+<div id="gameView" class="page">
+  <canvas id="gameCanvas" class="gameCanvas background-image-size" style="cursor: default;">
+  </canvas>
+
+  <div id="gameUI">
+    <div class="sound-button-in-game-placement">
       <button ng-click="soundSwitch()">sound {{soundStateSwitchTo}}</button>
       <button ng-click="pause()">pause {{paused}}</button>
     </div>
 
-    <div style="top: 20px;left: 100px;position: absolute;"><a href="#/menu/">menu</a></div>
-    <div style="top: 20px;left: 300px;position: absolute;">Life: {{life}}</div>
-    <div style="top: 20px;left: 560px;position: absolute;">Score: {{score}}</div>
+    <div class="menu-button-in-game-placement"><a href="#/menu/">menu</a></div>
+    <div class="life-in-game-placement">Life: {{life}}</div>
+    <div class="score-in-game-placement">Score: {{score}}</div>
 
-    <div ng-switch="gameState" style="position: relative; margin-top: -300px" ng-animate="'game-info'">
-      <div ng-switch-when="preparing" class="game-info">
-        <h1>Instruction:</h1>
-        <p>1. Just use Left/Right to ride the car.</p>
-        <p>2. You need avoid the rain.</p>
-        <div ng-show="loadProgress < 1">
-          <p>Loading ... {{loadProgressInPercent}} %</p>
+    <div style="display: table;" class="background-image-size">
+      <div ng-switch="gameState" class="game-info-panel" ng-animate="'game-info'">
+        <div ng-switch-when="preparing" class="game-info game-view-width">
+          <h1>Instruction:</h1>
+          <p>1. Just use Left/Right to ride the car.</p>
+          <p>2. You need avoid the rain.</p>
+          <div ng-show="loadProgress < 1">
+            <p>Loading ... {{loadProgressInPercent}} %</p>
+          </div>
+          <div ng-show="loadProgress >= 1">
+            <p>Press any key to play!</p>
+          </div>
         </div>
-        <div ng-show="loadProgress >= 1">
-          <p>Press any key to play!</p>
+        <div ng-switch-when="game-completed" class="game-info game-view-width">
+          <h1>Level Complete</h1>
+          <p>Got scores: {{score}}</p>
+          <a href="#/menu">Map</a>
+          <a>Publish results</a>
         </div>
-      </div>
-      <div ng-switch-when="game-completed" class="game-info">
-        <h1>Level Complete</h1>
-        <p>Got scores: {{score}}</p>
-        <a href="#/menu">Map</a>
-        <a>Publish results</a>
-      </div>
-      <div ng-switch-when="level-completed" class="game-info">
-        <h1>Level Complete</h1>
-        <p>Got scores: {{score}}</p>
-        <a href="#/menu">Menu</a>
-        <a href="#/map">Map</a>
-        <a href="#/game/{{levelId + 1}}">Next</a>
-        <a>Publish results</a>
-      </div>
-      <div ng-switch-when="game-over" class="game-info">
-        <h1>Game Over</h1>
-        <a href="#/game/{{urlToReplay}}">Try Again</a>
-        <a href="#/map">Map</a>
-        <a href="#/menu">Menu</a>
+        <div ng-switch-when="level-completed" class="game-info game-view-width">
+          <h1>Level Complete</h1>
+          <p>Got scores: {{score}}</p>
+          <a href="#/menu">Menu</a>
+          <a href="#/map">Map</a>
+          <a href="#/game/{{levelId + 1}}">Next</a>
+          <a>Publish results</a>
+        </div>
+        <div ng-switch-when="game-over" class="game-info game-view-width">
+          <h1>Game Over</h1>
+          <a href="#/game/{{urlToReplay}}">Try Again</a>
+          <a href="#/map">Map</a>
+          <a href="#/menu">Menu</a>
+        </div>
       </div>
     </div>
-  </section>
+  </div>
 </div>
