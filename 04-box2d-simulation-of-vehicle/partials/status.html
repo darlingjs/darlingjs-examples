@@ -1,0 +1,21 @@
+<div class="page">
+  <div style="background-image: url('assets/pages/menu.png');" class="background-image-size"></div>
+  <div class="page-content">
+    <h2>Status</h2>
+    <a href="#/menu">Menu</a>
+    <ul>
+      <li>document.clientWidth x Height: {{document.width}} x {{document.height}}</li>
+      <li>window.innerWidth x Height: {{window.innerWidth}} x {{window.innerHeight}}</li>
+      <li>window.outerWidth x Height: {{window.outerWidth}} x {{window.outerHeight}}</li>
+      <li>window.screen.availWidth x Height: {{window.screen.availWidth}} x {{window.screen.availHeight}}</li>
+      <li>window.screen.Width x Height: {{window.screen.width}} x {{window.screen.height}}</li>
+      <li>landscape: {{landscape}}</li>
+      <li>support webgl: {{webgl}}</li>
+      <li>mouse: {{mouse.screenX}} x {{mouse.screenY}}</li>
+    </ul>
+    <p>touches {{touches.length}}</p>
+    <ul>
+      <li ng-repeat="touch in touches">{{touch.pageX}} x {{touch.pageY}}</li>
+    </ul>
+  </div>
+</div>

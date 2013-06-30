@@ -2,7 +2,7 @@
   <canvas id="gameCanvas" class="gameCanvas background-image-size" style="cursor: default;">
   </canvas>
 
-  <div id="gameUI">
+  <div id="gameUI" class="background-image-size">
     <div class="sound-button-in-game-placement">
       <button ng-click="soundSwitch()">sound {{soundStateSwitchTo}}</button>
       <button ng-click="pause()">pause {{paused}}</button>
@@ -12,7 +12,7 @@
     <div class="life-in-game-placement">Life: {{life}}</div>
     <div class="score-in-game-placement">Score: {{score}}</div>
 
-    <div style="display: table;" class="background-image-size">
+    <div style="display: table; position: absolute" class="background-image-size">
       <div ng-switch="gameState" class="game-info-panel" ng-animate="'game-info'">
         <div ng-switch-when="preparing" class="game-info game-view-width">
           <h1>Instruction:</h1>

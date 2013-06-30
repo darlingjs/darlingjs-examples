@@ -10,6 +10,7 @@ game.config(['$routeProvider', function($routeProvider) {
     $routeProvider.
         when('/menu',           {templateUrl: 'partials/menu.html',     controller: 'MainMenuCtrl'}).
         when('/map',            {templateUrl: 'partials/map.html',      controller: 'MapCtrl'}).
+        when('/status',         {templateUrl: 'partials/status.html',   controller: 'StatusCtrl'}).
         when('/about',          {templateUrl: 'partials/about.html',    controller: 'AboutCtrl'}).
         when('/game/:levelId',  {templateUrl: 'partials/game.html',     controller: 'GameCtrl'}).
         otherwise({redirectTo: '/menu'});

@@ -29,11 +29,10 @@ canvas {
     }
 
     #gameCanvas {
-        margin: 0 auto;
-        width: 640px;
+        /*margin: 0 auto;*/
+        /*width: 640px;*/
     }
     .desktop {
-        visibility: visible;
     }
     .center {
         /*width: 640px;*/
@@ -91,8 +90,8 @@ canvas {
 
     #gameUI {
         margin-top: -480px;
-        width: 640px;
-        height: 480px;
+        /*width: 640px;
+        height: 480px;*/
     }
 }
 
@@ -117,12 +116,12 @@ canvas {
 
     #gameCanvas {
 
-        position: fixed;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        margin: auto;
+        /*position: fixed;*/
+        /*left: 0;*/
+        /*right: 0;*/
+        /*top: 0;*/
+        /*bottom: 0;*/
+        /*margin: auto;*/
 
         /*
         -webkit-transform: rotate(0.25turn);
@@ -131,6 +130,7 @@ canvas {
         */
     }
     #gameUI {
+        /*
         position: fixed;
         left: 0;
         right: 0;
@@ -138,9 +138,13 @@ canvas {
         bottom: 0;
         margin: auto;
         width: 400px;height: 300px;
+        */
+        margin-top: -300px;
+        width: 400px;
+        height: 300px;
     }
     .desktop {
-        visibility: hidden;
+        display: none;
     }
     body {
         overflow-x: hidden;

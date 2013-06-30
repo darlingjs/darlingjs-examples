@@ -637,7 +637,7 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
         world.$add('ngPerformanceLogEnd');
 
         world.$add('ngStatsEnd', {
-            domId: 'gameView'
+            domId: 'gameUI'
         });
 
         world.$e('sky', {
