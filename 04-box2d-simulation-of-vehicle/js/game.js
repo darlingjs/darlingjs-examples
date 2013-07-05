@@ -42,7 +42,7 @@ game.controller('GameCtrl', ['GameWorld', 'Levels', 'Player', '$scope', '$routeP
         GameWorld.destroy();
         setTimeout(function() {
             //wait a second to show
-            GameWorld.build();
+            GameWorld.build(level);
             GameWorld.start(levelId);
         }, 1000);
     } else {
@@ -59,7 +59,7 @@ game.controller('GameCtrl', ['GameWorld', 'Levels', 'Player', '$scope', '$routeP
                 $scope.loadProgress = 1;
                 $scope.gameState = 'playing';
             });
-            GameWorld.build();
+            GameWorld.build(level);
             GameWorld.start(levelId);
         });
     }
@@ -455,7 +455,7 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
      * @public
      *
      */
-    function build() {
+    function build(levelSettings) {
         if (isBuilded) {
             return;
         }
@@ -521,7 +521,8 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
         world.$add('ngHowlerAmbientSoundAdapter');
 
         var firstTile = true;
-        var levelLength = 10000;
+
+        var levelLength = levelSettings.levelLength;
 
         world.$add('ngInfinity1DWorld', {
             seed: {
@@ -545,9 +546,12 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
                     } else {
                         var seed = Math.random();
                         if (seed <= 0.9) {
+                            var hillSettings = levelSettings.tileSettings.hill;
                             hillGenerator(newTile, leftSeedTile, rightSeedTile, {
-                                hillWidth: 640 + 50 * Math.random(),
-                                hillHeight: 50 * Math.random()
+                                hillWidth: hillSettings.minHillWidth +
+                                    (hillSettings.maxHillWidth - hillSettings.minHillWidth) * Math.random(),
+                                hillHeight: hillSettings.minHillHeight +
+                                    (hillSettings.maxHillHeight - hillSettings.minHillHeight) * Math.random()
                             });
                             currentTile = 'hill';
                         } else if (false) {
@@ -660,7 +664,10 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
         buildCloudFront({
             useCloudFactory: true,
             cloudMinRate: 0.0,
-            cloudMaxRate: 0.1
+            cloudMaxRate: 0.1,
+
+            frontStart: levelSettings.doom.start,
+            frontSpeed: levelSettings.doom.speed
         });
 
         buildMountain({
@@ -1908,17 +1915,14 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
 
 
     function buildCloudFront(ops) {
-        var frontStart = 200.0,
-            frontSpeed = 40.0;
-
         world.$e('rain-sound', {
             'ng2D': {
-                x: frontStart,
+                x: ops.frontStart,
                 y: 500.0
             },
 
             'ngShiftMove': {
-                dx: frontSpeed,
+                dx: ops.frontSpeed,
                 dy: 0.0
             },
 
@@ -1934,7 +1938,7 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
                 'cloudsFront': {},
 
                 'ng2D': {
-                    x: frontStart - 512,
+                    x: ops.frontStart - 512,
                     y: 500.0
                 },
 
@@ -1950,7 +1954,7 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
                 'ngBindPositionToPhysics': {},
 
                 'ngShiftMove': {
-                    dx: frontSpeed,
+                    dx: ops.frontSpeed,
                     dy: 0.0
                 }
             }
@@ -1958,7 +1962,7 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
 
         world.$e('doom-sky', {
                 'ng2D': {
-                    x: frontStart - 320.0,
+                    x: ops.frontStart - 320.0,
                     y: 0.0
                 },
 
@@ -1968,7 +1972,7 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
                 },
 
                 'ngShiftMove': {
-                    dx: frontSpeed,
+                    dx: ops.frontSpeed,
                     dy: 0.0
                 },
 
@@ -1992,12 +1996,12 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
         world.$e(
             'clouds-front', {
                 'ng2D': {
-                    x: frontStart - 3,
+                    x: ops.frontStart - 3,
                     y: 0.0
                 },
 
                 'ngShiftMove': {
-                    dx: frontSpeed,
+                    dx: ops.frontSpeed,
                     dy: 0.0
                 },
 
@@ -2021,7 +2025,7 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
         if (ops.useCloudFactory) {
             world.$e('clouds-factory', {
                 'ng2D': {
-                    x: frontStart,
+                    x: ops.frontStart,
                     y: 275.0
                 },
 
@@ -2031,7 +2035,7 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
                 },
 
                 'ngShiftMove': {
-                    dx: frontSpeed,
+                    dx: ops.frontSpeed,
                     dy: 0.0
                 },
 
@@ -2062,7 +2066,7 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
                             },
 
                             'ngShiftMove': {
-                                dx: 100 * (0.2 + 0.4 * distance),
+                                dx: 20 + ops.frontSpeed + 80 * distance,
                                 dy: 0.0
                             },
 
