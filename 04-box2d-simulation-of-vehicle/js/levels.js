@@ -12,6 +12,23 @@ game.factory('Levels', ['localStorageService', function(localStorageService) {
     'use strict';
 
     //get badges from Mozilla : https://badges.webmaker.org/
+    var tiles = {
+        'hill': {
+            name: 'hill',
+            type: 'hill'
+        },
+        'bridge': {
+            name: 'bridge',
+            type: 'tile',
+            tileUrl: 'assets/maps/bridge-0.json'
+        },
+        'ramp': {
+            name: 'ramp',
+            type: 'tile',
+            tileUrl: 'assets/maps/ramp-0.json'
+        }
+    };
+
     var levels = [
         {
             name: 0,
@@ -19,17 +36,23 @@ game.factory('Levels', ['localStorageService', function(localStorageService) {
             next: [1],
 
             levelLength: 7*1000,
-            tileProbabilities: {
-                'hill': 1.0,
-                'straightLine': 0,
-                'bridge': 0.0
-            },
+
             tileSettings: {
                 'hill': {
+                    probability: 1.0,
+
                     maxHillHeight: 0,
                     minHillHeight: 50,
                     minHillWidth: 640,
                     maxHillWidth: 690
+                },
+
+                'bridge': {
+                    probability: 0.0
+                },
+
+                'ramp': {
+                    probability: 0.0
                 }
             },
             doom: {
@@ -43,17 +66,23 @@ game.factory('Levels', ['localStorageService', function(localStorageService) {
             next: [2],
 
             levelLength: 10*1000,
-            tileProbabilities: {
-                'hill': 0.9,
-                'straightLine': 0,
-                'bridge': 0.1
-            },
+
             tileSettings: {
                 'hill': {
+                    probability: 0.0,
+
                     maxHillHeight: 0,
                     minHillHeight: 50,
                     minHillWidth: 640,
                     maxHillWidth: 690
+                },
+
+                'bridge': {
+                    probability: 0.0
+                },
+
+                'ramp': {
+                    probability: 1.0
                 }
             },
             doom: {
@@ -67,17 +96,23 @@ game.factory('Levels', ['localStorageService', function(localStorageService) {
             next: [3],
 
             levelLength: 13*1000,
-            tileProbabilities: {
-                'hill': 0.5,
-                'straightLine': 0,
-                'bridge': 0.5
-            },
+
             tileSettings: {
                 'hill': {
+                    probability: 0.0,
+
                     maxHillHeight: 0,
                     minHillHeight: 50,
                     minHillWidth: 640,
                     maxHillWidth: 690
+                },
+
+                'bridge': {
+                    probability: 0.0
+                },
+
+                'ramp': {
+                    probability: 1.0
                 }
             },
             doom: {
@@ -91,17 +126,147 @@ game.factory('Levels', ['localStorageService', function(localStorageService) {
             next: [],
 
             levelLength: 17*1000,
-            tileProbabilities: {
-                'hill': 0.9,
-                'straightLine': 0,
-                'bridge': 0.1
-            },
+
             tileSettings: {
                 'hill': {
+                    probability: 0.0,
+
                     maxHillHeight: 0,
                     minHillHeight: 50,
                     minHillWidth: 640,
                     maxHillWidth: 690
+                },
+
+                'bridge': {
+                    probability: 0.0
+                },
+
+                'ramp': {
+                    probability: 1.0
+                }
+            },
+            doom: {
+                start: 0.0,
+                speed: 290.0
+            },
+            final: true
+        },
+        {
+            name: 4,
+            imgUrl: "https://badges.webmaker.org/badge/image/i-am-a-webmaker.png",
+            next: [],
+
+            levelLength: 17*1000,
+
+            tileSettings: {
+                'hill': {
+                    probability: 0.0,
+
+                    maxHillHeight: 0,
+                    minHillHeight: 50,
+                    minHillWidth: 640,
+                    maxHillWidth: 690
+                },
+
+                'bridge': {
+                    probability: 0.0
+                },
+
+                'ramp': {
+                    probability: 1.0
+                }
+            },
+            doom: {
+                start: 0.0,
+                speed: 290.0
+            },
+            final: true
+        },
+        {
+            name: 5,
+            imgUrl: "https://badges.webmaker.org/badge/image/i-am-a-webmaker.png",
+            next: [],
+
+            levelLength: 17*1000,
+
+            tileSettings: {
+                'hill': {
+                    probability: 0.0,
+
+                    maxHillHeight: 0,
+                    minHillHeight: 50,
+                    minHillWidth: 640,
+                    maxHillWidth: 690
+                },
+
+                'bridge': {
+                    probability: 0.0
+                },
+
+                'ramp': {
+                    probability: 1.0
+                }
+            },
+            doom: {
+                start: 0.0,
+                speed: 290.0
+            },
+            final: true
+        },
+        {
+            name: 6,
+            imgUrl: "https://badges.webmaker.org/badge/image/i-am-a-webmaker.png",
+            next: [],
+
+            levelLength: 17*1000,
+
+            tileSettings: {
+                'hill': {
+                    probability: 0.0,
+
+                    maxHillHeight: 0,
+                    minHillHeight: 50,
+                    minHillWidth: 640,
+                    maxHillWidth: 690
+                },
+
+                'bridge': {
+                    probability: 0.0
+                },
+
+                'ramp': {
+                    probability: 1.0
+                }
+            },
+            doom: {
+                start: 0.0,
+                speed: 290.0
+            },
+            final: true
+        },
+        {
+            name: 7,
+            imgUrl: "https://badges.webmaker.org/badge/image/i-am-a-webmaker.png",
+            next: [],
+
+            levelLength: 17*1000,
+
+            tileSettings: {
+                'hill': {
+                    probability: 0.0,
+
+                    maxHillHeight: 0,
+                    minHillHeight: 50,
+                    minHillWidth: 640,
+                    maxHillWidth: 690
+                },
+
+                'bridge': {
+                    probability: 0.0
+                },
+
+                'ramp': {
+                    probability: 1.0
                 }
             },
             doom: {
@@ -127,11 +292,17 @@ game.factory('Levels', ['localStorageService', function(localStorageService) {
         return levels;
     }
 
+    function getTileSettings(name) {
+        return tiles[name];
+    }
+
     return {
         numLevels: numLevels,
 
         getLevelAt: getLevelAt,
 
-        getLevels: getLevels
+        getLevels: getLevels,
+
+        getTileSettings: getTileSettings
     }
 }]);

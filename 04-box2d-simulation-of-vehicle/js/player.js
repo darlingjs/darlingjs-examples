@@ -84,9 +84,15 @@ game.factory('Player', ['Levels', 'localStorageService', function(Levels, localS
         for (var i = 0, count = Levels.numLevels(); i < count; i++) {
             var level = Levels.getLevelAt(i);
             var playedLevel = playedLevels[i];
-            level.maxScore = playedLevel.maxScore;
-            level.available = playedLevel.available;
-            level.passed = playedLevel.passed;
+            if (playedLevel) {
+                level.maxScore = playedLevel.maxScore;
+                level.available = playedLevel.available;
+                level.passed = playedLevel.passed;
+            } else {
+                level.maxScore = 0;
+                level.available = false;
+                level.passed = false;
+            }
         }
 
         return Levels.getLevels();

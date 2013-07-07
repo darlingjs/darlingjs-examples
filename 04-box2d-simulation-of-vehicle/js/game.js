@@ -8,15 +8,14 @@ game.controller('GameCtrl', ['GameWorld', 'Levels', 'Player', '$scope', '$routeP
 
     'use strict';
     var bonusForLevelFinish = 1000;
+    var levelId = Math.floor(Number($routeParams.levelId));
+    var level = Player.getPlayedLevelAt(levelId);
 
     $scope.life = 1;
     $scope.score = 0;
 
     $scope.gameState = 'preparing';
 
-    var levelId = Math.floor(Number($routeParams.levelId));
-
-    var level = Player.getPlayedLevelAt(levelId);
     if (!level || !level.available) {
         $location.url('/menu');
         return;
@@ -132,13 +131,13 @@ game.controller('GameCtrl', ['GameWorld', 'Levels', 'Player', '$scope', '$routeP
 /**
  * Game World Service deal with all game interaction
  */
-game.factory('GameWorld', ['$rootScope', function($rootScope) {
+game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) {
     'use strict';
 
     var world,
         width,
         height,
-        debugDraw = false,
+        debugDraw = true,
         renderWithPixiJs = true,
         levelId,
         levelProgress,
@@ -524,6 +523,26 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
 
         var levelLength = levelSettings.levelLength;
 
+        var tileSettings = levelSettings.tileSettings;
+
+        var probabilitySum = 0;
+        var tileCumulativeProbability = [];
+
+        //store probability and normalize
+        for (var tileName in tileSettings) {
+            probabilitySum += tileSettings[tileName].probability;
+        }
+
+        var lastCumulativeProbability = 0;
+        for (var tileName in tileSettings) {
+            var currentProbability = lastCumulativeProbability + tileSettings[tileName].probability / probabilitySum;
+            tileCumulativeProbability.push({
+                name : tileName,
+                probability: currentProbability
+            });
+            lastCumulativeProbability = currentProbability;
+        }
+
         world.$add('ngInfinity1DWorld', {
             seed: {
                 leftEdge: 0.0,
@@ -544,27 +563,50 @@ game.factory('GameWorld', ['$rootScope', function($rootScope) {
                         generateByTiledFile(newTile, leftSeedTile, rightSeedTile, 'assets/maps/finish.json');
                         updateLevelProgress('finish', leftSeedTile.rightEdge / levelLength);
                     } else {
-                        var seed = Math.random();
-                        if (seed <= 0.9) {
-                            var hillSettings = levelSettings.tileSettings.hill;
-                            hillGenerator(newTile, leftSeedTile, rightSeedTile, {
-                                hillWidth: hillSettings.minHillWidth +
-                                    (hillSettings.maxHillWidth - hillSettings.minHillWidth) * Math.random(),
-                                hillHeight: hillSettings.minHillHeight +
-                                    (hillSettings.maxHillHeight - hillSettings.minHillHeight) * Math.random()
-                            });
-                            currentTile = 'hill';
-                        } else if (false) {
-                            generateStraightLine(newTile, leftSeedTile, rightSeedTile);
-                            updateLevelProgress('straight-line', leftSeedTile.rightEdge / levelLength);
-                        } else {
-                            generateByTiledFile(newTile, leftSeedTile, rightSeedTile, 'assets/maps/bridge-0.json');
-                            updateLevelProgress('bridge', leftSeedTile.rightEdge / levelLength);
+                        //var seed = Math.random();
+                        var tileSetting = getTileSettingByRandomValue(Math.random());
+                        if (tileSetting === null || darlingutil.isUndefined(tileSetting)) {
+                            throw new Error('Missing tile Settings');
                         }
+
+                        var tileSettingForLevel = levelSettings.tileSettings[tileSetting.name];
+
+                        switch(tileSetting.type) {
+                            case 'hill':
+                                hillGenerator(newTile, leftSeedTile, rightSeedTile, {
+                                    hillWidth: tileSettingForLevel.minHillWidth +
+                                        (tileSettingForLevel.maxHillWidth - tileSettingForLevel.minHillWidth) * Math.random(),
+                                    hillHeight: tileSettingForLevel.minHillHeight +
+                                        (tileSettingForLevel.maxHillHeight - tileSettingForLevel.minHillHeight) * Math.random()
+                                });
+                                currentTile = 'hill';
+                                break;
+                            case 'tile':
+                                generateByTiledFile(newTile, leftSeedTile, rightSeedTile, tileSetting.tileUrl);
+                                break;
+                            default:
+                                throw new Error('undefined tile');
+                                break;
+                        }
+                        updateLevelProgress(tileSetting.name, leftSeedTile.rightEdge / levelLength);
+//                        if (seed <= 0.9) {
+//                        } else if (false) {
+//                            generateStraightLine(newTile, leftSeedTile, rightSeedTile);
+//                            updateLevelProgress('straight-line', leftSeedTile.rightEdge / levelLength);
+//                        } else {
+//                        }
                     }
                 }
             }
         });
+
+        function getTileSettingByRandomValue(value) {
+            for (var i = 0, count = tileCumulativeProbability.length; i < count; i++) {
+                if (value <= tileCumulativeProbability[i].probability) {
+                    return Levels.getTileSettings(tileCumulativeProbability[i].name);
+                }
+            }
+        }
 
         world.$add('ngBindPositionToPhysics');
 
