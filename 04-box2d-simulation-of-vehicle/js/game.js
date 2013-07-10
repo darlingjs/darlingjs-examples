@@ -137,7 +137,7 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
     var world,
         width,
         height,
-        debugDraw = true,
+        debugDraw = false,
         renderWithPixiJs = true,
         levelId,
         levelProgress,
@@ -1274,130 +1274,20 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
     }
 
     function parseMap(data) {
+        try {
+            return parseMapUnSafe(data);
+        } catch(e) {
+            console.log(e);
+        }
+    }
+
+    function parseMapUnSafe(data) {
         var entities = [],
             rightEdge = {},
             leftEdge = {};
 
-        try {
-            for(var j = 0, lj = data.layers.length; j < lj; j++) {
-                var layer = data.layers[j];
-                switch(layer.type) {
-                    case 'tilelayer':
-                        //TODO: Do we really need to transform flat array to separate entities?
-                        //                var tile = data.tilesets[0];
-                        //                parseTileLayerData(layer.data, layer.width, layer.height, {
-                        //                    ng2D: {x:0, y:0},
-                        //                    ng2DSize: {width:tile.tilewidth, height:tile.tileheight},
-                        //                    ngTileSprite: {tilesheetUrl: 'assets/' + tile.image, tileId: 0}
-                        //                });
-                        break;
-                    case 'imagelayer':
-                        //TODO: whole image.
-                        break;
-                    case 'objectgroup':
-
-                        for(var i = 0, li = layer.objects.length; i < li; i++) {
-                            var object = layer.objects[i];
-                            var components = {};
-
-                            components = convertTiledPropertiesToComponents(object.properties);
-                            switch(object.type) {
-                                case 'right-edge':
-                                    rightEdge.x = object.x + 0.5 * object.width;
-                                    rightEdge.y = object.y + 0.5 * object.height;
-                                    continue;
-                                case 'left-edge':
-                                    leftEdge.x = object.x + 0.5 * object.width;
-                                    leftEdge.y = object.y + 0.5 * object.height;
-                                    continue;
-                                case 'static':
-                                    if (components.ngPhysic) {
-                                        components.ngPhysic.type = 'static';
-                                        components.ngPhysic.restitution = 0.0;
-                                    } else {
-                                        components.ngPhysic = {type: 'static', restitution: 0.0};
-                                    }
-                                    break;
-                                case 'dynamic':
-                                    if (components.ngPhysic) {
-                                        components.ngPhysic.type = 'dynamic';
-                                    } else {
-                                        components.ngPhysic = {type: 'dynamic'};
-                                    }
-                                    break;
-                                case 'revolute-joint':
-                                    if (!components.ngRevoluteJoint) {
-                                        components.ngRevoluteJoint = true;
-                                    }
-                                    break;
-                                case 'distance-joint':
-                                    if (!components.ngDistanceJoint) {
-                                        components.ngDistanceJoint = {};
-                                    }
-
-                                    parseAnchors(components.ngDistanceJoint, object);
-                                    break;
-                                case 'prismatic-joint':
-                                    if (!components.ngPrismaticJoint) {
-                                        components.ngPrismaticJoint = {};
-                                    }
-                                    parseAnchors(components.ngPrismaticJoint, object);
-                                    break;
-                                case 'pulley-joint':
-                                    if (!components.ngPulleyJoint) {
-                                        components.ngPulleyJoint = true;
-                                    }
-                                    break;
-                                case '':
-                                    //TODO:
-                                    //console.log('undefined object', object);
-                                    //continue;
-                                    break;
-                                default:
-                                    throw new Error('Need to implement new object type : "' + object.type + '"');
-                                    break;
-                            }
-
-                            components.ng2D = {
-                                x: object.x,
-                                y: object.y
-                            };
-
-                            if (object.ellipse) {
-                                //Because Box2D can't interact with ellipse we just take average value
-                                components.ng2DCircle = {
-                                    radius: 0.25 * (object.width + object.height)
-                                };
-                                components.ng2D.x+= 0.5 * object.width;
-                                components.ng2D.y+= 0.5 * object.height;
-                            } else if (object.polyline) {
-                                //TODO : create complex shape
-                                //object.polyline[].{x,y};// custom shape
-                                components.ng2DPolygon = {
-                                    line: object.polyline
-                                };
-                                //continue;
-                            } else if (object.polygon) {
-                                components.ng2DPolygon = {
-                                    line: object.polygon
-                                };
-                            } else {
-                                components.ng2DSize = {
-                                    width: object.width,
-                                    height: object.height
-                                };
-
-                                components.ng2D.x += 0.5 * object.width;
-                                components.ng2D.y += 0.5 * object.height;
-                            }
-
-                            entities.push(world.$e(object.name, components, true));
-                        }
-                        break;
-                }
-            }
-        } catch(e) {
-            console.log(e);
+        for(var j = 0, lj = data.layers.length; j < lj; j++) {
+            parseLayer(j, data, rightEdge, leftEdge, entities);
         }
 
         return {
@@ -1406,6 +1296,129 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
             rightEdge: rightEdge
         };
     }
+
+    function parseLayer(j, data, rightEdge, leftEdge, entities) {
+        var layer = data.layers[j];
+        switch(layer.type) {
+            case 'tilelayer':
+                //TODO: Do we really need to transform flat array to separate entities?
+                //                var tile = data.tilesets[0];
+                //                parseTileLayerData(layer.data, layer.width, layer.height, {
+                //                    ng2D: {x:0, y:0},
+                //                    ng2DSize: {width:tile.tilewidth, height:tile.tileheight},
+                //                    ngTileSprite: {tilesheetUrl: 'assets/' + tile.image, tileId: 0}
+                //                });
+                break;
+            case 'imagelayer':
+                //TODO: whole image.
+                break;
+            case 'objectgroup':
+                parseObjectGroup(layer, rightEdge, leftEdge, entities);
+                break;
+        }
+    }
+
+    function parseObjectGroup(layer, rightEdge, leftEdge, entities) {
+        for(var i = 0, li = layer.objects.length; i < li; i++) {
+            var object = layer.objects[i];
+            var components = {};
+
+            components = convertTiledPropertiesToComponents(object.properties);
+            switch(object.type) {
+                case 'right-edge':
+                    rightEdge.x = object.x + 0.5 * object.width;
+                    rightEdge.y = object.y + 0.5 * object.height;
+                    continue;
+                case 'left-edge':
+                    leftEdge.x = object.x + 0.5 * object.width;
+                    leftEdge.y = object.y + 0.5 * object.height;
+                    continue;
+                case 'static':
+                    if (components.ngPhysic) {
+                        components.ngPhysic.type = 'static';
+                        components.ngPhysic.restitution = 0.0;
+                    } else {
+                        components.ngPhysic = {type: 'static', restitution: 0.0};
+                    }
+                    break;
+                case 'dynamic':
+                    if (components.ngPhysic) {
+                        components.ngPhysic.type = 'dynamic';
+                    } else {
+                        components.ngPhysic = {type: 'dynamic'};
+                    }
+                    break;
+                case 'revolute-joint':
+                    if (!components.ngRevoluteJoint) {
+                        components.ngRevoluteJoint = true;
+                    }
+                    break;
+                case 'distance-joint':
+                    if (!components.ngDistanceJoint) {
+                        components.ngDistanceJoint = {};
+                    }
+
+                    parseAnchors(components.ngDistanceJoint, object);
+                    break;
+                case 'prismatic-joint':
+                    if (!components.ngPrismaticJoint) {
+                        components.ngPrismaticJoint = {};
+                    }
+                    parseAnchors(components.ngPrismaticJoint, object);
+                    break;
+                case 'pulley-joint':
+                    if (!components.ngPulleyJoint) {
+                        components.ngPulleyJoint = true;
+                    }
+                    break;
+                case '':
+                    //TODO:
+                    //console.log('undefined object', object);
+                    //continue;
+                    break;
+                default:
+                    throw new Error('Need to implement new object type : "' + object.type + '"');
+                    break;
+            }
+
+            components.ng2D = {
+                x: object.x,
+                y: object.y
+            };
+
+            if (object.ellipse) {
+                //Because Box2D can't interact with ellipse we just take average value
+                components.ng2DCircle = {
+                    radius: 0.25 * (object.width + object.height)
+                };
+                components.ng2D.x+= 0.5 * object.width;
+                components.ng2D.y+= 0.5 * object.height;
+            } else if (object.polyline) {
+                //TODO : create complex shape
+                //object.polyline[].{x,y};// custom shape
+                components.ng2DPolygon = {
+                    line: object.polyline
+                };
+                //continue;
+            } else if (object.polygon) {
+                components.ng2DPolygon = {
+                    line: object.polygon
+                };
+            } else {
+                components.ng2DSize = {
+                    width: object.width,
+                    height: object.height
+                };
+
+                components.ng2D.x += 0.5 * object.width;
+                components.ng2D.y += 0.5 * object.height;
+            }
+
+            entities.push(world.$e(object.name, components, true));
+        }
+    }
+
+
 
     function parseAnchors(component, object) {
         component.anchorA = {
