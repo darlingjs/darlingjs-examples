@@ -164,6 +164,9 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
         fps: 60
     });
 
+    /**
+     * component-marker for ground entities
+     */
     world.$c('ground', {});
 
     //resource loading
