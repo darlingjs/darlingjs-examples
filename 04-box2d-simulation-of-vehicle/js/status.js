@@ -27,6 +27,10 @@
                 $scope.$apply(function() {
                     $scope.mouse = event;
                 });
+                event.cancelBubble = true;
+                event.returnValue = false;
+                if (event.stopPropagation) event.stopPropagation();
+                if (event.preventDefault) event.preventDefault();
             });
 
             document.addEventListener("touchstart", handleStart, false);
@@ -49,6 +53,10 @@
                 $scope.$apply(function() {
                     $scope.touches = event.touches;
                 });
+                event.cancelBubble = true;
+                event.returnValue = false;
+                if (event.stopPropagation) event.stopPropagation();
+                if (event.preventDefault) event.preventDefault();
             });
         }
     ]);
