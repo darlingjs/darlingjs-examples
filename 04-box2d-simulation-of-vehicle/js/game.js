@@ -624,7 +624,7 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
                 fitToWindow: true
             });
 
-            world.$add('ngPixijsUpdateCycle');
+            world.$add('ngPixijsPositionUpdateCycleWithViewPort');
             world.$add('ngPixijsSpriteShiftUpdate');
             world.$add('ngPixijsRotationUpdateCycle');
             world.$add('ngPixijsViewPortUpdateCycle');
