@@ -28,7 +28,11 @@ game.factory('Player', ['Levels', 'localStorageService', function(Levels, localS
     levelAPI.passed = false;
     levelAPI.available = false;
 
-    playedLevels = JSON.parse(localStorageService.get(playedLevelsLocalStorageKey));
+    try {
+        playedLevels = localStorageService.get(playedLevelsLocalStorageKey);
+    } catch(e) {
+
+    }
 
     if (!playedLevels) {
         clear();

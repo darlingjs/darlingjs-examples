@@ -1,0 +1,19 @@
+{
+  "name": "game-red-cabriolet",
+  "version": "0.7.0",
+  "main": [
+    "index.html"
+  ],
+  "ignore": [
+    ".jshintrc",
+    "**/*.txt"
+  ],
+  "dependencies": {
+    "q": "~0.9.6",
+    "angular-unstable": "~1.1.5",
+    "angular-localstorage": "latest"
+  },
+  "devDependencies": {
+    "jasmine": "*"
+  }
+}
