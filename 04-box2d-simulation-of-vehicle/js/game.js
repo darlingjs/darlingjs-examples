@@ -139,6 +139,7 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
         height,
         debugDraw = false,
         renderWithPixiJs = true,
+        useStats = false,
         levelId,
         levelProgress,
         currentTile = 'unknown';
@@ -465,7 +466,9 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
         isBuilded = true;
 
         // systems
-        world.$add('ngStatsBegin');
+        if (useStats) {
+            world.$add('ngStatsBegin');
+        }
 
         world.$add('ngPerformanceLogBegin');
 
@@ -685,9 +688,11 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
 
         world.$add('ngPerformanceLogEnd');
 
-        world.$add('ngStatsEnd', {
-            domId: 'gameUI'
-        });
+        if (useStats) {
+            world.$add('ngStatsEnd', {
+                domId: 'gameUI'
+            });
+        }
 
         world.$e('sky', {
             'ng2D': {
