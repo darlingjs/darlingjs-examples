@@ -8,9 +8,9 @@ var version = '0.2';
 var game = angular.module('RedCabrioletGame', ['LocalStorageModule']);
 game.config(['$routeProvider', function($routeProvider) {
     $routeProvider.
-        when('/menu',           {templateUrl: 'partials/menu.html',     controller: 'MainMenuCtrl', bgColor: 'rgb(0, 0, 128)'}).
-        when('/map',            {templateUrl: 'partials/map.html',      controller: 'MapCtrl', bgColor: 'rgb(128, 128, 0)'}).
-        when('/status',         {templateUrl: 'partials/status.html',   controller: 'StatusCtrl', bgColor: 'rgb(0, 0, 128)'}).
+        when('/menu',           {templateUrl: 'partials/menu.html',     controller: 'MainMenuCtrl', bgColor: '#2B82B0'}).
+        when('/map',            {templateUrl: 'partials/map.html',      controller: 'MapCtrl', bgColor: '#8D395F'}).
+        when('/status',         {templateUrl: 'partials/status.html',   controller: 'StatusCtrl', bgColor: '#2B82B0'}).
         when('/about',          {templateUrl: 'partials/about.html',    controller: 'AboutCtrl', bgColor: 'rgb(0, 0, 0)'}).
         when('/game/:levelId',  {templateUrl: 'partials/game.html',     controller: 'GameCtrl', bgColor: 'rgb(0, 0, 0)'}).
         otherwise({redirectTo: '/menu'});

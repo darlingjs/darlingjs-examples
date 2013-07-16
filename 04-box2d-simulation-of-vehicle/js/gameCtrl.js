@@ -153,6 +153,7 @@ game.controller('GameCtrl', ['GameWorld', 'TouchService', 'Levels', 'Player', '$
             || navigator.userAgent.match(/iPad/i)
             || navigator.userAgent.match(/iPod/i)
             || navigator.userAgent.match(/BlackBerry/i)
+            || navigator.userAgent.match(/PlayBook/i)
             || navigator.userAgent.match(/Windows Phone/i)
             ){
                 return true;

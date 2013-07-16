@@ -17,6 +17,12 @@ game.factory('TouchService', ['$rootScope', function($rootScope) {
     var ctrlState = NONE_SIDE_STATE,
         middle = document.width / 2;
 
+    window.addEventListener('resize', resizeHandle, false);
+
+    function resizeHandle() {
+        middle = document.width / 2;
+    }
+
     function fingerAt(x, y) {
         if (x < middle) {
             setState(LEFT_SIDE_STATE);
