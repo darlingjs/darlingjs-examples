@@ -132,16 +132,35 @@ game.controller('GameCtrl', ['GameWorld', 'TouchService', 'Levels', 'Player', '$
             });
         });
 
+        $scope.drivingLeft = false;
+        $scope.drivingRight = false;
+
+        $scope.middle = TouchService.getMiddle();
+
         $scope.$on('change-touch-control-state', function(name, state) {
             switch (state) {
                 case TouchService.LEFT_SIDE_STATE:
-                    GameWorld.driveLeft();
+                    if (GameWorld.driveLeft()) {
+                        $scope.$apply(function() {
+                            $scope.drivingLeft = true;
+                            $scope.drivingRight = false;
+                        });
+                    }
                     break;
                 case TouchService.RIGHT_SIDE_STATE:
-                    GameWorld.driveRight();
+                    if (GameWorld.driveRight()) {
+                        $scope.$apply(function() {
+                            $scope.drivingLeft = false;
+                            $scope.drivingRight = true;
+                        });
+                    }
                     break;
                 default:
                     GameWorld.stopDriving();
+                    $scope.$apply(function() {
+                    $scope.drivingLeft = false;
+                    $scope.drivingRight = false;
+                    });
                     break;
             }
         });

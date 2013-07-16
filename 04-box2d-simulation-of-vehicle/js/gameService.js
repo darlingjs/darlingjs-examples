@@ -18,7 +18,8 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
         levelProgress,
         currentTile = 'unknown',
 
-        soundIsEnabled = true;
+        soundIsEnabled = true,
+        fullStopped = false;
 
     world = darlingjs.world('myGame', [
         'myApp',
@@ -277,14 +278,6 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
     }
 
     /**
-     * @public
-     */
-    function stopVehicle() {
-        world.$remove(enableMotorOnKeyDownSystem);
-        playerVehicle.fullStop();
-    }
-
-    /**
      * Destroy the Game World
      *
      * @public
@@ -344,6 +337,8 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
         }
 
         isBuilded = true;
+
+        fullStopped = false;
 
         // systems
         if (useStats) {
@@ -475,7 +470,10 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
                                 throw new Error('undefined tile');
                                 break;
                         }
-                        updateLevelProgress(tileSetting.name, leftSeedTile.rightEdge / levelLength);
+
+                        if (leftSeedTile) {
+                            updateLevelProgress(tileSetting.name, leftSeedTile.rightEdge / levelLength);
+                        }
 //                        if (seed <= 0.9) {
 //                        } else if (false) {
 //                            generateStraightLine(newTile, leftSeedTile, rightSeedTile);
@@ -1868,8 +1866,6 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
         }
     }
 
-
-
     function buildCloudFront(ops) {
         world.$e('rain-sound', {
             'ng2D': {
@@ -2202,12 +2198,30 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
         }
     }
 
+    /**
+     * @public
+     */
+    function fullStopVehicle() {
+        fullStopped = true;
+
+        world.$remove(enableMotorOnKeyDownSystem);
+        playerVehicle.fullStop();
+    }
+
     function driveLeft() {
+        if (fullStopped) {
+            return false;
+        }
         playerVehicle.left();
+        return true;
     }
 
     function driveRight() {
+        if (fullStopped) {
+            return false;
+        }
         playerVehicle.right();
+        return true;
     }
 
     function stopDriving() {
@@ -2233,14 +2247,14 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
         pause: pause,
         unPause: unpause,
 
-        stopVehicle: stopVehicle,
-
         enableSound: enableSound,
         isMute: isMute,
         unMute: unMute,
         mute: mute,
 
         setStageSize: setStageSize,
+
+        stopVehicle: fullStopVehicle,
 
         driveLeft: driveLeft,
         driveRight: driveRight,

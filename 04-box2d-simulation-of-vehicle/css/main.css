@@ -34,6 +34,18 @@ canvas {
     /*z-index: -100;*/
 }
 
+.left-driving-arrow {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+}
+
+.right-driving-arrow {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+}
+
 /* Desktop */
 @media (min-width: 641px) {
     .header {

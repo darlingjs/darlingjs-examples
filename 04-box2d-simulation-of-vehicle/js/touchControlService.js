@@ -15,7 +15,7 @@ game.factory('TouchService', ['$rootScope', function($rootScope) {
         RIGHT_SIDE_STATE = 2;
 
     var ctrlState = NONE_SIDE_STATE,
-        middle = document.width / 2;
+        middle = window.innerWidth / 2;
 
     window.addEventListener('resize', resizeHandle, false);
 
@@ -91,9 +91,14 @@ game.factory('TouchService', ['$rootScope', function($rootScope) {
         document.removeEventListener('mousemove', mouseMoveHandler);
     }
 
+    function getMiddle() {
+        return middle;
+    }
+
     return {
         NONE_SIDE_STATE: NONE_SIDE_STATE,
         LEFT_SIDE_STATE: LEFT_SIDE_STATE,
-        RIGHT_SIDE_STATE: RIGHT_SIDE_STATE
+        RIGHT_SIDE_STATE: RIGHT_SIDE_STATE,
+        getMiddle: getMiddle
     }
 }]);
