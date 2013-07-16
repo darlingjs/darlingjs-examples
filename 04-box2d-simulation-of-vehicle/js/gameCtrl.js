@@ -3,8 +3,8 @@
  * Copyright (c) 2013, Eugene-Krevenets
  */
 
-game.controller('GameCtrl', ['GameWorld', 'Levels', 'Player', '$scope', '$routeParams', '$location',
-    function(GameWorld, Levels, Player, $scope, $routeParams, $location) {
+game.controller('GameCtrl', ['GameWorld', 'TouchService', 'Levels', 'Player', '$scope', '$routeParams', '$location',
+    function(GameWorld, TouchService, Levels, Player, $scope, $routeParams, $location) {
 
         'use strict';
         var bonusForLevelFinish = 1000;
@@ -19,6 +19,11 @@ game.controller('GameCtrl', ['GameWorld', 'Levels', 'Player', '$scope', '$routeP
         if (!level || !level.available) {
             $location.url('/menu');
             return;
+        }
+
+        //because of lack of performance
+        if (isMobile()) {
+            GameWorld.enableSound(false);
         }
 
         $scope.levelId = levelId;
@@ -126,4 +131,34 @@ game.controller('GameCtrl', ['GameWorld', 'Levels', 'Player', '$scope', '$routeP
                 $scope.score = score;
             });
         });
+
+        $scope.$on('change-touch-control-state', function(name, state) {
+            switch (state) {
+                case TouchService.LEFT_SIDE_STATE:
+                    GameWorld.driveLeft();
+                    break;
+                case TouchService.RIGHT_SIDE_STATE:
+                    GameWorld.driveRight();
+                    break;
+                default:
+                    GameWorld.stopDriving();
+                    break;
+            }
+        });
+
+        function isMobile() {
+            if( navigator.userAgent.match(/Android/i)
+            || navigator.userAgent.match(/webOS/i)
+            || navigator.userAgent.match(/iPhone/i)
+            || navigator.userAgent.match(/iPad/i)
+            || navigator.userAgent.match(/iPod/i)
+            || navigator.userAgent.match(/BlackBerry/i)
+            || navigator.userAgent.match(/Windows Phone/i)
+            ){
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
     }]);

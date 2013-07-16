@@ -4,6 +4,7 @@
  *
  * Game World Service deal with all game interaction
  */
+
 game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) {
     'use strict';
 
@@ -15,7 +16,9 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
         useStats = false,
         levelId,
         levelProgress,
-        currentTile = 'unknown';
+        currentTile = 'unknown',
+
+        soundIsEnabled = true;
 
     world = darlingjs.world('myGame', [
         'myApp',
@@ -81,23 +84,25 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
         assetsAreLoading = true;
 
         //sounds
-        var ngHowlerResources = world.$add('ngHowlerResources');
-        ngHowlerResources.load(['assets/sfx/pickup-bonus-A.ogg', 'assets/sfx/pickup-bonus-A.mp3'], ngResourceLoader);
-        ngHowlerResources.load(['assets/sfx/pickup-bonus-E.ogg', 'assets/sfx/pickup-bonus-E.mp3'], ngResourceLoader);
-        ngHowlerResources.load(['assets/sfx/drops-damage.ogg', 'assets/sfx/drops-damage.mp3'], ngResourceLoader);
-        ngHowlerResources.load(['assets/sfx/doom-damage-0.ogg', 'assets/sfx/doom-damage-0.mp3'], ngResourceLoader);
-        ngHowlerResources.load(['assets/sfx/engine-loop-0.ogg', 'assets/sfx/engine-loop-0.mp3'], ngResourceLoader);
-        ngHowlerResources.load(['assets/sfx/tires-squal-loop-0.ogg', 'assets/sfx/tires-squal-loop-0.mp3'], ngResourceLoader);
-        ngHowlerResources.load(['assets/sfx/rain-loop-0.ogg', 'assets/sfx/rain-loop-0.mp3'], ngResourceLoader);
-        ngHowlerResources.load(['assets/sfx/thunder-0.ogg', 'assets/sfx/thunder-0.mp3'], ngResourceLoader);
-        ngHowlerResources.load(['assets/sfx/thunder-1.ogg', 'assets/sfx/thunder-1.mp3'], ngResourceLoader);
-        ngHowlerResources.load(['assets/sfx/drops-1.ogg', 'assets/sfx/drops-1.mp3'], ngResourceLoader);
-        ngHowlerResources.load(['assets/sfx/cicada-0.ogg', 'assets/sfx/cicada-0.mp3'], ngResourceLoader);
-        ngHowlerResources.load(['assets/sfx/bird-nightingale-0.ogg', 'assets/sfx/bird-nightingale-0.mp3'], ngResourceLoader);
-        ngHowlerResources.load(['assets/sfx/frogs-0.ogg', 'assets/sfx/frogs-0.mp3'], ngResourceLoader);
+        if (soundIsEnabled) {
+            var ngHowlerResources = world.$add('ngHowlerResources');
+            ngHowlerResources.load(['assets/sfx/pickup-bonus-A.ogg', 'assets/sfx/pickup-bonus-A.mp3'], ngResourceLoader);
+            ngHowlerResources.load(['assets/sfx/pickup-bonus-E.ogg', 'assets/sfx/pickup-bonus-E.mp3'], ngResourceLoader);
+            ngHowlerResources.load(['assets/sfx/drops-damage.ogg', 'assets/sfx/drops-damage.mp3'], ngResourceLoader);
+            ngHowlerResources.load(['assets/sfx/doom-damage-0.ogg', 'assets/sfx/doom-damage-0.mp3'], ngResourceLoader);
+            ngHowlerResources.load(['assets/sfx/engine-loop-0.ogg', 'assets/sfx/engine-loop-0.mp3'], ngResourceLoader);
+            ngHowlerResources.load(['assets/sfx/tires-squal-loop-0.ogg', 'assets/sfx/tires-squal-loop-0.mp3'], ngResourceLoader);
+            ngHowlerResources.load(['assets/sfx/rain-loop-0.ogg', 'assets/sfx/rain-loop-0.mp3'], ngResourceLoader);
+            ngHowlerResources.load(['assets/sfx/thunder-0.ogg', 'assets/sfx/thunder-0.mp3'], ngResourceLoader);
+            ngHowlerResources.load(['assets/sfx/thunder-1.ogg', 'assets/sfx/thunder-1.mp3'], ngResourceLoader);
+            ngHowlerResources.load(['assets/sfx/drops-1.ogg', 'assets/sfx/drops-1.mp3'], ngResourceLoader);
+            ngHowlerResources.load(['assets/sfx/cicada-0.ogg', 'assets/sfx/cicada-0.mp3'], ngResourceLoader);
+            ngHowlerResources.load(['assets/sfx/bird-nightingale-0.ogg', 'assets/sfx/bird-nightingale-0.mp3'], ngResourceLoader);
+            ngHowlerResources.load(['assets/sfx/frogs-0.ogg', 'assets/sfx/frogs-0.mp3'], ngResourceLoader);
 
-        //sound track
-        ngHowlerResources.load(['assets/sfx/rock-drums-120-0.ogg', 'assets/sfx/rock-drums-120-0.mp3'], ngResourceLoader);
+            //sound track
+            ngHowlerResources.load(['assets/sfx/rock-drums-120-0.ogg', 'assets/sfx/rock-drums-120-0.mp3'], ngResourceLoader);
+        }
 
         //images
         var ngPixijsResources = world.$add('ngPixijsResources');
@@ -144,7 +149,7 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
      *
      */
     function unMute() {
-        if (!hawlerAdapter || !muted) {
+        if (!hawlerAdapter || !muted || !soundIsEnabled) {
             return;
         }
         unMuteGame();
@@ -160,6 +165,10 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
         }
 
         hawlerAdapter.unmute();
+    }
+
+    function enableSound(value) {
+        soundIsEnabled = value;
     }
 
     /**
@@ -272,7 +281,7 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
      */
     function stopVehicle() {
         world.$remove(enableMotorOnKeyDownSystem);
-        playerVehicle.stop();
+        playerVehicle.fullStop();
     }
 
     /**
@@ -290,7 +299,6 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
         darlingjs.removeWorld('myGame');
         world = darlingjs.world('myGame', [
             'myApp',
-            'ngCommon',
             'ngFlatland',
             'ngCyclic',
             'ng3D',
@@ -371,7 +379,6 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
         world.$add('ngBox2DCollision');
 
         enableMotorOnKeyDownSystem = world.$add('ngEnableMotorOnKeyDown');
-        world.$add('ngEnableMotorOnAccelerometer');
         world.$add('ngBox2DEnableMotorSystem');
         world.$add('ngBox2DMotorWithAcceleration');
 
@@ -393,9 +400,11 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
 
         world.$add('ngRemoveSelectionFromWinner');
 
-        hawlerAdapter = world.$add('ngHowlerAdapter');
+        if (soundIsEnabled) {
+            hawlerAdapter = world.$add('ngHowlerAdapter');
 
-        world.$add('ngHowlerAmbientSoundAdapter');
+            world.$add('ngHowlerAmbientSoundAdapter');
+        }
 
         var firstTile = true;
 
@@ -1678,11 +1687,6 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
                 keyCode: [37, 65],
                 keyCodeReverse: [39, 68]
             }:{},
-            'ngEnableMotorOnAccelerometer': ops.rearWheelDrive?{
-                xAxis: false,
-                yAxis: false,
-                zAxis: true
-            }:{},
             ngAnyJoint: {
                 onEnabledReverse: {
                     ngAmbientSound : {
@@ -1732,11 +1736,6 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
             'ngEnableMotorOnKeyDown': ops.frontWheelDrive?{
                 keyCode: [37, 65],
                 keyCodeReverse: [39, 68]
-            }:{},
-            'ngEnableMotorOnAccelerometer': ops.rearWheelDrive?{
-                xAxis: false,
-                yAxis: false,
-                zAxis: true
             }:{},
             'ngSelected': true,
             'ngMotorWithAcceleration': {
@@ -1796,17 +1795,39 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
             }
         });
 
+        function fullStop() {
+            stop();
+
+            leftWheel.ngPhysic.angularDamping = wheelAngularDampingOnStop;
+            rightWheel.ngPhysic.angularDamping = wheelAngularDampingOnStop;
+        }
+
         function stop() {
             leftWheelRevoluteJoint.$remove('ngEnableMotor');
             leftWheelRevoluteJoint.$remove('ngEnableMotorReverse');
             rightWheelRevoluteJoint.$remove('ngEnableMotor');
             rightWheelRevoluteJoint.$remove('ngEnableMotorReverse');
-            leftWheel.ngPhysic.angularDamping = wheelAngularDampingOnStop;
-            rightWheel.ngPhysic.angularDamping = wheelAngularDampingOnStop;
+        }
+
+        function left() {
+            leftWheelRevoluteJoint.$remove('ngEnableMotorReverse');
+            rightWheelRevoluteJoint.$remove('ngEnableMotorReverse');
+            leftWheelRevoluteJoint.$add('ngEnableMotor');
+            rightWheelRevoluteJoint.$add('ngEnableMotor');
+        }
+
+        function right() {
+            leftWheelRevoluteJoint.$add('ngEnableMotorReverse');
+            rightWheelRevoluteJoint.$add('ngEnableMotorReverse');
+            leftWheelRevoluteJoint.$add('ngEnableMotor');
+            rightWheelRevoluteJoint.$add('ngEnableMotor');
         }
 
         return {
-            stop: stop
+            fullStop: fullStop,
+            stop: stop,
+            left: left,
+            right: right
         }
     }
 
@@ -2181,6 +2202,18 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
         }
     }
 
+    function driveLeft() {
+        playerVehicle.left();
+    }
+
+    function driveRight() {
+        playerVehicle.right();
+    }
+
+    function stopDriving() {
+        playerVehicle.stop();
+    }
+
     /**
      * API of Game Service
      */
@@ -2202,10 +2235,15 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
 
         stopVehicle: stopVehicle,
 
+        enableSound: enableSound,
         isMute: isMute,
         unMute: unMute,
         mute: mute,
 
-        setStageSize: setStageSize
+        setStageSize: setStageSize,
+
+        driveLeft: driveLeft,
+        driveRight: driveRight,
+        stopDriving: stopDriving
     };
 }]);
