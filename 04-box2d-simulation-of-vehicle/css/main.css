@@ -1,5 +1,17 @@
 body {
     margin: 0;
+    color: #f7f7f7;
+    /*background-color: #0c0c0c;*/
+    font-family: calibri;
+
+    /* Firefox */
+    -moz-transition: all 1s ease-in;
+    /* WebKit */
+    -webkit-transition: all 1s ease-in;
+    /* Opera */
+    -o-transition: all 1s ease-in;
+    /* Standard */
+    transition: all 1s ease-in;
 }
 
 canvas {
@@ -221,12 +233,6 @@ canvas {
 
 h1 {
     font-family: 'Lobster', cursive; font-weight: 400;
-}
-
-body {
-    background-color: #0c0c0c;
-    color: #f7f7f7;
-    font-family: calibri;
 }
 
 a:link {

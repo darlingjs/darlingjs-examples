@@ -10,17 +10,37 @@
             // BORROWED from Mr Doob (mrdoob.com)
 
             staticDatas();
-            dynanicDatas();
+            dynamicDatas();
 
-            function dynanicDatas() {
+            function onOrientationChangeHandler(e) {
+                var orientation;
+                if (darlingutil.isDefined(window.orientation)) {
+                    orientation = window.orientation;
+                } else if (darlingutil.isDefined(screen.orientation)) {
+                    orientation = screen.orientation;
+                }
+
+                $scope.landscape = orientation == -90 || orientation == 90;
+            }
+
+            //BUG: Android Chrome Bug: if orientation change from left to right landscape event doesn't fire handle
+            //and even 'window.orientation' doesn't change, test by
+            //setInterval(onOrientationChangeHandler, 1000);
+
+            onOrientationChangeHandler();
+            window.addEventListener('orientationchange', function() {
+                $scope.$apply(onOrientationChangeHandler);
+            });
+
+            function dynamicDatas() {
                 $scope.document = document;
                 $scope.window = window;
-                $scope.landscape = window.innerWidth > window.innerHeight;
-                $timeout(dynanicDatas, 1000);
+                $timeout(dynamicDatas, 1000);
             }
 
             function staticDatas() {
                 $scope.webgl = ( function () { try { return !! window.WebGLRenderingContext && !! document.createElement( 'canvas' ).getContext( 'experimental-webgl' ); } catch( e ) { return false; } } )();
+                $scope.navigator = navigator;
             }
 
             document.addEventListener('mousemove', function(event) {
@@ -43,10 +63,12 @@
 
             document.addEventListener("touchend", handleEnd, false);
 
+            var emptyArray = [];
+
             function handleEnd(event) {
-                /*$scope.$apply(function() {
-                    $scope.touches = event.touches;
-                });*/
+                $scope.$apply(function() {
+                    $scope.touches = emptyArray;
+                });
             }
 
             document.addEventListener('touchmove', function(event) {
