@@ -11,7 +11,20 @@
   "dependencies": {
     "q": "~0.9.6",
     "angular-unstable": "~1.1.5",
-    "angular-localstorage": "latest"
+    "angular-localstorage": "latest",
+    "howler": "~1.1.9",
+    "darlingjs": "https://github.com/darlingjs/bower-darlingjs.git",
+    "darlingjs-geometry": "https://github.com/darlingjs/bower-geometry-module.git",
+    "darlingjs-pixijs": "https://github.com/darlingjs/bower-pixi.js-module.git",
+    "darlingjs-resources": "https://github.com/darlingjs/bower-resources-module.git",
+    "darlingjs-physics": "https://github.com/darlingjs/bower-physics-module.git",
+    "darlingjs-box2d.js": "https://github.com/darlingjs/bower-box2d.js-module.git",
+    "stats.js": "latest",
+    "pixi": "~1.2.0",
+    "darlingjs-generators": "https://github.com/darlingjs/bower-generators-module.git",
+    "darlingjs-particles": "https://github.com/darlingjs/darlingjs-debug-module.git",
+    "darlingjs-sound": "https://github.com/darlingjs/darlingjs-sound-module.git",
+    "darlingjs-debug": "https://github.com/darlingjs/darlingjs-debug-module.git"
   },
   "devDependencies": {
     "jasmine": "*"

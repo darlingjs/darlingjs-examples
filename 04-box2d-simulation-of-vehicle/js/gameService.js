@@ -19,7 +19,6 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
 
     world = darlingjs.world('myGame', [
         'myApp',
-        'ngCommon',
         'ngFlatland',
         'ngCyclic',
         'ng3D',
