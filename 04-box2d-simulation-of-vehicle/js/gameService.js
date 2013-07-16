@@ -1686,31 +1686,29 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
                 keyCodeReverse: [39, 68]
             }:{},
             ngAnyJoint: {
-                onEnabledReverse: {
-                    ngAmbientSound : {
-                        urls: ['assets/sfx/engine-loop-0.ogg', 'assets/sfx/engine-loop-0.mp3'],
-                        volume: 0.03,
-                        loop: true,
-                        stopPlayAfterRemove: true
-                    }
-                },
-                onEnabled: {
-                    ngAmbientSound : {
-                        urls: ['assets/sfx/tires-squal-loop-0.ogg', 'assets/sfx/tires-squal-loop-0.mp3'],
-                        volume: 0.03,
-                        loop: true,
-                        stopPlayAfterRemove: true
-                    }
-                }
-
-                /*
-                 onEnabled: function() {
-                 console.log('motor is enabled');
-                 },
-                 onDisabled: function() {
-                 console.log('motor is disabled');
-                 }
-                 */
+                onEnabledReverse: [
+                    {
+                        ngAmbientSound : {
+                            urls: ['assets/sfx/engine-loop-0.ogg', 'assets/sfx/engine-loop-0.mp3'],
+                            volume: 0.03,
+                            loop: true,
+                            stopPlayAfterRemove: true
+                        }
+                    },
+                    driveRightHandler
+                ],
+                onEnabled:[
+                    {
+                        ngAmbientSound : {
+                            urls: ['assets/sfx/tires-squal-loop-0.ogg', 'assets/sfx/tires-squal-loop-0.mp3'],
+                            volume: 0.03,
+                            loop: true,
+                            stopPlayAfterRemove: true
+                        }
+                    },
+                    driveLeftHandler
+                ],
+                onDisabled: stopDrivingHandler
             },
             'ngSelected': true,
             'ngMotorWithAcceleration': {
@@ -2226,6 +2224,18 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
 
     function stopDriving() {
         playerVehicle.stop();
+    }
+
+    function driveLeftHandler() {
+        $rootScope.$broadcast('drive-left');
+    }
+
+    function driveRightHandler() {
+        $rootScope.$broadcast('drive-right');
+    }
+
+    function stopDrivingHandler() {
+        $rootScope.$broadcast('stop-driving');
     }
 
     /**

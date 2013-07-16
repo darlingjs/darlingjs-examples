@@ -137,30 +137,37 @@ game.controller('GameCtrl', ['GameWorld', 'TouchService', 'Levels', 'Player', '$
 
         $scope.middle = TouchService.getMiddle();
 
+        $scope.$on('drive-left', function() {
+            $scope.$apply(function() {
+                $scope.drivingLeft = true;
+                $scope.drivingRight = false;
+            });
+        });
+
+        $scope.$on('drive-right', function() {
+            $scope.$apply(function() {
+                $scope.drivingLeft = false;
+                $scope.drivingRight = true;
+            });
+        });
+
+        $scope.$on('stop-driving', function() {
+            $scope.$apply(function() {
+                $scope.drivingLeft = false;
+                $scope.drivingRight = false;
+            });
+        })
+
         $scope.$on('change-touch-control-state', function(name, state) {
             switch (state) {
                 case TouchService.LEFT_SIDE_STATE:
-                    if (GameWorld.driveLeft()) {
-                        $scope.$apply(function() {
-                            $scope.drivingLeft = true;
-                            $scope.drivingRight = false;
-                        });
-                    }
+                    GameWorld.driveLeft();
                     break;
                 case TouchService.RIGHT_SIDE_STATE:
-                    if (GameWorld.driveRight()) {
-                        $scope.$apply(function() {
-                            $scope.drivingLeft = false;
-                            $scope.drivingRight = true;
-                        });
-                    }
+                    GameWorld.driveRight();
                     break;
                 default:
                     GameWorld.stopDriving();
-                    $scope.$apply(function() {
-                    $scope.drivingLeft = false;
-                    $scope.drivingRight = false;
-                    });
                     break;
             }
         });
