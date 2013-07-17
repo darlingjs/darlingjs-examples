@@ -1386,7 +1386,8 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
         var leftWheelRevoluteJoint,
             rightWheelRevoluteJoint,
             leftWheel,
-            rightWheel;
+            rightWheel,
+            vehicleBody;
 
         var degreesToRadians = Math.PI / 180.0;
 
@@ -1472,7 +1473,7 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
 
         //body
         var bodyName = 'vehicle-body-' + name;
-        world.$e(bodyName, {
+        vehicleBody = world.$e(bodyName, {
             'ng2D': {x : x, y: y},
             'ng2DSize': {width: 2.0 * ops.width, height: 2.0 * ops.height},
             'ng2DRotation': true,
@@ -1819,11 +1820,16 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
             rightWheelRevoluteJoint.$add('ngEnableMotor');
         }
 
+        function immortal() {
+            vehicleBody.$remove('ngLive');
+        }
+
         return {
             fullStop: fullStop,
             stop: stop,
             left: left,
-            right: right
+            right: right,
+            immortal: immortal
         }
     }
 
@@ -2204,6 +2210,7 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
 
         world.$remove(enableMotorOnKeyDownSystem);
         playerVehicle.fullStop();
+        playerVehicle.immortal();
     }
 
     function driveLeft() {
