@@ -273,46 +273,71 @@ a:active {
     color: #ff537b;
 }
 
-.page {
-    float: left;
-    -webkit-transform:translateZ(0);
-}
-
 .page-container {
     /*position:relative;
     width: 640px;*/
 }
 
 .page-enter, .page-leave {
-    -webkit-transition:all cubic-bezier(0.420, 0.000, 1.000, 1.000) 10.5s;
-    -moz-transition:all cubic-bezier(0.420, 0.000, 1.000, 1.000) 10.5s;
-    -o-transition:all cubic-bezier(0.420, 0.000, 1.000, 1.000) 10.5s;
-    transition:all cubic-bezier(0.420, 0.000, 1.000, 1.000) 10.5s;
+    -webkit-transition: -webkit-transform .2s cubic-bezier(0.26,0.405,0.355,1);
+    -moz-transition: -moz-transform .2s cubic-bezier(0.26,0.405,0.355,1);
+    -ms-transition: -ms-transform .2s cubic-bezier(0.26,0.405,0.355,1);
+    -o-transition: -o-transform .2s cubic-bezier(0.26,0.405,0.355,1);
+}
+
+.page {
+    /*float: left;*/
+    -webkit-transform:translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    transform: translateZ(0);
 }
 
 .page-enter, .page-leave, .page-enter-active, .page-leave-active {
-    position:relative;
-    margin-right: -100%;
-    float: left;
+    position:absolute;
+    /*margin-right: -100%;*/
+    /*-webkit-transform: translateX(500px) translateZ(0);*/
+    /*float: left;*/
 }
 
 .page-enter {
-    left:100px;
+    /*left:100px;*/
+    -webkit-transform: translateX(500px) translateZ(0);
+    -moz-transform: translateX(500px) translateZ(0);
+    -ms-transform: translateX(500px) translateZ(0);
+    -o-transform: translateX(500px) translateZ(0);
+    transform: translateX(500px) translateZ(0);
     /*opacity: 0;*/
 }
 
 .page-enter-active {
-    left: 0;
+    /*left: 0;*/
+    -webkit-transform: translateX(0px) translateZ(0);
+    -moz-transform: translateX(0px) translateZ(0);
+    -ms-transform: translateX(0px) translateZ(0);
+    -o-transform: translateX(0px) translateZ(0);
+    transform: translateX(0px) translateZ(0);
     /*opacity: 1;*/
 }
 
 .page-leave {
-    left:0;
+    -webkit-transform: translateX(0px) translateZ(0);
+    -moz-transform: translateX(0px) translateZ(0);
+    -ms-transform: translateX(0px) translateZ(0);
+    -o-transform: translateX(0px) translateZ(0);
+    transform: translateX(0px) translateZ(0);
+    /*left:0;*/
     /*opacity: 1;*/
 }
 
 .page-leave-active {
-    left:-100px;
+    /*left:-100px;*/
+    -webkit-transform: translateX(-500px) translateZ(0);
+    -moz-transform: translateX(-500px) translateZ(0);
+    -ms-transform: translateX(-500px) translateZ(0);
+    -o-transform: translateX(-500px) translateZ(0);
+    transform: translateX(-500px) translateZ(0);
     /*opacity: 0;*/
 }
 
@@ -329,39 +354,68 @@ a:active {
 }
 
 .game-info-enter, .game-info-leave, .game-info-enter-active, .game-info-leave-active {
-    position:relative;
+    position:absolute;
+    /*position:relative;
     margin-right: -300px;
-    float: left;
+    float: left;*/
 }
 
 .game-info-enter, .game-info-leave {
-    -webkit-transition:all cubic-bezier(0.420, 0.000, 1.000, 1.000) 0.5s;
-    -moz-transition:all cubic-bezier(0.420, 0.000, 1.000, 1.000) 0.5s;
-    -o-transition:all cubic-bezier(0.420, 0.000, 1.000, 1.000) 0.5s;
-    transition:all cubic-bezier(0.420, 0.000, 1.000, 1.000) 0.5s;
+    -webkit-transition: -webkit-transform 10.2s cubic-bezier(0.26,0.405,0.355,1);
+    -moz-transition: -moz-transform 10.2s cubic-bezier(0.26,0.405,0.355,1);
+    -ms-transition: -ms-transform 10.2s cubic-bezier(0.26,0.405,0.355,1);
+    -o-transition: -o-transform 10.2s cubic-bezier(0.26,0.405,0.355,1);
 }
 
 .game-info-enter {
-    position:relative;
-    top:-100px;
+    /*position:relative;
+    top:-100px;*/
+
+    -webkit-transform: translateY(-100px) translateZ(0);
+    -moz-transform: translateY(-100px) translateZ(0);
+    -ms-transform: translateY(-100px) translateZ(0);
+    -o-transform: translateY(-100px) translateZ(0);
+    transform: translateY(-100px) translateZ(0);
+
     opacity: 0;
 }
 
 .game-info-enter-active {
-    position:relative;
-    top:0;
+    /*position:relative;
+    top:0;*/
+
+    -webkit-transform: translateY(0px) translateZ(0);
+    -moz-transform: translateY(0px) translateZ(0);
+    -ms-transform: translateY(0px) translateZ(0);
+    -o-transform: translateY(0px) translateZ(0);
+    transform: translateY(0px) translateZ(0);
+
     opacity: 1;
 }
 
 .game-info-leave {
-    position:relative;
-    top:0;
+    /*position:relative;
+    top:0;*/
+
+    -webkit-transform: translateY(0px) translateZ(0);
+    -moz-transform: translateY(0px) translateZ(0);
+    -ms-transform: translateY(0px) translateZ(0);
+    -o-transform: translateY(0px) translateZ(0);
+    transform: translateY(0px) translateZ(0);
+
     opacity: 1;
 }
 
 .game-info-leave-active {
-    position:relative;
-    top:100px;
+    /*position:relative;
+    top:100px;*/
+
+    -webkit-transform: translateY(100px) translateZ(0);
+    -moz-transform: translateY(100px) translateZ(0);
+    -ms-transform: translateY(100px) translateZ(0);
+    -o-transform: translateY(100px) translateZ(0);
+    transform: translateY(100px) translateZ(0);
+
     opacity: 0;
 }
 
