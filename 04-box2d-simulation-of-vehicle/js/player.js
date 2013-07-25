@@ -46,7 +46,8 @@ game.factory('Player', ['Levels', 'localStorageService', function(Levels, localS
     function getScore() {
         var result = 0;
         for (var i = 0, count = playedLevels.length; i < count; i++) {
-            result += playedLevels[i].score;
+            var score = playedLevels[i].maxScore;
+            result += isNaN(score)?0:score;
         }
         return result;
     }

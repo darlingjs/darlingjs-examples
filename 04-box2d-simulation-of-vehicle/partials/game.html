@@ -1,4 +1,5 @@
 <div id="gameView" class="page">
+
   <canvas id="gameCanvas" class="gameCanvas background-image-size" style="cursor: default;">
   </canvas>
 
@@ -36,13 +37,25 @@
           <a href="#/menu">Map</a>
           <a>Publish results</a>
         </div>
-        <div ng-switch-when="level-completed" class="game-info game-view-width">
+        <div ng-switch-when="level-completed" class="game-info game-view-width" ng-controller="LevelFinishCtrl">
           <h1>Level Complete</h1>
           <p>Got scores: {{score}}</p>
+          <div>
+            <h2>Publish results</h2>
+            <div ng-hide="isLogin">
+              <p>To store scores you need be login to game by Facebook account</p>
+              <!--<div class="fb-login-button" data-show-faces="true" data-width="200" data-max-rows="1" data-autologoutlink="true" data-onlogin="console.log('login!');" data-height="100" style="max-height: 100px"></div>-->
+              <div class="fb-login-button" data-show-faces="true" data-width="200" data-max-rows="1" data-autologoutlink="true" data-onlogin="game.onFBLogin()" data-height="100" style="max-height: 100px"></div>
+            </div>
+            <div ng-show="isLogin">
+            </div>
+            <div ng-show="isScoreStored">
+              <fb-scoreboard></fb-scoreboard>
+            </div>
+          </div>
           <a href="#/menu">Menu</a>
           <a href="#/map">Map</a>
           <a href="#/game/{{levelId + 1}}">Next</a>
-          <a>Publish results</a>
         </div>
         <div ng-switch-when="game-over" class="game-info game-view-width">
           <h1>Game Over</h1>

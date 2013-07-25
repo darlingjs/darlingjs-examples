@@ -91,7 +91,7 @@ game.controller('GameCtrl', ['GameWorld', 'TouchService', 'Levels', 'Player', '$
                 GameWorld.pause();
                 $scope.paused = true;
             }
-        }
+        };
 
         $scope.$on('world/finish', function() {
             $scope.score+=bonusForLevelFinish;

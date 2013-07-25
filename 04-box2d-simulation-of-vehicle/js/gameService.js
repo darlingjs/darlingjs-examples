@@ -2209,15 +2209,19 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
         fullStopped = true;
 
         world.$remove(enableMotorOnKeyDownSystem);
-        playerVehicle.fullStop();
-        playerVehicle.immortal();
+        if (playerVehicle) {
+            playerVehicle.fullStop();
+            playerVehicle.immortal();
+        }
     }
 
     function driveLeft() {
         if (fullStopped) {
             return false;
         }
-        playerVehicle.left();
+        if (playerVehicle) {
+            playerVehicle.left();
+        }
         return true;
     }
 
@@ -2225,12 +2229,16 @@ game.factory('GameWorld', ['$rootScope', 'Levels', function($rootScope, Levels) 
         if (fullStopped) {
             return false;
         }
-        playerVehicle.right();
+        if (playerVehicle) {
+            playerVehicle.right();
+        }
         return true;
     }
 
     function stopDriving() {
-        playerVehicle.stop();
+        if (playerVehicle) {
+            playerVehicle.stop();
+        }
     }
 
     function driveLeftHandler() {

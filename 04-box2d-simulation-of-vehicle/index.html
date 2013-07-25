@@ -9,80 +9,89 @@
     <title>Red Cabriolet</title>
 </head>
 <body ng-controller="BodyCtrl" ng-style="bodyStyle">
-    <article style="position: relative">
-      <div class="page-container background-image-size center" ng-view ng-animate="'page'">
-      </div>
-    </article>
+  <div id="fb-root"></div>
 
-    <script src="components/darlingjs/darling.js"></script>
+  <article style="position: relative">
+    <div class="page-container background-image-size center" ng-view>
+    <!--<div class="page-container background-image-size center" ng-view ng-animate="'page'">-->
+    </div>
+  </article>
 
-    <script src="components/darlingjs-geometry/flatland.js" type="text/javascript"></script>
-    <script src="components/darlingjs-geometry/3d.js"></script>
-    <script src="components/darlingjs-geometry/cyclic.js"></script>
-    <script src="components/darlingjs-physics/physics.js" type="text/javascript"></script>
-    <script src="components/darlingjs-generators/infinity1D.js"></script>
+  <script src="components/darlingjs/darling.js"></script>
 
-    <script src="components/stats.js/build/stats.min.js"></script>
-    <script src="components/darlingjs-debug/stats.js"></script>
-    <script src="components/darlingjs-debug/performance.js"></script>
-    <script src="components/darlingjs-box2d.js/box2d.js"></script>
-    <script src="components/darlingjs-box2d.js/embox2d-html5canvas-debugDraw.js"></script>
-    <script src="components/darlingjs-box2d.js/box2dEmscriptenAdapter.js"></script>
+  <script src="components/darlingjs-geometry/flatland.js" type="text/javascript"></script>
+  <script src="components/darlingjs-geometry/3d.js"></script>
+  <script src="components/darlingjs-geometry/cyclic.js"></script>
+  <script src="components/darlingjs-physics/physics.js" type="text/javascript"></script>
+  <script src="components/darlingjs-generators/infinity1D.js"></script>
 
-    <script src="components/pixi/bin/pixi.dev.js"></script>
-    <script src="components/darlingjs-pixijs/pixiAdapter.js" type="text/javascript"></script>
+  <script src="components/stats.js/build/stats.min.js"></script>
+  <script src="components/darlingjs-debug/stats.js"></script>
+  <script src="components/darlingjs-debug/performance.js"></script>
+  <script src="components/darlingjs-box2d.js/box2d.js"></script>
+  <script src="components/darlingjs-box2d.js/embox2d-html5canvas-debugDraw.js"></script>
+  <script src="components/darlingjs-box2d.js/box2dEmscriptenAdapter.js"></script>
 
-    <script src="js/playerModule.js"></script>
+  <script src="components/pixi/bin/pixi.dev.js"></script>
+  <script src="components/darlingjs-pixijs/pixiAdapter.js" type="text/javascript"></script>
 
-    <script src="components/darlingjs-particles/particleSystem.js"></script>
+  <script src="js/playerModule.js"></script>
 
-    <script src="components/howler/howler.js"></script>
-    <script src="components/darlingjs-sound/sound.js"></script>
-    <script src="components/darlingjs-sound/howlerAdapter.js"></script>
+  <script src="components/darlingjs-particles/particleSystem.js"></script>
 
-    <script src="components/darlingjs-resources/resources.js" type="text/javascript"></script>
+  <script src="components/howler/howler.js"></script>
+  <script src="components/darlingjs-sound/sound.js"></script>
+  <script src="components/darlingjs-sound/howlerAdapter.js"></script>
 
-    <script src="components/q/q.js"></script>
+  <script src="components/darlingjs-resources/resources.js" type="text/javascript"></script>
 
-    <!--CDN-->
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>-->
-    <script src="components/angular-unstable/angular.js"></script>
-    <script src="components/angular-localstorage/localStorageModule.js"></script>
+  <script src="components/q/q.js"></script>
 
-    <script src="js/common.js"></script>
-    <script src="js/app.js"></script>
+  <!--CDN-->
+  <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>-->
+  <script src="components/angular-unstable/angular.js"></script>
+  <script src="components/angular-localstorage/localStorageModule.js"></script>
 
-    <script src="js/gameCtrl.js"></script>
-    <script src="js/gameService.js"></script>
-    <script src="js/touchControlService.js"></script>
+  <script src="js/fb/scoreBoard.js"></script>
+  <script src="js/fb/facebookService.js"></script>
+  <script src="js/fb/login.js"></script>
 
-    <script src="js/levels.js"></script>
-    <script src="js/player.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/app.js"></script>
 
-    <script src="js/statusCtrl.js"></script>
+  <script src="js/gameCtrl.js"></script>
+  <script src="js/gameService.js"></script>
+  <script src="js/touchControlService.js"></script>
 
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','googleAnalytics');
+  <script src="js/levelFinishCtrl.js"></script>
 
-      googleAnalytics('create', 'UA-38043860-4', {
+  <script src="js/levels.js"></script>
+  <script src="js/player.js"></script>
+
+  <script src="js/statusCtrl.js"></script>
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','googleAnalytics');
+
+    googleAnalytics('create', 'UA-38043860-4', {
 //        'cookieDomain': 'none'
-      });
+    });
 
-      googleAnalytics('send', 'pageview');
+    googleAnalytics('send', 'pageview');
 
-      window.onerror = function(msg, url, line) {
-        var preventErrorAlert = true;
-        googleAnalytics('send', 'event', 'JS Error', msg, navigator.userAgent + ' -> ' + url + " : " + line, line);
-        console.log('send event JS Error ' + msg + ' ' + navigator.userAgent + ' -> ' + url + " : " + line);
-        return preventErrorAlert;
-      };
-    </script>
+    window.onerror = function(msg, url, line) {
+      var preventErrorAlert = true;
+      googleAnalytics('send', 'event', 'JS Error', msg, navigator.userAgent + ' -> ' + url + " : " + line, line);
+      console.log('send event JS Error ' + msg + ' ' + navigator.userAgent + ' -> ' + url + " : " + line);
+      return preventErrorAlert;
+    };
+  </script>
 
-    <noscript>
-      <img src="https://lh4.googleusercontent.com/--BwdjZS5wZk/UXLxxVdcZuI/AAAAAAAAaac/ktkB6nzgF3I/s0/2013-04-20_21-31-27.png" width="640" height="480">
-    </noscript>
+  <noscript>
+    <img src="https://lh4.googleusercontent.com/--BwdjZS5wZk/UXLxxVdcZuI/AAAAAAAAaac/ktkB6nzgF3I/s0/2013-04-20_21-31-27.png" width="640" height="480">
+  </noscript>
 </body>
 </html>

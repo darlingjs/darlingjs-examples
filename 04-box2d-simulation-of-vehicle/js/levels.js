@@ -35,7 +35,8 @@ game.factory('Levels', ['localStorageService', function(localStorageService) {
             imgUrl: "https://badges.webmaker.org/badge/image/code-whisperer.png",
             next: [1],
 
-            levelLength: 7*1000,
+            levelLength: 2*1000,
+//            levelLength: 7*1000,
 
             tileSettings: {
                 'hill': {
