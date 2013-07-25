@@ -8,7 +8,7 @@ var gameFBModule = window.gameFBModule || angular.module('GameFBModule', []);
 gameFBModule
     // Register the 'myCurrentTime' directive factory method.
     // We inject $timeout and dateFilter service since the factory method is DI.
-    .directive('fbScoreboard', ['FacebookService', function(FacebookService) {
+    .directive('fbScoreboard', ['FacebookService', '$parse', function(FacebookService, $parse) {
         'use strict';
         // return the directive link function. (compile function not needed)
         return {
@@ -33,7 +33,20 @@ gameFBModule
             link: function(scope, element, attrs) {
                 scope.isShowLogin = false;
 
-                scope.onLoginHandler = validate;
+                var onLoginHandler = function() {};
+                if (attrs.hasOwnProperty('onLogin')) {
+                    onLoginHandler = $parse(attrs.onLogin);
+                }
+
+                scope.$on('fb/setMyScore', function() {
+                    validate();
+                });
+
+                scope.onLoginHandler = function() {
+                    onLoginHandler(scope);
+                    validate();
+                };
+
                 function validate() {
                     console.log('validate');
                     FacebookService.isLogin().then(function(result) {
@@ -42,8 +55,9 @@ gameFBModule
                                 scope.scores = scores;
                             });
                             scope.isShowLogin = false;
-                        } else if (attrs.hasOwnProperty('asktologin')){
+                        } else if (attrs.hasOwnProperty('askToLogin')){
                             scope.isShowLogin = true;
+                            if (!score.$$phase) score.$digest();
                         }
                     });
                 }

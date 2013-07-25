@@ -42,15 +42,11 @@ game.controller('MainMenuCtrl', ['$scope', '$timeout', 'GameWorld', 'FacebookSer
     $scope.isLogin = false;
     $scope.userName = "stranger";
     $scope.myScore = "unknown";
-    $scope.isScoreStored = false;
 
     FacebookService.isLogin().then(function(result) {
         $scope.isLogin = result;
 
         if (result) {
-            FacebookService.setMyScore(100 * Math.random()).then(function() {
-                $scope.isScoreStored = true;
-            });
             $scope.userName = FacebookService.getUserName();
             $scope.myScore = FacebookService.getMyScore();
         }
@@ -65,11 +61,11 @@ game.controller('AboutCtrl', ['$scope', 'GameWorld', function($scope, GameWorld)
     GameWorld.stop();
 }]);
 
-game.controller('ScoreboardCtrl', ['$scope', 'GameWorld', function($scope, GameWorld) {
+game.controller('ScoreboardCtrl', ['$scope', 'GameWorld', 'FacebookService', function($scope, GameWorld, FacebookService) {
     GameWorld.stop();
-    $scope.onLoginHandler = function() {
-        console.log('function in controller');
-    }
+    $scope.clearMyScore = function() {
+        FacebookService.setMyScore(0);
+    };
 }]);
 
 game.controller('MapCtrl', ['$scope', 'GameWorld', 'Player', function($scope, GameWorld, Player) {

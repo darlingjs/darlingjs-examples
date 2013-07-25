@@ -238,6 +238,7 @@ gameFBModule
                     console.log('setMyScore.response', response);
                     if (!response.error) {
                         requestDeferred.resolve(true);
+                        $rootScope.$broadcast('fb/setMyScore', value);
                     } else {
                         requestDeferred.reject(response.error);
                     }

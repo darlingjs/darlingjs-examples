@@ -41,16 +41,10 @@
           <h1>Level Complete</h1>
           <p>Got scores: {{score}}</p>
           <div>
-            <h2>Publish results</h2>
+            <h2>Scoreboard</h2>
+            <fb-scoreboard ask-to-login on-login="onLogin()"></fb-scoreboard>
             <div ng-hide="isLogin">
               <p>To store scores you need be login to game by Facebook account</p>
-              <!--<div class="fb-login-button" data-show-faces="true" data-width="200" data-max-rows="1" data-autologoutlink="true" data-onlogin="console.log('login!');" data-height="100" style="max-height: 100px"></div>-->
-              <div class="fb-login-button" data-show-faces="true" data-width="200" data-max-rows="1" data-autologoutlink="true" data-onlogin="game.onFBLogin()" data-height="100" style="max-height: 100px"></div>
-            </div>
-            <div ng-show="isLogin">
-            </div>
-            <div ng-show="isScoreStored">
-              <fb-scoreboard></fb-scoreboard>
             </div>
           </div>
           <a href="#/menu">Menu</a>
