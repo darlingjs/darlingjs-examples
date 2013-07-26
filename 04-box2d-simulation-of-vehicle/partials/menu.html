@@ -9,5 +9,11 @@
       <li><a href="#/about">About</a></li>
     </ul>
     <div ng-cloak> Hello {{ userName }}! You have {{ myScore }} scores.</div>
+    <div ng-cloak ng-show="isNeedToLogin">
+      <p>
+        Login with Facebook to store your scores.
+      </p>
+      <fb-login onLogin="onLoginHandler()"></fb-login>
+    </div>
   </div>
 </div>
