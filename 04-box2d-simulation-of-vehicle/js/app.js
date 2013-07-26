@@ -15,8 +15,9 @@ game.config(['$routeProvider', function($routeProvider) {
         when('/about',          {templateUrl: 'partials/about.html',        controller: 'AboutCtrl',        bgColor: 'rgb(0, 0, 0)'}).
         when('/game/:levelId',  {templateUrl: 'partials/game.html',         controller: 'GameCtrl',         bgColor: 'rgb(0, 0, 0)'}).
         otherwise({redirectTo: '/menu'});
-}]).run(['FacebookService', function(FacebookService) {
+}]).run(['FacebookService', 'DeviceService', function(FacebookService, DeviceService) {
     FacebookService.init('474902895931168', '/channel.html');
+    DeviceService.hideUrlBar();
 }]);
 
 game.controller('BodyCtrl', ['$scope', function($scope) {

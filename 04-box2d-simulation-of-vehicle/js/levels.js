@@ -35,8 +35,8 @@ game.factory('Levels', ['localStorageService', function(localStorageService) {
             imgUrl: "https://badges.webmaker.org/badge/image/code-whisperer.png",
             next: [1],
 
-            levelLength: 2*1000,
-//            levelLength: 7*1000,
+//            levelLength: 2*1000,
+            levelLength: 4*1000,
 
             tileSettings: {
                 'hill': {
@@ -70,20 +70,20 @@ game.factory('Levels', ['localStorageService', function(localStorageService) {
 
             tileSettings: {
                 'hill': {
-                    probability: 0.0,
+                    probability: 0.9,
 
                     maxHillHeight: 0,
-                    minHillHeight: 50,
+                    minHillHeight: 52,
                     minHillWidth: 640,
                     maxHillWidth: 690
                 },
 
                 'bridge': {
-                    probability: 0.0
+                    probability: 0.1
                 },
 
                 'ramp': {
-                    probability: 1.0
+                    probability: 0.0
                 }
             },
             doom: {
@@ -100,10 +100,10 @@ game.factory('Levels', ['localStorageService', function(localStorageService) {
 
             tileSettings: {
                 'hill': {
-                    probability: 0.0,
+                    probability: 1.0,
 
                     maxHillHeight: 0,
-                    minHillHeight: 50,
+                    minHillHeight: 54,
                     minHillWidth: 640,
                     maxHillWidth: 690
                 },
@@ -113,7 +113,7 @@ game.factory('Levels', ['localStorageService', function(localStorageService) {
                 },
 
                 'ramp': {
-                    probability: 1.0
+                    probability: 0.0
                 }
             },
             doom: {
@@ -130,20 +130,20 @@ game.factory('Levels', ['localStorageService', function(localStorageService) {
 
             tileSettings: {
                 'hill': {
-                    probability: 0.0,
+                    probability: 0.7,
 
                     maxHillHeight: 0,
-                    minHillHeight: 50,
+                    minHillHeight: 56,
                     minHillWidth: 640,
                     maxHillWidth: 690
                 },
 
                 'bridge': {
-                    probability: 0.0
+                    probability: 0.3
                 },
 
                 'ramp': {
-                    probability: 1.0
+                    probability: 0.0
                 }
             },
             doom: {
@@ -161,10 +161,10 @@ game.factory('Levels', ['localStorageService', function(localStorageService) {
 
             tileSettings: {
                 'hill': {
-                    probability: 0.0,
+                    probability: 1.0,
 
                     maxHillHeight: 0,
-                    minHillHeight: 50,
+                    minHillHeight: 58,
                     minHillWidth: 640,
                     maxHillWidth: 690
                 },
@@ -174,7 +174,7 @@ game.factory('Levels', ['localStorageService', function(localStorageService) {
                 },
 
                 'ramp': {
-                    probability: 1.0
+                    probability: 0.0
                 }
             },
             doom: {
@@ -192,20 +192,20 @@ game.factory('Levels', ['localStorageService', function(localStorageService) {
 
             tileSettings: {
                 'hill': {
-                    probability: 0.0,
+                    probability: 0.8,
 
                     maxHillHeight: 0,
-                    minHillHeight: 50,
+                    minHillHeight: 60,
                     minHillWidth: 640,
                     maxHillWidth: 690
                 },
 
                 'bridge': {
-                    probability: 0.0
+                    probability: 0.2
                 },
 
                 'ramp': {
-                    probability: 1.0
+                    probability: 0.0
                 }
             },
             doom: {
@@ -223,10 +223,10 @@ game.factory('Levels', ['localStorageService', function(localStorageService) {
 
             tileSettings: {
                 'hill': {
-                    probability: 0.0,
+                    probability: 1.0,
 
                     maxHillHeight: 0,
-                    minHillHeight: 50,
+                    minHillHeight: 62,
                     minHillWidth: 640,
                     maxHillWidth: 690
                 },
@@ -236,7 +236,7 @@ game.factory('Levels', ['localStorageService', function(localStorageService) {
                 },
 
                 'ramp': {
-                    probability: 1.0
+                    probability: 0.0
                 }
             },
             doom: {
@@ -254,10 +254,10 @@ game.factory('Levels', ['localStorageService', function(localStorageService) {
 
             tileSettings: {
                 'hill': {
-                    probability: 0.0,
+                    probability: 1.0,
 
                     maxHillHeight: 0,
-                    minHillHeight: 50,
+                    minHillHeight: 64,
                     minHillWidth: 640,
                     maxHillWidth: 690
                 },
@@ -267,7 +267,7 @@ game.factory('Levels', ['localStorageService', function(localStorageService) {
                 },
 
                 'ramp': {
-                    probability: 1.0
+                    probability: 0.0
                 }
             },
             doom: {
