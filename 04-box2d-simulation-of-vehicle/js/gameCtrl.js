@@ -83,14 +83,26 @@ game.controller('GameCtrl', ['GameWorld', 'TouchService', 'Levels', 'Player', '$
         };
 
         $scope.paused = false;
+        /**
+         * Set pause on game
+         */
         $scope.pause = function() {
-            if (GameWorld.isPaused()) {
-                GameWorld.unPause();
-                $scope.paused = false;
-            } else {
-                GameWorld.pause();
-                $scope.paused = true;
+            if ($scope.gameState !== 'playing') {
+                return;
             }
+
+            GameWorld.pause();
+            $scope.paused = true;
+            $scope.gameState = 'game-paused';
+        };
+
+        /**
+         * resume game after it has paused
+         */
+        $scope.resume = function() {
+            GameWorld.unPause();
+            $scope.paused = false;
+            $scope.gameState = 'playing';
         };
 
         $scope.$on('world/finish', function() {

@@ -56,6 +56,25 @@ canvas {
     right: 8px;
 }
 
+.life-in-game-placement {
+    position: absolute;
+    top: 4px;
+    left: 130px;
+}
+
+.menu-button-in-game-placement {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+}
+
+
+.score-in-game-placement {
+    position: absolute;
+    top: 4px;
+    right: 105px;
+}
+
 /* Desktop */
 @media (min-width: 641px) {
     .header {
@@ -91,23 +110,6 @@ canvas {
         height: 480px;
     }
 
-    .menu-button-in-game-placement {
-        position: absolute;
-        top: 4px;
-        left: 100px;
-    }
-
-    .life-in-game-placement {
-        position: absolute;
-        top: 4px;
-        left: 160px;
-    }
-
-    .score-in-game-placement {
-        position: absolute;
-        top: 4px;
-        right: 65px;
-    }
 
     .sound-button-in-game-placement {
         position: absolute;
@@ -193,37 +195,6 @@ canvas {
     .page-content {
         margin-top: -300px;
         height: 300px;
-    }
-
-    .menu-button-in-game-placement {
-        position: absolute;
-        top: 4px;
-        left: 100px;
-        /*top: 20px;
-        left: 100px;
-        position: absolute;*/
-    }
-
-    .life-in-game-placement {
-        position: absolute;
-        top: 4px;
-        left: 160px;
-        /*
-        top: 20px;
-        left: 180px;
-        position: absolute;
-        */
-    }
-
-    .score-in-game-placement {
-        position: absolute;
-        top: 4px;
-        right: 65px;
-        /*
-        top: 20px;
-        left: 360px;
-        position: absolute;
-        */
     }
 
     .sound-button-in-game-placement {
@@ -351,6 +322,8 @@ a:active {
     text-align: center;
     margin-right: auto;
     margin-left: auto;
+    background-color: rgba(78, 78, 78, 0.60);
+    padding-bottom: 16px;
 }
 
 .game-info-enter, .game-info-leave, .game-info-enter-active, .game-info-leave-active {
@@ -361,10 +334,10 @@ a:active {
 }
 
 .game-info-enter, .game-info-leave {
-    -webkit-transition: -webkit-transform 10.2s cubic-bezier(0.26,0.405,0.355,1);
-    -moz-transition: -moz-transform 10.2s cubic-bezier(0.26,0.405,0.355,1);
-    -ms-transition: -ms-transform 10.2s cubic-bezier(0.26,0.405,0.355,1);
-    -o-transition: -o-transform 10.2s cubic-bezier(0.26,0.405,0.355,1);
+    -webkit-transition: -webkit-transform 0.2s cubic-bezier(0.26,0.405,0.355,1);
+    -moz-transition: -moz-transform 0.2s cubic-bezier(0.26,0.405,0.355,1);
+    -ms-transition: -ms-transform 0.2s cubic-bezier(0.26,0.405,0.355,1);
+    -o-transition: -o-transform 0.2s cubic-bezier(0.26,0.405,0.355,1);
 }
 
 .game-info-enter {
