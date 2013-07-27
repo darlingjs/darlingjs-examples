@@ -4,20 +4,6 @@
   </canvas>
 
   <div id="gameUI" class="background-image-size">
-    <div class="sound-button-in-game-placement">
-      <button ng-click="soundSwitch()">sound {{soundStateSwitchTo}}</button>
-      <button ng-click="pause()">pause {{paused}}</button>
-    </div>
-
-    <img src="img/left-arrow-active.png" width="48" height="48" ng-show="drivingLeft" class="left-driving-arrow"/>
-    <img src="img/left-arrow.png" width="48" height="48" ng-hide="drivingLeft" class="left-driving-arrow"/>
-    <img src="img/right-arrow-active.png" width="48" height="48" ng-show="drivingRight" class="right-driving-arrow"/>
-    <img src="img/right-arrow.png" width="48" height="48" ng-hide="drivingRight" class="right-driving-arrow"/>
-
-    <div class="menu-button-in-game-placement"><a href="#/menu/">menu</a></div>
-    <div class="life-in-game-placement">Life: {{life}}</div>
-    <div class="score-in-game-placement">Score: {{score}}</div>
-
     <div style="display: table; position: absolute" class="background-image-size">
       <div ng-switch="gameState" class="game-info-panel">
         <div ng-animate="'game-info'">
@@ -61,5 +47,20 @@
         </div>
       </div>
     </div>
+
+    <div class="sound-button-in-game-placement">
+      <button ng-click="soundSwitch()">sound {{soundStateSwitchTo}}</button>
+      <button ng-click="pause()">pause {{paused}}</button>
+    </div>
+
+    <img src="img/left-arrow-active.png" width="48" height="48" ng-show="drivingLeft" class="left-driving-arrow"/>
+    <img src="img/left-arrow.png" width="48" height="48" ng-hide="drivingLeft" class="left-driving-arrow"/>
+    <img src="img/right-arrow-active.png" width="48" height="48" ng-show="drivingRight" class="right-driving-arrow"/>
+    <img src="img/right-arrow.png" width="48" height="48" ng-hide="drivingRight" class="right-driving-arrow"/>
+
+    <div class="menu-button-in-game-placement"><a href="#/menu/">menu</a></div>
+    <div class="life-in-game-placement">Life: {{life}}</div>
+    <div class="score-in-game-placement">Score: {{score}}</div>
+
   </div>
 </div>
