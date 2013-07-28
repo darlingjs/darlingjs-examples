@@ -1,7 +1,7 @@
 Game of Pong
 ============
 
-Game developed almost without any additional modules. Main goal of the game example
+The game developed almost without any additional modules. Main goal of the game example
 to show simple way to create modules, systems, components and combine them into the game.
 
 # Demo: 
