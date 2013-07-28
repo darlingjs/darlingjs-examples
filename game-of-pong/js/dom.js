@@ -6,6 +6,8 @@
     'use strict';
 
     var m = darlingjs.module('domModule', []);
+
+
     m.$c('domView', {
         color: null,
         element: null
