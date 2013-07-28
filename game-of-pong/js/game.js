@@ -7,10 +7,10 @@
                 'physicsModule',
                 'gamePlayModule']),
         aspectRatio = 2,
-/**
- * window.innerWidth and window.innerHeight === 0 inside iFrame at 1st moment.
- * Need to get size from documentElement
- */
+    /**
+     * window.innerWidth and window.innerHeight === 0 inside iFrame at 1st moment.
+     * Need to get size from documentElement
+     */
         windowWidth = document.documentElement.clientWidth,
         windowHeight = document.documentElement.clientHeight;
 
@@ -28,6 +28,7 @@
     // add view renderer system
 
     world.$add('domViewRenderer', {
+        //target div element
         target: '#gameStage',
         width: width,
         height: height,
@@ -57,7 +58,10 @@
         width: width,
         height: height,
 
+        //target DOM element for player 1 score output
         player1TargetElement: '#playerScore1',
+
+        //target DOM element for player 2 score output
         player2TargetElement: '#playerScore2'
     });
 
@@ -95,7 +99,6 @@
 
 
     //throw the ball
-
     var angle = Math.PI * Math.random(),
         power = 5;
 

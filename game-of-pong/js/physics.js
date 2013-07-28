@@ -1,11 +1,17 @@
-'use strict';
 /**
  * Project: darlingjs (GameEngine).
  * Copyright (c) 2013, Eugene-Krevenets
  */
 
 (function() {
+    'use strict';
+
+    //create module of physics
     var m = darlingjs.module('physicsModule');
+
+    /**
+     * Holds impulse of entity
+     */
     m.$c('impulse', {
         impulse: {x: 0.0, y: 0.0}
     });
@@ -16,11 +22,16 @@
      * And reflect on the borders
      */
     m.$s('impulseUpdate', {
+        //deals with entity, that hold:
+        $require: ['impulse', 'ng2D', 'ng2DSize'],
+
         width: 400,
         height: 300,
 
-        $require: ['impulse', 'ng2D', 'ng2DSize'],
-
+        /**
+         * Each World tick, we recalculate position
+         * and check Worlds boundaries.
+         */
         $update: ['$entity', function($entity) {
             var ng2D = $entity.ng2D,
                 ng2DSize = $entity.ng2DSize,
@@ -50,7 +61,12 @@
         }]
     });
 
-    m.$c('solid');
+    /**
+     * For solid entities. So it collide
+     */
+    m.$c('solid', {
+        type: null
+    });
 
     /**
      * PongCollision system use for catch collision of ball and paddle
@@ -58,18 +74,30 @@
      *
      */
     m.$s('pongCollision', {
-        edgePart: 0.2,
-
-        paddles: null,
-        balls: null,
-
+        //deals with entity, that hold:
         $require: ['solid', 'ng2D', 'ng2DSize'],
 
+        //edge part of paddle, whole size of paddle is [-0.5, 0.5]
+        edgePart: 0.1,
+
+        //@private
+        paddles: null,
+        //@private
+        balls: null,
+
+        /**
+         * Create lists of entities on the System has added to the World
+         */
         $added: function() {
             this.paddles = new darlingutil.List('paddles');
             this.balls = new darlingutil.List('balls');
         },
 
+        /**
+         * When entity has added to the System we're rearrange it the proper list
+         *
+         * @param $entity
+         */
         $addEntity: function($entity) {
             var solid = $entity.solid;
             if (solid.type === 'ball') {
@@ -85,6 +113,11 @@
             }
         },
 
+        /**
+         * On entity removed from the System, it also removed entity from list
+         *
+         * @param $entity
+         */
         $removeEntity: function($entity) {
             var solid = $entity.solid;
             if (solid.type === 'ball') {
@@ -96,6 +129,10 @@
             }
         },
 
+        /**
+         * On World tick, we're checking collision between paddles and balls.
+         * And if got one - simulate bounce.
+         */
         $update: function() {
             var ballNode = this.balls.$head;
             while(ballNode) {
@@ -150,6 +187,12 @@
             }
         },
 
+        /**
+         *
+         * @private
+         * @param ballImpulse
+         * @param normalAngle
+         */
         calcSlopImpulse: function(ballImpulse, normalAngle) {
             var impulseScale = Math.sqrt(ballImpulse.x * ballImpulse.x + ballImpulse.y * ballImpulse.y),
                 impulseAngle = Math.atan2(-ballImpulse.y, -ballImpulse.x);
@@ -160,10 +203,17 @@
             ballImpulse.y = impulseScale * Math.sin(impulseAngle);
         },
 
+        /**
+         *
+         * @param entity1
+         * @param entity2
+         * @returns {boolean}
+         */
         checkCollision: function(entity1, entity2) {
             if (entity1 === entity2) {
-                return;
+                return false;
             }
+
             var ng2D1 = entity1.ng2D,
                 ng2DSize1 = entity1.ng2DSize,
                 halfWidth1 = 0.5 * ng2DSize1.width,
@@ -181,16 +231,18 @@
             );
         },
 
-        sign: function(value) {
-            if (value > 0) {
-                return 1;
-            } else if (value < 0) {
-                return -1;
-            } else {
-                return 0;
-            }
-        },
-
+        /**
+         *
+         * @param left1
+         * @param right1
+         * @param top1
+         * @param bottom1
+         * @param left2
+         * @param right2
+         * @param top2
+         * @param bottom2
+         * @returns {boolean}
+         */
         rectOverlap: function(left1, right1, top1, bottom1, left2, right2, top2, bottom2) {
             return (left1 < right2 && left2 < right1 && top1 < bottom2 && top2 < bottom1);
         }

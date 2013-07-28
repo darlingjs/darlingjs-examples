@@ -5,7 +5,13 @@
 
 (function() {
     'use strict';
+
+    //create control module
     var m = darlingjs.module('controlModule', []);
+
+    /**
+     * Describe up/down keyCode, and min/max value for Y
+     */
     m.$c('control', {
         up: null,
         down: null,
@@ -13,24 +19,42 @@
         maxY: 0
     });
 
+    /**
+     * Component-marker for paddler moved down
+     */
     m.$c('moveDown', {
         speed: 1,
+        //limit value of Y
         limit: 0
     });
 
+    /**
+     * Component-marker for paddler moved up
+     */
     m.$c('moveUp', {
         speed: 1,
+        //limit value of Y
         limit: 0
     });
 
+    /**
+     * System handler keyDown/keyUp and add/remove moveDown/moveUp component from entity
+     */
     m.$s('controlSystem', {
+        //for with entity that holds:
         $require: ['control'],
 
+        //map to reflect keyCode to entities
         keyToEntities: [],
 
+        // @private
         keyDownHandler: null,
+        // @private
         keyUpHandler: null,
 
+        /**
+         * System added to the World
+         */
         $added: function() {
             this.keyToEntities.length = 256;
             var self = this;
@@ -47,21 +71,42 @@
             document.addEventListener('keyup', this.keyUpHandler);
         },
 
+        /**
+         * System removed from the World
+         *
+         */
         $removed: function() {
             document.removeEventListener('keydown', this.keyDownHandler);
             document.removeEventListener('keyup', this.keyUpHandler);
         },
 
+        /**
+         * Entity added to the System
+         *
+         * @param $entity
+         */
         $addEntity: function($entity) {
             this.watchKey($entity.control.up, $entity);
             this.watchKey($entity.control.down, $entity);
         },
 
+        /**
+         * Entity removed from the System
+         *
+         * @param $entity
+         */
         $removeEntity: function($entity) {
             this.stopWatchingKey($entity.control.up, $entity);
             this.stopWatchingKey($entity.control.down, $entity);
         },
 
+        /**
+         * System start watching the key for the entity
+         *
+         * @private
+         * @param keyCode
+         * @param $entity
+         */
         watchKey: function(keyCode, $entity) {
             if (!this.keyToEntities[keyCode]) {
                 this.keyToEntities[keyCode] = [];
@@ -70,12 +115,26 @@
             this.keyToEntities[keyCode].push($entity);
         },
 
+        /**
+         * System stop watching the key for the entity
+         *
+         * @private
+         * @param keyCode
+         * @param $entity
+         */
         stopWatchingKey: function(keyCode, $entity) {
             var entities = this.keyToEntities[keyCode];
             var index = entities.indexOf($entity);
             entities.splice(index, 1);
         },
 
+        /**
+         * Handle KeyDown event
+         *
+         * @private
+         * @param e
+         * @returns {boolean}
+         */
         onKeyDown: function(e) {
             var entities = this.keyToEntities[e.keyCode];
             if (entities && entities.length > 0) {
@@ -116,33 +175,16 @@
         }
     });
 
-    var specialKeys = {
-        8: "backspace", 9: "tab", 10: "return", 13: "return", 16: "shift", 17: "ctrl", 18: "alt", 19: "pause",
-        20: "capslock", 27: "esc", 32: "space", 33: "pageup", 34: "pagedown", 35: "end", 36: "home",
-        37: "left", 38: "up", 39: "right", 40: "down", 45: "insert", 46: "del",
-        96: "0", 97: "1", 98: "2", 99: "3", 100: "4", 101: "5", 102: "6", 103: "7",
-        104: "8", 105: "9", 106: "*", 107: "+", 109: "-", 110: ".", 111 : "/",
-        112: "f1", 113: "f2", 114: "f3", 115: "f4", 116: "f5", 117: "f6", 118: "f7", 119: "f8",
-        120: "f9", 121: "f10", 122: "f11", 123: "f12", 144: "numlock", 145: "scroll", 186: ";", 191: "/",
-        220: "\\", 222: "'", 224: "meta"
-    };
-
-    function charCodeFromKey(key) {
-        switch(key) {
-            case 'LEFT_ARROW':
-                return ;
-            case 'RIGHT_ARROW':
-                break;
-            case 'UP_ARROW':
-                break;
-            case 'DONW_ARROW':
-                break;
-        }
-    }
-
+    /**
+     * System move up entity if it holds moveUp and ng2D components
+     */
     m.$s('controlMoveUp', {
+        //for with entity that holds:
         $require: ['moveUp', 'ng2D'],
 
+        /**
+         * Update each entity from the System on the World tick
+         */
         $update: ['$entity',function($entity) {
             if ($entity.ng2D.y <= $entity.moveUp.limit) {
                 $entity.$remove('moveUp');
@@ -152,9 +194,16 @@
         }]
     });
 
+    /**
+     * System move down entity if it holds moveUp and ng2D components
+     */
     m.$s('controlMoveDown', {
+        //for with entity that holds:
         $require: ['moveDown', 'ng2D'],
 
+        /**
+         * Update each entity from the System on the World tick
+         */
         $update: ['$entity',function($entity) {
             if ($entity.ng2D.y >= $entity.moveDown.limit) {
                 $entity.$remove('moveDown');
