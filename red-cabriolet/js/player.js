@@ -87,17 +87,7 @@ game.factory('Player', ['Levels', 'localStorageService', function(Levels, localS
      */
     function getPlayedLevels() {
         for (var i = 0, count = Levels.numLevels(); i < count; i++) {
-            var level = Levels.getLevelAt(i);
-            var playedLevel = playedLevels[i];
-            if (playedLevel) {
-                level.maxScore = playedLevel.maxScore;
-                level.available = playedLevel.available;
-                level.passed = playedLevel.passed;
-            } else {
-                level.maxScore = 0;
-                level.available = false;
-                level.passed = false;
-            }
+            getPlayedLevelAt(i);
         }
 
         return Levels.getLevels();
@@ -113,9 +103,20 @@ game.factory('Player', ['Levels', 'localStorageService', function(Levels, localS
     function getPlayedLevelAt(i) {
         var level = Levels.getLevelAt(i);
         var playedLevel = playedLevels[i];
-        level.maxScore = playedLevel.maxScore;
-        level.available = playedLevel.available;
-        level.passed = playedLevel.passed;
+        if (playedLevel) {
+            level.maxScore = playedLevel.maxScore;
+            level.available = playedLevel.available;
+            level.passed = playedLevel.passed;
+            if (darlingutil.isDefined(playedLevel.maxScore) || level.available) {
+                level.imgUrl = 'https://badges.webmaker.org/badge/image/image-maker.png';
+            } else {
+                level.imgUrl = 'https://badges.webmaker.org/badge/image/i-am-a-webmaker.png';
+            }
+        } else {
+            level.maxScore = 0;
+            level.available = false;
+            level.passed = false;
+        }
 
         return level;
     }

@@ -3,22 +3,23 @@
   <div class="page-content">
     <h2>Map</h2>
     <a href="#/menu">Menu</a>
-    <ul>
-      <li ng-repeat="level in levels" class="level-selector">
-        <p>Level : {{level.name}}</p>
-        <p>{{level.state}}</p>
-        <div ng-switch="{{level.available}}" class="level-badge">
-          <div ng-switch-when="true">
-            <a href="#/game/{{$index}}"><img ng-src="{{level.imgUrl}}" width="32" height="32"/></a>
-            <p>score: {{level.maxScore}}</p>
-            <p>available</p>
+    <div style="margin-left: 128px">
+      <ul>
+        <li ng-repeat="level in levels" class="level-selector">
+          <p>Level : {{level.name}}</p>
+          <div ng-switch="{{level.available}}" class="level-badge">
+            <div ng-switch-when="true">
+              <a href="#/game/{{$index}}" style="margin-right: 64px;"><img ng-src="{{level.imgUrl}}" width="32" height="32"/></a>
+              <span>score: {{level.maxScore}}</span>
+              <!--<span>available</span>-->
+            </div>
+            <div ng-switch-default="">
+              <img ng-src="{{level.imgUrl}}" width="32" height="32"/>
+            </div>
           </div>
-          <div ng-switch-default="">
-            <img ng-src="{{level.imgUrl}}" width="32" height="32"/>
-          </div>
-        </div>
-      </li>
-    </ul>
+        </li>
+      </ul>
+    </div>
     <p style="clear: both">Select Level to play</p>
   </div>
 </div>
