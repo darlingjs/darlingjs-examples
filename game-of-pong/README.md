@@ -3,6 +3,7 @@ Game of Pong
 
 The game developed almost without any additional modules. Main goal of the game example
 to show simple way to create modules, systems, components and combine them into the game.
+It's heavily based on [CraftyJs example](http://craftyjs.com/tutorial/getting-started/how-crafty-works).
 
 # Demo: 
 [![](https://lh5.googleusercontent.com/-80qp7uh3EZM/UfUXEVNq6TI/AAAAAAAAfoo/twveW1uDI2A/s0/2013-07-28_15-05-19.png)](http://darlingjs.github.io/games/game-of-pong/)
