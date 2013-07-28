@@ -20,6 +20,8 @@
 
         $require: ['ng2D', 'ng2DSize', 'domView'],
 
+        updatePosition: null,
+
         $added: function() {
             this.stageElement = document.querySelector(this.target);
             if (!this.stageElement) {
@@ -30,6 +32,7 @@
             this.stageElement.style.width = this.width + 'px';
             this.stageElement.style.height = this.height + 'px';
             this.stageElement.style.margin = '0 auto';
+            this.updatePosition = buildUpdatePosition(getVendorPrefix());
         },
 
         $removed: function() {
@@ -49,7 +52,7 @@
             element.style.position = 'absolute';
 
             this.stageElement.appendChild(element);
-            updatePositionWebKit(element, $entity.ng2D, $entity.ng2DSize);
+            this.updatePosition(element, $entity.ng2D, $entity.ng2DSize);
             domView.element = element;
         }],
 
@@ -60,18 +63,35 @@
         }],
 
         $update: ['$entity', function($entity) {
-            updatePositionWebKit($entity.domView.element, $entity.ng2D, $entity.ng2DSize);
+            this.updatePosition($entity.domView.element, $entity.ng2D, $entity.ng2DSize);
         }]
     });
+
+    function getVendorPrefix() {
+        var ua = navigator.userAgent.toLowerCase(),
+            match = /(webkit)[ \/]([\w.]+)/.exec(ua) ||
+                /(o)pera(?:.*version)?[ \/]([\w.]+)/.exec(ua) ||
+                /(ms)ie ([\w.]+)/.exec(ua) ||
+                /(moz)illa(?:.*? rv:([\w.]+))?/.exec(ua) || [],
+            prefix = (match[1] || match[0]);
+
+        //browser specific quirks
+        if (prefix === "moz") prefix = "Moz";
+        if (prefix === "o") prefix = "O";
+        return prefix;
+    }
 
     /**
      * Update position of DOM element in WebKit style
      * @param element
      * @param ng2D
      */
-    function updatePositionWebKit(element, ng2D, ng2DSize) {
-        element.style['webkitTransform'] = 'translate3d('
-                + ~~(ng2D.x - 0.5 * ng2DSize.width) + 'px, '
-                + ~~(ng2D.y - 0.5 * ng2DSize.height) + 'px, 0)';
+    function buildUpdatePosition(prefix) {
+        var property = prefix + 'Transform';
+        return function (element, ng2D, ng2DSize) {
+            element.style[property] = 'translate3d('
+                    + ~~(ng2D.x - 0.5 * ng2DSize.width) + 'px, '
+                    + ~~(ng2D.y - 0.5 * ng2DSize.height) + 'px, 0)';
+        }
     }
 })();
