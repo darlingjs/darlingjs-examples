@@ -9,7 +9,7 @@ It's heavily based on [CraftyJs example](http://craftyjs.com/tutorial/getting-st
 [![](https://lh5.googleusercontent.com/-80qp7uh3EZM/UfUXEVNq6TI/AAAAAAAAfoo/twveW1uDI2A/s0/2013-07-28_15-05-19.png)](http://darlingjs.github.io/games/game-of-pong/)
 
 # Deps
-* [darlingjs-geometry-module](https://github.com/darlingjs/darlingjs-geometry-module)
+* [darlingjs-geometry-module](https://github.com/darlingjs/darlingjs-geometry-module) - use ng2D component.
 
 # What's Inside?
 
