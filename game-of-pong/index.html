@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple Game Of Pong</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <link href="css/main.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+  <div id="gameStage" class="game">
+    <div class="ui-elements">
+      <div class="scores score-left">Player1:<span id="playerScore1"></span></div>
+      <div class="scores score-right">Player2:<span id="playerScore2"></span></div>
+    </div>
+  </div>
+
+  <script src="bower_components/darlingjs/darling.js"></script>
+  <script src="bower_components/darlingjs-geometry/flatland.js"></script>
+
+  <script src="js/dom.js"></script>
+  <script src="js/control.js"></script>
+  <script src="js/physics.js"></script>
+  <script src="js/gameplay.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
