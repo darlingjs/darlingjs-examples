@@ -4,11 +4,11 @@ Game of Pong
 Game developed almost without any additional modules. Main goal of the game example
 to show simple way to create modules, systems, components and combine them into the game.
 
-# demo: 
+# Demo: 
 [![](https://lh5.googleusercontent.com/-80qp7uh3EZM/UfUXEVNq6TI/AAAAAAAAfoo/twveW1uDI2A/s0/2013-07-28_15-05-19.png)](http://darlingjs.github.io/games/game-of-pong/)
 
-#deps: 
-[darlingjs-geometry-module](https://github.com/darlingjs/darlingjs-geometry-module);
+# Deps: 
+* [darlingjs-geometry-module](https://github.com/darlingjs/darlingjs-geometry-module)
 
 # What Inside?
 
