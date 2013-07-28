@@ -68,14 +68,15 @@
 
     // build game scene
 
-    var paddleHeight = 50;
+    var paddleHeight = height/3;
+    if (paddleHeight > 100) paddleHeight = 100;
     world.$e('LeftPaddle', {
         domView: {color: 'rgb(255,0,0)'},
         ng2D: {x: 20, y: height / 2},
-        ng2DSize: {width: 10, height: 100},
+        ng2DSize: {width: 10, height: paddleHeight},
         control: {
             up: 87 /* W */, down: 83 /* S */,
-            maxY: height - paddleHeight, minY: paddleHeight,
+            maxY: height - paddleHeight/2, minY: paddleHeight/2,
             speed: 4
         },
         solid: {
@@ -86,10 +87,10 @@
     world.$e('RightPaddle', {
         domView: {color: 'rgb(0,255,0)'},
         ng2D: {x: width - 20, y: height / 2},
-        ng2DSize: {width: 10, height: 100},
+        ng2DSize: {width: 10, height: paddleHeight},
         control: {
             up: 38 /* arrow up */, down: 40 /* arrow down */,
-            maxY: height - paddleHeight, minY: paddleHeight,
+            maxY: height - paddleHeight/2, minY: paddleHeight/2,
             speed: 4
         },
         solid: {
