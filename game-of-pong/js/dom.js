@@ -67,6 +67,10 @@
         }]
     });
 
+    /**
+     * Get Vendor Prefix. Based on CraftyJS <http://craftyjs.com>
+     * @returns {*}
+     */
     function getVendorPrefix() {
         var ua = navigator.userAgent.toLowerCase(),
             match = /(webkit)[ \/]([\w.]+)/.exec(ua) ||
