@@ -95,6 +95,8 @@
                         });
                     }
                 }
+                e.preventDefault();
+                return false;
             }
         },
 

@@ -1,11 +1,4 @@
-/**
- * TODO:
- * window.innerWidth and window.innerHeight === 0 inside iFrame at 1st moment.
- * Need to wait a moment to get them
- */
-setTimeout(init, 0);
-
-function init() {
+(function() {
     'use strict';
 
     var world = darlingjs.world('pong',
@@ -13,21 +6,24 @@ function init() {
                 'controlModule',
                 'physicsModule',
                 'gamePlayModule']),
-        aspectRatio = 2;
+        aspectRatio = 2,
+/**
+ * window.innerWidth and window.innerHeight === 0 inside iFrame at 1st moment.
+ * Need to get size from documentElement
+ */
+        windowWidth = document.documentElement.clientWidth,
+        windowHeight = document.documentElement.clientHeight;
 
     /**
      * fit to screen with aspect
      */
-    if (window.innerWidth < aspectRatio * window.innerHeight) {
-        var width = window.innerWidth,
-            height = window.innerWidth / aspectRatio;
+    if (windowWidth < aspectRatio * windowHeight) {
+        var width = windowWidth,
+            height = windowWidth / aspectRatio;
     } else {
-        var width = aspectRatio * window.innerHeight,
-            height = window.innerHeight;
+        var width = aspectRatio * windowHeight,
+            height = windowHeight;
     }
-
-    console.log('width ' + width);
-    console.log('height ' + height);
 
     // add view renderer system
 
@@ -125,4 +121,4 @@ function init() {
     //Ready, Steady, Go!
 
     world.$start();
-};
+})();
