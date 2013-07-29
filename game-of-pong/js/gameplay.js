@@ -22,7 +22,7 @@
      */
     m.$s('gamePlay', {
         //deal with entity that hold:
-        $require: ['ball', 'ng2D'],
+        $require: ['ball', 'ng2D', 'ng2DSize'],
 
         width: 400,
         height: 300,
@@ -61,11 +61,11 @@
          * And set ball back.
          */
         $update: ['$entity', function($entity) {
-            if ($entity.ng2D.x < 0) {
+            if ($entity.ng2D.x < 0.5 * $entity.ng2DSize.width) {
                 this.player1Score++;
                 this.setBallToDefaultPosition($entity);
                 this.validatePlayersState();
-            } else if ($entity.ng2D.x > this.width) {
+            } else if ($entity.ng2D.x > this.width - 0.5 * $entity.ng2DSize.width) {
                 this.player2Score++;
                 this.setBallToDefaultPosition($entity);
                 this.validatePlayersState();
