@@ -32,7 +32,7 @@
         target: '#gameStage',
         width: width,
         height: height,
-        backgroundColor: 'rgb(127,127,127)'
+        backgroundColor: '#008B9A'
     });
 
 
@@ -71,7 +71,7 @@
     var paddleHeight = height/3;
     if (paddleHeight > 100) paddleHeight = 100;
     world.$e('LeftPaddle', {
-        domView: {color: 'rgb(255,0,0)'},
+        domView: {color: '#ED4501'},
         ng2D: {x: 20, y: height / 2},
         ng2DSize: {width: 10, height: paddleHeight},
         control: {
@@ -85,7 +85,7 @@
     });
 
     world.$e('RightPaddle', {
-        domView: {color: 'rgb(0,255,0)'},
+        domView: {color: '#BBD401'},
         ng2D: {x: width - 20, y: height / 2},
         ng2DSize: {width: 10, height: paddleHeight},
         control: {
@@ -110,7 +110,7 @@
     }
 
     world.$e('ball', {
-        domView: {color: 'rgb(0,0,255)'},
+        domView: {color: 'rgb(255,255,255)'},
         ng2D: {x: width / 2, y: height / 2},
         ng2DSize: {width: 10, height: 10},
         impulse: {

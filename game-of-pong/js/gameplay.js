@@ -80,6 +80,7 @@
          */
         setBallToDefaultPosition: function(ball) {
             ball.ng2D.x = this.width / 2;
+            ball.impulse.y += 3 * (0.5 - Math.random());
         },
 
         /**

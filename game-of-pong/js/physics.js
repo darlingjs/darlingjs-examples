@@ -156,10 +156,10 @@
 
                         var delta = (ballNg2D.y - paddleEntityNg2D.y) / paddleEntityNg2DSize.height;
                         var slope = Math.PI / 16;
-                        if (delta < -this.edgePart) {
+                        if (delta < this.edgePart - 0.5) {
                             //top edge
                             this.calcSlopImpulse(ballImpulse, paddleEntity.solid.left?-slope:Math.PI + slope);
-                        } else if (delta > this.edgePart) {
+                        } else if (delta > 0.5 - this.edgePart) {
                             //bottom edge
                             this.calcSlopImpulse(ballImpulse, paddleEntity.solid.left?slope:Math.PI - slope);
                         } else {
