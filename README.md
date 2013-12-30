@@ -12,3 +12,6 @@ Darlingjs Examples
 ![](https://lh4.googleusercontent.com/--BwdjZS5wZk/UXLxxVdcZuI/AAAAAAAAaac/ktkB6nzgF3I/s0/2013-04-20_21-31-27.png)
 
 [try it!](http://darlingjs.github.io/games/cabriolet/) and [fork it!](https://github.com/darlingjs/darlingjs-examples/tree/master/red-cabriolet)
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/darlingjs/darlingjs-examples/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
